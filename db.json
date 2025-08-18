@@ -1,0 +1,240 @@
+{
+  "users": [
+    {
+      "id": "618d",
+      "name": "david",
+      "email": "david@gmail.com",
+      "password": "David@1234",
+      "cart": [
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
+          "ml": "500ml",
+          "section": "milk"
+        },
+        {
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
+          "ml": "500ml",
+          "section": "milk"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
+          "ml": "500ml",
+          "section": "milk"
+        }
+      ]
+    },
+    {
+      "id": "7863",
+      "name": "sreenand",
+      "email": "sreenand@gmail.com",
+      "password": "Sree@123"
+    },
+    {
+      "id": "f79a",
+      "name": "qwer",
+      "email": "jhon@gmail.com",
+      "password": "Sree@123",
+      "cart": []
+    },
+    {
+      "id": "2225",
+      "name": "mal",
+      "email": "mal@gmail.com",
+      "password": "Sree@123",
+      "cart": [
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        }
+      ]
+    },
+    {
+      "id": "4ab1",
+      "name": "abraham",
+      "email": "ab@gmail.com",
+      "password": "David@123",
+      "cart": [
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
+          "ml": "500ml",
+          "section": "milk"
+        },
+        {
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
+          "ml": "500ml",
+          "section": "milk"
+        },
+        {
+          "id": "5",
+          "name": "godfather",
+          "price": "2000rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "6",
+          "name": "redlabel milk",
+          "price": "1700rs",
+          "ml": "500ml",
+          "section": "milk"
+        },
+        {
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
+          "ml": "500ml",
+          "section": "milk"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "4",
+          "name": "vodka",
+          "price": "1200rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
+          "ml": "500ml",
+          "section": "milk"
+        },
+        {
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
+          "ml": "500ml",
+          "section": "milk"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "pepsi",
+      "price": "250rs",
+      "ml": "500ml"
+    },
+    {
+      "id": "2",
+      "name": "milk",
+      "price": "200rs",
+      "ml": "500ml",
+      "section": "milk"
+    },
+    {
+      "id": "3",
+      "name": "cocktail",
+      "price": "300rs",
+      "ml": "500ml"
+    },
+    {
+      "id": "4",
+      "name": "vodka",
+      "price": "1200rs",
+      "ml": "500ml"
+    },
+    {
+      "id": "5",
+      "name": "godfather",
+      "price": "2000rs",
+      "ml": "500ml"
+    },
+    {
+      "id": "6",
+      "name": "redlabel milk",
+      "price": "1700rs",
+      "ml": "500ml",
+      "section": "milk"
+    },
+    {
+      "id": "7",
+      "name": "baccardi",
+      "price": "1900rs",
+      "ml": "500ml"
+    },
+    {
+      "id": "8",
+      "name": "baccardi",
+      "price": "1900rs",
+      "ml": "500ml"
+    }
+  ]
+}
