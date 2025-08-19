@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext } from "react";
 import { SearchContext } from "./SearchContext";
 import { useNavigate } from "react-router-dom";
+
 export default function Products(){
 
     const [products,setProducts]=useState([]);
@@ -17,6 +18,8 @@ export default function Products(){
         const [updatedQuantity,setUpdatedQuantity]=useState(null)
 
         const [filtered,setFilterd]=useState([]);
+        
+        
       
             useEffect(function(){
               async function quantity(){
@@ -140,6 +143,9 @@ setinputValue(event.target.value);
   className="btn btn-secondary m-1"
   onClick={async function(){
     try {
+
+      
+
       const savedUser = JSON.parse(localStorage.getItem("existingUser"));
 
       if (!savedUser) {
@@ -148,12 +154,44 @@ setinputValue(event.target.value);
         return;
       }
 
+     
+      
       // 1. Fetch the latest user from db.json
       const response = await axios.get(`http://localhost:5000/users/${savedUser.id}`);
       let user = response.data;
 
+
+      let removeItemFromCart=false;
+
+      for(let product of user.cart){
+
+        if(product.id===item.id){
+          removeItemFromCart=true;
+          break;
+        }
+        
+      }
+       let updatedCart;
+      if(removeItemFromCart){
+         updatedCart = user.cart.filter(function(product){
+          
+         
+          return product.id!==item.id;
+
+         })
+      alert(" item removed from cart")
+      }
+      else{
+        
       // 2. Append new product to cart
-      let updatedCart = [...user.cart, item];
+      alert(`${item.name} added to cart ✅`);
+          
+         updatedCart = [...user.cart, item];
+        
+      }
+
+
+      
 
       // 3. Update user in db.json
       await axios.patch(`http://localhost:5000/users/${savedUser.id}`, {
@@ -164,22 +202,87 @@ setinputValue(event.target.value);
 
       localStorage.setItem("existingUser",JSON.stringify(updatedUser))
 
-      alert(`${item.name} added to cart ✅`);
     
      
        localStorage.setItem("cartTotalLength",updatedUser.cart.length);
 
        const newUpdatedQuantity= localStorage.getItem("cartTotalLength");
 
-       setUpdatedQuantity(newUpdatedQuantity)
+       setUpdatedQuantity(newUpdatedQuantity);
+
+       
 
     } catch (err) {
       console.log("error in fetch cart data", err);
     }
   }}
 >
-  Add to Cart
-</button>
+{JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(function(p){
+  return p.id===item.id
+})
+    ? "Remove "
+    : "Add to Cart"}
+</button> 
+
+
+  <button onClick={ async function(){
+
+    const savedUser=JSON.parse(localStorage.getItem("existingUser"));
+    if(!savedUser) {
+
+      alert("login first");
+      navigate("/login")
+      return;
+    }
+    
+    if(savedUser){
+   
+
+    const user=  await axios.get(`http://localhost:5000/users/${savedUser.id}`);
+
+    
+
+    const  newUserWishlist=[...user.data.wishlist]
+      
+
+        const alreadyAdded=newUserWishlist.some(function(element){
+      return element.id===item.id;
+    });
+ if(alreadyAdded){
+      const newWishlist=newUserWishlist.filter(function(i){
+        return i.id!==item.id;
+      })
+
+        await axios.patch(`http://localhost:5000/users/${savedUser.id}`,{
+      wishlist:newWishlist
+     })
+     alert("item removed from wishlist");
+     
+     localStorage.setItem("existingUser",JSON.stringify({...user.data,wishlist:newWishlist}));
+    
+    }else{
+
+
+    newUserWishlist.push(item);
+
+
+
+     await axios.patch(`http://localhost:5000/users/${savedUser.id}`,{
+      wishlist:newUserWishlist
+     })
+  localStorage.setItem("existingUser",JSON.stringify({...user.data,wishlist:newUserWishlist}));
+  
+    }
+
+
+    
+
+  }
+
+  }}>like</button>
+
+
+
           </div>
         </div>
       </div>

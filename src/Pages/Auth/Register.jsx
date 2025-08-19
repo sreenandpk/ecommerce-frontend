@@ -13,6 +13,7 @@ import axios from "axios";
 
     
     const cart=[];
+    const wishlist=[];
 
     const submit= async function(event){
 
@@ -44,7 +45,7 @@ import axios from "axios";
          
            
 
-        await axios.post("http://localhost:5000/users",{name,email,password,cart});
+        await axios.post("http://localhost:5000/users",{name,email,password,cart,wishlist});
        
        
         setEmail("");
