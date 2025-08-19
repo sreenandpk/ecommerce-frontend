@@ -68,16 +68,34 @@
       "password": "Revi@123",
       "cart": [
         {
-          "id": "2",
-          "name": "milk",
-          "price": "200rs",
+          "id": "3",
+          "name": "cocktail",
+          "price": "300rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "4",
+          "name": "vodka",
+          "price": "1200rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "1",
+          "name": "pepsi",
+          "price": "250rs",
+          "ml": "500ml"
+        },
+        {
+          "id": "6",
+          "name": "redlabel ",
+          "price": "1700rs",
           "ml": "500ml",
           "section": "milk"
         },
         {
-          "id": "6",
-          "name": "redlabel milk",
-          "price": "1700rs",
+          "id": "2",
+          "name": "milk",
+          "price": "200rs",
           "ml": "500ml",
           "section": "milk"
         },
@@ -88,15 +106,7 @@
           "ml": "500ml"
         }
       ],
-      "wishlist": [
-        {
-          "id": "6",
-          "name": "redlabel milk",
-          "price": "1700rs",
-          "ml": "500ml",
-          "section": "milk"
-        }
-      ]
+      "wishlist": []
     }
   ],
   "products": [
@@ -133,7 +143,7 @@
     },
     {
       "id": "6",
-      "name": "redlabel milk",
+      "name": "redlabel ",
       "price": "1700rs",
       "ml": "500ml",
       "section": "milk"

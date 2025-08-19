@@ -26,7 +26,7 @@ export default function Wishlist(){
 
     return(
 <>
-
+<h2>wishlist</h2>
 <div className="container mt-4">
   <div className="row g-3">
     {likedProducts&&likedProducts.map((item, index) => (
@@ -48,8 +48,51 @@ export default function Wishlist(){
             }}>Buy</button>
 
 
-            <button onClick={function(){
+            <button onClick={async function(){
+              try{
 
+
+                const savedUser=JSON.parse(localStorage.getItem("existingUser"));
+
+
+                if(!savedUser) return ;
+
+
+                const wishlistItem=await axios.get(`http://localhost:5000/users/${savedUser.id}`);
+
+                
+
+                const newWishlistItem=wishlistItem.data.wishlist.some(function(element){
+                  return element.id===item.id;
+                })
+
+                if(newWishlistItem){
+
+
+
+                 const filteredWishlist=wishlistItem.data.wishlist.filter(function(i){
+                  return i.id!==item.id;
+                 })
+
+                 await axios.patch(`http://localhost:5000/users/${savedUser.id}`,{
+                  wishlist:filteredWishlist
+                 });
+
+                 localStorage.setItem("existingUser",JSON.stringify({...wishlistItem.data,wishlist:filteredWishlist}))
+
+                 alert(`${item.name} removed from wishlist`);
+
+                 setLikedProducts(filteredWishlist)
+
+                }
+
+
+
+              }catch{
+
+                console.log("cant remove item somthing happend in try block")
+
+              }
             }}>remove</button>
 
           </div>

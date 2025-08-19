@@ -43,6 +43,9 @@ const Wishlist=lazy(function(){
 })
 
 
+const ProductDetails=lazy(function(){
+ return import("./Pages/Components/Products/ProductDetails")
+})
 
 function App() {
 
@@ -77,6 +80,7 @@ function App() {
           <Route path="/search" element={<FilteredSearchProducts  />}></Route>
            <Route path="/cart" element={<Cart  />}></Route>
             <Route path="/wishlist" element={<Wishlist  />}></Route>
+              <Route path="/ProductDetails" element={<ProductDetails  />}></Route>
 
 
 
