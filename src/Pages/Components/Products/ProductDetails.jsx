@@ -1,47 +1,61 @@
-import { useContext, useEffect } from "react";
-import { SearchContext } from "./SearchContext";
-
-import { useNavigate } from "react-router-dom";
-
+import {  useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { fetchProductById} from "../Fetch/FetchUser";
 export default function ProductDetails(){
-
-
-    const navigator=useNavigate();
-  const {productDetails}=useContext(SearchContext);
-
-
-
-    useEffect(function(){
-        if(productDetails.length===0||!productDetails){
-            navigator("/products")
+   const [product, setProduct] = useState(null);
+   const {id}=useParams();
+   console.log(id)
+    useEffect(()=>{
+      async function fetchproduct() {
+        try{
+            const response=await fetchProductById(id)
+            setProduct(response)
+        }catch{
+          console.log("something happend")
         }
-    },[productDetails])
-
-
+      }
+      fetchproduct()
+    },[id])
     return(
-
-
         <>
-        
-       
+{/*will run when user click product image*/}
 <div className="container mt-4">
-  <div className="row g-3">
-    {productDetails&&
-      <div className="col-6 col-sm-4 col-md-3" >
-        <div className="card text-center h-100">
-          <div className="card-body">
-            <h5 className="card-title"> {productDetails.name}</h5>
-            <p className="card-text">Price: {productDetails.price}</p>
-            <p className="card-text">ML: {productDetails.ml}</p>
-          </div>
+  {product && (
+    <div className="row g-3 align-items-start">
+      <div className="col-12 col-md-5">
+        <div className="card h-100 border-0 shadow-sm" style={{ borderRadius: "20px", overflow: "hidden" }}>
+          <img
+            src={product.image}
+            alt={product.name}
+            className="img-fluid"
+            style={{
+              width: "100%",
+              height: "auto",
+              maxHeight: "400px",
+              objectFit: "contain",
+            }}
+          />
         </div>
       </div>
-    }
-  </div>
+      <div className="col-12 col-md-7">
+        <div className="card h-100 border-0 shadow-sm p-3" style={{ borderRadius: "20px" }}>
+          <h3 className="fw-bold mb-3">{product.name}</h3>
+          <p className="mb-2"><strong>Price:</strong> ₹{product.price}</p>
+          <p className="mb-2"><strong>ML:</strong> {product.ml}</p> <h6 className="fw-bold mb-2">{product.name}</h6>
+            <p className="text-muted small mb-1">Offer: {product.offer}</p>
+            <p className="text-muted small mb-1">Category: {product.category}</p>
+            <p className="text-muted small mb-1">Ratings: ⭐ {product.rating}</p>
+          <hr />
+          <p className="text-muted mb-1"><strong>Captions:</strong> {product.captions || "No captions available"}</p>
+          <p className="text-muted"><strong>Reviews:</strong> {product.reviews || "No reviews yet"}</p>
+        </div>
+      </div>
+    </div>
+  )}
 </div>
-
         </>
-
-
     )
 }

@@ -66,99 +66,121 @@
       "name": "revi",
       "email": "revi@gmail.com",
       "password": "Revi@123",
-      "cart": [
-        {
-          "id": "3",
-          "name": "cocktail",
-          "price": "300rs",
-          "ml": "500ml"
-        },
-        {
-          "id": "4",
-          "name": "vodka",
-          "price": "1200rs",
-          "ml": "500ml"
-        },
-        {
-          "id": "1",
-          "name": "pepsi",
-          "price": "250rs",
-          "ml": "500ml"
-        },
-        {
-          "id": "6",
-          "name": "redlabel ",
-          "price": "1700rs",
-          "ml": "500ml",
-          "section": "milk"
-        },
-        {
-          "id": "2",
-          "name": "milk",
-          "price": "200rs",
-          "ml": "500ml",
-          "section": "milk"
-        },
-        {
-          "id": "5",
-          "name": "godfather",
-          "price": "2000rs",
-          "ml": "500ml"
-        }
-      ],
+      "cart": [],
       "wishlist": []
+    },
+    {
+      "id": "0130",
+      "name": "david123",
+      "email": "david123@gmail.com",
+      "password": "David@123",
+      "cart": [],
+      "wishlist": []
+    },
+    {
+      "id": "3141",
+      "name": "sree",
+      "email": "sreenadpk3@gmail.com",
+      "password": "David@123",
+      "cart": [],
+      "wishlist": []
+    },
+    {
+      "id": "eeaf",
+      "name": "david",
+      "email": "david1234@gmail.com",
+      "password": "David@123",
+      "cart": [],
+      "wishlist": []
+    },
+    {
+      "id": "1332",
+      "name": "sreenandpk123",
+      "email": "sreenandpk33@gmail.cpm",
+      "password": "Sreenand@123",
+      "cart": [],
+      "wishlist": [],
+      "recentlyViewed": []
     }
   ],
   "products": [
     {
       "id": "1",
-      "name": "pepsi",
+      "name": "milk",
       "price": "250rs",
-      "ml": "500ml"
+      "ml": "500ml",
+      "image": "/images/cowMilk.png",
+      "rating": "rating : 4",
+      "offer": "200rs",
+      "category": "milk"
     },
     {
       "id": "2",
-      "name": "milk",
+      "name": "strawberry milkshake",
       "price": "200rs",
       "ml": "500ml",
-      "section": "milk"
+      "section": "milk",
+      "image": "/images/strawberryMilkshakeMix.png",
+      "rating": "rating : 4",
+      "offer": "200rs",
+      "category": "strawberry milkshake"
     },
     {
       "id": "3",
-      "name": "cocktail",
+      "name": "vanila milkshake",
       "price": "300rs",
-      "ml": "500ml"
+      "ml": "500ml",
+      "image": "/images/vanilamilkshake.png",
+      "rating": "rating : 4",
+      "offer": "200rs",
+      "category": "vanila"
     },
     {
       "id": "4",
-      "name": "vodka",
+      "name": "strawberry",
       "price": "1200rs",
-      "ml": "500ml"
+      "ml": "500ml",
+      "image": "/images/cowMilk.png",
+      "rating": "rating : 4",
+      "offer": "200rs",
+      "category": "milk"
     },
     {
       "id": "5",
-      "name": "godfather",
+      "name": "strawberry milkshake",
       "price": "2000rs",
-      "ml": "500ml"
+      "ml": "500ml",
+      "image": "images/strawberry2.png",
+      "rating": "rating : 4",
+      "category": "strawberry"
     },
     {
       "id": "6",
-      "name": "redlabel ",
+      "name": "crusha Milkshake ",
       "price": "1700rs",
       "ml": "500ml",
-      "section": "milk"
+      "section": "pepsi",
+      "image": "/images/crushamilkshake.png",
+      "rating": "rating : 4",
+      "category": "crusha milkshake"
     },
     {
       "id": "7",
-      "name": "baccardi",
+      "name": "choclate Milkshake",
       "price": "1900rs",
-      "ml": "500ml"
+      "ml": "500ml",
+      "image": "/images/choclateMilkshake.png",
+      "rating": "rating : 4",
+      "category": "choclate"
     },
     {
       "id": "8",
-      "name": "baccardi",
+      "name": "choclate milkshake",
       "price": "1900rs",
-      "ml": "500ml"
+      "ml": "500ml",
+      "image": "/images/frijj.png",
+      "rating": "rating : 4",
+      "category": "choclate"
     }
   ]
 }

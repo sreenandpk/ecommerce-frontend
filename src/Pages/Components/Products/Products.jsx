@@ -1,342 +1,365 @@
-import axios from "axios"
+
 import { useEffect, useState } from "react"
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import { Heart } from "lucide-react";
-import Lottie from "lottie-react";
-import addToCartAnimation from "./addtocart.json";
-
-
-
 import { useContext } from "react";
-import { SearchContext } from "./SearchContext";
+import { SearchContext } from "../SearchContext/SearchContext";
 import { useNavigate } from "react-router-dom";
-
-
+import Navbar from "../../Navbar/Navbar";
+import { fetchUser, updateUser,fetchProducts } from "../Fetch/FetchUser"
 export default function Products(){
+const [products,setProducts]=useState([]);
+const { wishlistIds = [], setWishlistIds, setCartCount } = useContext(SearchContext);
+const [active, setActive] = useState(""); // track active flavor
+const navigate=useNavigate();
+const [filtered,setFilterd]=useState([]);
+const [divForBuy,setDivForBuy]=useState(false);
+const [latestProductForBuy,setLatestProductForBuy]=useState([]);
 
-    const [products,setProducts]=useState([]);
-    
-    const [inputValue,setinputValue]=useState("");
-        const {setSearchValue}=useContext(SearchContext);
-
-        const {setProductDetails}=useContext(SearchContext);
-        
-
-        const navigate=useNavigate();
-
-        const [updatedQuantity,setUpdatedQuantity]=useState(null)
-
-        const [filtered,setFilterd]=useState([]);
-  
-        const [wishlistIds, setWishlistIds] = useState([]);
-
-        const [divForBuy,setDivForBuy]=useState(false);
-
-        const [latestProductForBuy,setLatestProductForBuy]=useState([]);
-
-        const [cartAnimation,setCartAnimation]=useState(false);
-        
-
-        useEffect(() => {
-  async function fetchWishlist() {
-    const savedUser = JSON.parse(localStorage.getItem("existingUser"));
-    if (savedUser) {
-      try {
-        const response = await axios.get(`http://localhost:5000/users/${savedUser.id}`);
-        setWishlistIds(response.data.wishlist.map((item) => item.id));
-  
-
-      } catch (err) {
-        console.log("error fetching wishlist", err);
-      }
-    }
-  }
-  fetchWishlist();
-}, []);
-
-      
-            useEffect(function(){
-              async function quantity(){
-
-                const cartQuantity=localStorage.getItem("cartTotalLength");
-
-                setUpdatedQuantity(cartQuantity);
-
-              }
-              quantity()
-            },[])
-
+  {/*this will run whenever the components mount*/}
     useEffect(function(){
-
-    
-    async  function fetchProducts(){
-    try{let response=await axios.get("http://localhost:5000/products");
-    
-   setProducts(response.data)
+    async  function fetchProductsFromFetch(){
+    try{
+      const res=await fetchProducts()
+   setProducts(res)
   
   }catch{
     console.log("failed to fetch")
    }
-    
     }
-fetchProducts();
+fetchProductsFromFetch();
 },[])
 
-const milk=async function(){
-
+const vanila=async function(){
   try{
-  const productMilk= await axios.get("http://localhost:5000/products?name=milk");
-
-  setFilterd(productMilk.data)
-  console.log(productMilk.data)
-
+  const productVanila= await fetchProducts();
+    const vanilaProducts=productVanila.filter((p)=> p.category==="vanila")
+  setFilterd(vanilaProducts)
+  console.log(vanilaProducts)
   }catch{
-
     console.log("failed to fetch")
-
   }
-
+}
+const strawberry=async function(){
+  try{
+  const productStrawberry=await fetchProducts();
+  const strawberryProducts=productStrawberry.filter((p)=>p.category==="strawberry")
+  setFilterd(strawberryProducts)
+  console.log(strawberryProducts)
+  }catch{
+    console.log("failed to fetch")
+  }
 }
 
-
-
-const pepsi=async function(){
-
+const choclate=async function(){
   try{
-  const productMilk= await axios.get("http://localhost:5000/products?name=pepsi");
-
-  setFilterd(productMilk.data)
-  console.log(productMilk.data)
+  const productChoclates= await fetchProducts();
+    const choclateProduct=productChoclates.filter((p)=>p.category==="choclate")
+  setFilterd(choclateProduct)
+  console.log(choclateProduct)
 
   }catch{
-
     console.log("failed to fetch")
-
   }
-
 }
-
-
+const showAll=async function(){
+  try{
+  const productAll= await fetchProducts()
+  setFilterd(productAll)
+  console.log(productAll)
+  }catch{
+    console.log("failed to fetch")
+  }
+}
+const addtoCart=async function (item) {
+                  try {
+                    const savedUser = JSON.parse(
+                      localStorage.getItem("existingUser")
+                    );
+                    if (!savedUser) {
+                      alert("Login first");
+                      navigate("/login");
+                      return;
+                    }
+                    const user = await fetchUser(savedUser.id)
+                   
+                    let removeItemFromCart = false;
+                    for (let product of user.cart) {
+                      if (product.id === item.id) {
+                        removeItemFromCart = true;
+                        break;
+                      }
+                    }
+                    let updatedCart;
+                    if (removeItemFromCart) {
+                      updatedCart = user.cart.filter(function (product) {
+                        return product.id !== item.id;
+                      });
+                      console.log("Item removed from cart");
+                   
+                    } else {
+                      console.log(`${item.name} added to cart ✅`);
+                     
+                      updatedCart = [...user.cart, item];
+                    }
+                    await updateUser(savedUser.id,
+                      {
+                        cart: updatedCart,
+                      }
+                    );
+                    let updatedUser = { ...user, cart: updatedCart };
+                    localStorage.setItem(
+                      "existingUser",
+                      JSON.stringify(updatedUser)
+                    );
+                    localStorage.setItem(
+                      "cartTotalLength",
+                      updatedUser.cart.length
+                    );
+                    const newUpdatedQuantity =
+                      localStorage.getItem("cartTotalLength");
+                    setCartCount(newUpdatedQuantity);
+                  } catch (err) {
+                    console.log("error in cart update", err);
+                  }
+                }
+                const wishListFn=async function (item) {
+                  try {
+                    const savedUser = JSON.parse(
+                      localStorage.getItem("existingUser")
+                    );
+                    if (!savedUser) {
+                      alert("login first");
+                      navigate("/login");
+                      return;
+                    }
+                    const user = await fetchUser(savedUser.id)
+                    const newUserWishlist = [...user.wishlist];
+                    const alreadyAdded = newUserWishlist.some(function (
+                      element
+                    ) {
+                      return element.id === item.id;
+                    });
+                    if (alreadyAdded) {
+                      const newWishlist = newUserWishlist.filter(function (i) {
+                        return i.id !== item.id;
+                      });
+                      await updateUser(savedUser.id,
+                        {
+                          wishlist: newWishlist,
+                        }
+                      );
+                      alert(`${item.name} removed from wishlist`);
+                      setWishlistIds((prev) =>
+                        prev.filter((id) => id !== item.id)
+                      );
+                      localStorage.setItem(
+                        "existingUser",
+                        JSON.stringify({
+                          ...user,
+                          wishlist: newWishlist,
+                        })
+                      );
+                    } else {
+                      alert(`${item.name} added to wishlist`);
+                      setWishlistIds((prev) => [...prev, item.id]);
+                    
+                      newUserWishlist.push(item);
+                      await updateUser(savedUser.id,
+                        {
+                          wishlist: newUserWishlist,
+                        }
+                      );
+                      localStorage.setItem(
+                        "existingUser",
+                        JSON.stringify({
+                          ...user,
+                          wishlist: newUserWishlist,
+                        })
+                      );
+                    }
+                  } catch {
+                    console.log("error in wishlist toggle");
+                  }
+                }
 return(
 
 <>
+    <Navbar />
 
-<p>products page__ items added to cart {updatedQuantity}</p>
+      <div style={{ height: "90px" }}></div>
 
-<p>length of wish list {wishlistIds.length}</p>
+ <div className="container my-3">
+      <div className="d-flex flex-wrap justify-content-center gap-2">
+        <button
+          onClick={() => { setActive("vanilla"); vanila(); }}
+          className={`btn rounded-pill px-4 py-2 ${
+            active === "vanilla" ? "btn-secondary" : "btn-outline-dark"
+          }`}
+        >
+          Vanilla
+        </button>
 
-<form onSubmit={function(event){
-  event.preventDefault();
-  if(inputValue.toLowerCase().trim()){
-     setSearchValue(inputValue);
-     navigate("/search");
-   }
-   else return;
-}}>
-    <input placeholder="Search"onChange={function(event){
-setinputValue(event.target.value);
-}}></input><button type="submit">search</button>
-</form>
+        <button
+          onClick={() => { setActive("strawberry"); strawberry(); }}
+          className={`btn rounded-pill px-4 py-2 ${
+            active === "strawberry" ? "btn-danger" : "btn-outline-dark"
+          }`}
+        >
+          Strawberry
+        </button>
 
+        <button
+          onClick={() => { setActive("chocolate"); choclate(); }}
+          className={`btn rounded-pill px-4 py-2 ${
+            active === "chocolate" ? "btn-dark" : "btn-outline-dark"
+          }`}
+        >
+          Chocolate
+        </button>
 
-  <div><span>filter</span><button onClick={milk}>Milk</button><button onClick={pepsi}>pepsi</button>
-  
-  <button onClick={function(){
-    setFilterd([])
-  }}>Show all</button>
-  </div>
+        <button
+          onClick={() => { setActive(""); showAll(); }}
+          className={`btn rounded-pill px-4 py-2 ${
+            active === "" ? "btn-dark" : "btn-outline-dark"
+          }`}
+        >
+          Show All
+        </button>
+      </div>
+    </div>
+  <div className="container mt-4">
+  <div className="row g-4">
+    {(filtered.length > 0 ? filtered : products).map((item, index) => (
+      <div key={index} className="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div
+          className="card h-100 shadow-sm border-0"
+          style={{
+            borderRadius: "20px",
+            overflow: "hidden",
+            backgroundColor: "white",
+            transition: "transform 0.2s",
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
+          onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        >
+          <div className="d-flex justify-content-center align-items-center p-3">
+            <img onClick={function () {
+               
+                navigate(`/productDetails/${item.id}`);
+              }}
+              
+              src={item.image}
+              alt={item.name}
+              style={{
+                width: "180px",
+                height: "auto",
+                objectFit: "contain",
+                maxWidth: "100%",
+                margin: "0", color: "gray", cursor: "pointer"
+              }}
+            />
+          </div>
 
-
-
-
-
-
-
-
-
-<div className="container mt-4">
-  <div className="row g-3">
-    {(filtered.length>0?filtered:products).map((item, index) => (
-      <div key={index} className="col-6 col-sm-4 col-md-3" >
-        <div className="card text-center h-100">
           <div className="card-body">
-            <p onClick={function(){
-        setProductDetails(item);
-        navigate("/ProductDetails")
-      }}>product details</p>
-            <h5 className="card-title">{item.name}</h5>
-            <p className="card-text">Price: {item.price}</p>
-            <p className="card-text">ML: {item.ml}</p>
-            <button className="btn btn-primary m-1"onClick={function(){
-                const savedUser=JSON.parse(localStorage.getItem("existingUser"));
-                if(!savedUser){
-                    alert("login first")
-                    navigate("/login")
-                }
-                else{
-                    setLatestProductForBuy(item)
-                    setDivForBuy(true)
-                }
-            }}>Buy</button>
-           <button 
-  className="btn btn-secondary m-1"
-  onClick={async function(){
-    try {
+            <h5
+              style={{
+                fontFamily: "cursive",
+                marginBottom: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <span>{item.name}</span>
+              <span
+                onClick={()=>wishListFn(item)}
+              >
+                <Heart
+                  color={wishlistIds.includes(item.id) ? "black" : "gray"}
+                  fill={wishlistIds.includes(item.id) ? "black" : "none"}
+                />
+              </span>
+            </h5>
 
-      
+            <p
+              className="card-text text-muted"
+              style={{ fontFamily: "initial", margin: "0" }}
+            >
+              ML: {item.ml}
+            </p>
 
-      const savedUser = JSON.parse(localStorage.getItem("existingUser"));
+            <p
+              onClick={function () {
+                
+                navigate(`/productDetails/${item.id}`);
+              }}
+              style={{ margin: "0", color: "gray", cursor: "pointer" }}
+            >
+              product details
+            </p>
 
-      if (!savedUser) {
-        alert("Login first");
-        navigate("/login");
-        return;
-      }
+            <p
+              className="card-text"
+              style={{
+                fontWeight: "bold",
+                fontSize: "20px",
+                color: "#4251b0ff",
+              }}
+            >
+              {item.price}
+            </p>
 
-     
-      
-      // 1. Fetch the latest user from db.json
-      const response = await axios.get(`http://localhost:5000/users/${savedUser.id}`);
-      let user = response.data;
+            {/* ✅ Buttons inline but responsive */}
+            <div className="d-flex flex-wrap gap-2">
+              <button
+                className="btn"
+                style={{
+                  flex: "1",
+                  background: "linear-gradient(135deg, #ffffff, #f0f0f0)",
+                  border: "2px solid #333",
+                  color: "#333",
+                  borderRadius: "30px",
+                  fontWeight: "600",
+                  fontSize: "14px",
+                  height: "40px",
+                }}
+                onClick={function () {
+                  const savedUser = JSON.parse(
+                    localStorage.getItem("existingUser")
+                  );
+                  if (!savedUser) {
+                    alert("login first");
+                    navigate("/login");
+                  } else {
+                    setLatestProductForBuy(item);
+                    setDivForBuy(true);
+                  }
+                }}
+              >
+                Buy
+              </button>
 
-
-      let removeItemFromCart=false;
-
-      for(let product of user.cart){
-
-        if(product.id===item.id){
-          removeItemFromCart=true;
-          break;
-        }
-        
-      }
-       let updatedCart;
-      if(removeItemFromCart){
-         updatedCart = user.cart.filter(function(product){
-          
-         
-          return product.id!==item.id;
-
-         })
-      alert(" item removed from cart")
-      setCartAnimation(false)
-      }
-      else{
-        
-      // 2. Append new product to cart
-      alert(`${item.name} added to cart ✅`);
-          setCartAnimation(true)
-           setTimeout(() => setCartAnimation(false), 2000);
-         updatedCart = [...user.cart, item];
-        
-      }
-
-
-      
-
-      // 3. Update user in db.json
-      await axios.patch(`http://localhost:5000/users/${savedUser.id}`, {
-        cart: updatedCart
-      });
-
-      let updatedUser={...user,cart:updatedCart};
-
-      localStorage.setItem("existingUser",JSON.stringify(updatedUser))
-
-    
-     
-       localStorage.setItem("cartTotalLength",updatedUser.cart.length);
-
-       const newUpdatedQuantity= localStorage.getItem("cartTotalLength");
-
-       setUpdatedQuantity(newUpdatedQuantity);
-
-       
-
-    } catch (err) {
-      console.log("error in fetch cart data", err);
-    }
-  }}
->
-{JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(function(p){
-  return p.id===item.id
-})
-    ? "Remove "
-    : "Add to Cart"}
-</button> 
-
-
-  <span
- 
-  onClick={ async function(){
-
-try{
-    const savedUser=JSON.parse(localStorage.getItem("existingUser"));
-    if(!savedUser) {
-
-      alert("login first");
-      navigate("/login")
-      return;
-    }
-    
-    if(savedUser){
-   
-
-    const user=  await axios.get(`http://localhost:5000/users/${savedUser.id}`);
-
-    
-
-    const  newUserWishlist=[...user.data.wishlist]
-      
-
-        const alreadyAdded=newUserWishlist.some(function(element){
-      return element.id===item.id;
-    });
- if(alreadyAdded){
-      const newWishlist=newUserWishlist.filter(function(i){
-        return i.id!==item.id;
-      })
-
-        await axios.patch(`http://localhost:5000/users/${savedUser.id}`,{
-      wishlist:newWishlist
-     })
-     alert(`${item.name} item remved from wishlist`);
-      setWishlistIds((prev) => prev.filter((id) => id !== item.id));
-
-     localStorage.setItem("existingUser",JSON.stringify({...user.data,wishlist:newWishlist}));
-    
-    }else{
-
-        alert(`${item.name} added to wishlist`)
-        setWishlistIds((prev) => [...prev, item.id]);
-       
-    newUserWishlist.push(item);
-
-
-
-     await axios.patch(`http://localhost:5000/users/${savedUser.id}`,{
-      wishlist:newUserWishlist
-     })
-  localStorage.setItem("existingUser",JSON.stringify({...user.data,wishlist:newUserWishlist}));
-  
-    }
-
-
-    
-
-  }
-  }catch{
-
-    console.log("cant add or remove something happend in try block")
-
-  }
-  }} > <Heart
-    color={wishlistIds.includes(item.id) ? "red" : "gray"}
-    fill={wishlistIds.includes(item.id) ? "red" : "none"}
-  /> </span>
-
-
-
+              <button
+                className="btn text-white"
+                style={{
+                  flex: "1",
+                  backgroundColor: "#1e3253ff",
+                  borderRadius: "20px",
+                  height: "40px",
+                }}
+                onClick={()=>addtoCart(item)}
+              >
+                {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
+                  function (p) {
+                    return p.id === item.id;
+                  }
+                )
+                  ? "Remove"
+                  : "Add"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -344,74 +367,70 @@ try{
   </div>
 </div>
 {divForBuy && (
-<div style={{
-  position: "fixed",
-  bottom: "0",
-  left: "50%",
-  transform: "translateX(-50%)", 
-  width: "100%",
-  maxWidth: "800px",            
-  backgroundColor: "#fdfdfdff",
-  boxShadow: "0 -2px 10px rgba(0,0,0,0.2)",
-  borderTopLeftRadius: "15px",
-  borderTopRightRadius: "15px",
-  padding: "20px",
-  zIndex: 1000,
-  animation: "slideUp 0.3s ease-in-out"
-}}>
-    
-<div className="container mb-4">
-  <div className="row justify-content-center">
-    <div className="col-12 col-md-6">
-      <div className="card border-0 shadow-lg rounded-4" style={{   backgroundColor: "#ffffffff"}}>
-        <div className="card-body text-center">
-          <h5 className="card-title fw-bold text-dark">{latestProductForBuy.name}</h5>
-          <p className="card-text fs-4 text-primary mb-1">₹{latestProductForBuy.price}</p>
-          <p className="card-text text-muted">ML: {latestProductForBuy.ml}</p>
-          
+  <div
+    style={{
+      position: "fixed",
+      bottom: "0",
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: "95%",
+      maxWidth: "500px",
+      backgroundColor: "#ffffffff",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+      borderTopLeftRadius: "20px",
+      borderTopRightRadius: "20px",
+      padding: "20px",
+      zIndex: 1000,
+      animation: "slideUp 0.3s ease-in-out",
+    }}
+  >
+    <div className="container" >
+      <div className="row justify-content-center">
+        <div className="col-12">
+          <div
+            className="card border-0  rounded-4 p-3"
+            
+          >
+            <div className="d-flex flex-column align-items-center text-center">
+              {/* Product Image */}
+              <img
+                src={latestProductForBuy.image}
+                alt={latestProductForBuy.name}
+                className="img-fluid mb-3"
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  objectFit: "contain",
+                  borderRadius: "10px",
+                 
+                }}
+              />
+              <h5 className="card-title fw-bold text-dark mb-1">
+                {latestProductForBuy.name}
+              </h5>
+              <p className="card-text fs-4 text-primary mb-1">
+                ₹{latestProductForBuy.price}
+              </p>
+              <p className="card-text text-muted mb-3">ML: {latestProductForBuy.ml}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-
-
-    <button className="btn btn-warning w-100 mb-2">Continue</button>
-    <button 
-      className="btn btn-outline-secondary w-100"
-      onClick={function(){
-        setDivForBuy(false)}}
-    >
-      Cancel
-    </button>
-  </div>
-)}
-
-{cartAnimation && (
-  <div style={{
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "200px",
-    height: "200px",
-    zIndex: 2000,
-    
-    borderRadius: "12px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }}>
-    <Lottie animationData={addToCartAnimation} loop={false} />
+    <div className="d-flex flex-column gap-2 mt-3">
+      <button className="btn btn-dar w-100 fw-bold shadow-sm" style={{ fontSize: "16px" }}>
+        Continue
+      </button>
+      <button
+        className="btn btn-outline-secondary w-100 fw-bold"
+        onClick={() => setDivForBuy(false)}
+        style={{ fontSize: "16px" }}
+      >
+        Cancel
+      </button>
+    </div>
   </div>
 )}
-
 </>
-
-
 )
-
-
-
 }

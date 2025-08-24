@@ -1,101 +1,97 @@
-
-
 import { Routes, Route } from "react-router-dom";
-import { lazy, Suspense, useState } from "react";
-import { SearchProvider } from "./Pages/Components/Products/SearchContext";
-import loaderAnimation from "./assets/loading.json";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
+import { SearchProvider } from "./Pages/Components/SearchContext/SearchContext";
+import loaderAnimation from "../jsonAnimation/loading.json";
+import ErrorAnimation from "../jsonAnimation/error.json";
 import Lottie from "lottie-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const Login = lazy(() => import("./Pages/Auth/Login"));
+const Register = lazy(() => import("./Pages/Auth/Register"));
+const Account = lazy(() => import("./Pages/Components/Account/Account"));
+const Products = lazy(() => import("./Pages/Components/Products/Products"));
+const FilteredSearchProducts = lazy(() =>
+  import("./Pages/Components/Products/FilteredSearchProducts")
+);
+const Cart = lazy(() => import("./Pages/Components/Cart/CartItems"));
+const Wishlist = lazy(() => import("./Pages/Components/Wishlist/Wishlist"));
+const ProductDetails = lazy(() =>
+  import("./Pages/Components/Products/ProductDetails")
+);
 
 
-
-
-  const Home=lazy(function(){
-   return import("./Pages/Components/Home")
-  })
-
- const Login=lazy(function(){
-  return  import("./Pages/Auth/Login")
-  })
-
-   const Register=lazy(function(){
-   return import("./Pages/Auth/Register")
-  })
-
-const Account=lazy(function(){
- return import("./Pages/Components/Account")
-})
-
-const Products=lazy(function(){
- return import("./Pages/Components/Products/Products")
-})
-
-
-  const FilteredSearchProducts = lazy(() => import("./Pages/Components/Products/FilteredSearchProducts"));
-
-
-const Cart=lazy(function(){
- return import("./Pages/Components/CartItems")
-})
-
-
-const Wishlist=lazy(function(){
- return import("./Pages/Components/Products/Wishlist")
-})
-
-
-const ProductDetails=lazy(function(){
- return import("./Pages/Components/Products/ProductDetails")
-})
 
 function App() {
+  const [showApp, setShowApp] = useState(false);
+  const loaderRef = useRef();
 
+  useEffect(() => {
+    if (!loaderRef.current) return;
+    const timer = setTimeout(() => {
+      setShowApp(true);
+    }, 800);
 
+    return () => clearTimeout(timer);
+  }, []);
 
-
-
+  if (!showApp) {
+    return (
+      <div
+        style={{
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Lottie
+          lottieRef={loaderRef}
+          animationData={loaderAnimation}
+          loop={false}   // 👈 play once
+          autoplay={true}
+          style={{ width: 300, height: 300 }}
+        />
+      </div>
+    );
+  }
 
   return (
-    <>
-  <SearchProvider>
+    <SearchProvider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/" element={<Products />} />
+          <Route path="/search" element={<FilteredSearchProducts />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/productDetails/:id" element={<ProductDetails />} />
 
- <Suspense fallback={ <div style={{
-      height: '100vh',
-      width: '100vw',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
-
-        <Lottie animationData={loaderAnimation} loop={true} style={{ width: 500, height: 500 }} />
-    </div>}>
-
-
-      <Routes>
-
-      <Route path="/"element={<Home />}/>
-       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-       <Route path="/account" element={<Account />} />
-        <Route path="/products" element={<Products />} />
-          <Route path="/search" element={<FilteredSearchProducts  />}></Route>
-           <Route path="/cart" element={<Cart  />}></Route>
-            <Route path="/wishlist" element={<Wishlist  />}></Route>
-              <Route path="/ProductDetails" element={<ProductDetails  />}></Route>
-
-
-
-      </Routes>
-
-
-    </Suspense>
-     
-
-
-  </SearchProvider>
-
-   
-    </>
-  )
+          {/* catch unwanted routes */}
+          <Route
+            path="*"
+            element={
+              <div
+                style={{
+                  height: "100vh",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Lottie
+                  animationData={ErrorAnimation}
+                  loop
+                  style={{ width: "100%", maxWidth: "400px" }}
+                />
+              </div>
+            }
+          />
+        </Routes>
+      </Suspense>
+    </SearchProvider>
+  );
 }
 
-export default App
+export default App;
