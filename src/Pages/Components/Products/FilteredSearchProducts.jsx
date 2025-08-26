@@ -3,7 +3,7 @@ import { SearchContext } from "../SearchContext/SearchContext";
 import ErrorAnimation from "../../../../jsonAnimation/error.json"
 import Lottie from "lottie-react";
 import Navbar from "../../Navbar/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchUser, updateUser,fetchProducts} from "../Fetch/FetchUser"
 export default function FilteredSearchProducts(){
 const navigate=useNavigate();
@@ -13,9 +13,10 @@ const [products,setProducts]=useState([]);
 const [userBuyMessage,setUserBuyMessage]=useState([]);
 const [divForBuy,setDivForBuy]=useState(false);
 const [divForAlignmnt,setDivForAlignment] = useState(false);
+const {id}=useParams();
 const detailsOfproduct=async function (item) {
           setProductDetails(item)
-          navigate("/productDetails")
+          navigate(`/productDetails/${item.id}`);
          }
 {/*this will run whenever search value changes*/}
 useEffect(function(){
@@ -202,47 +203,7 @@ const  addToCartAndRemoveFromCart=async function (item) {
   </div>
 </div>
 {/*this div will only display when user click buy*/}
-{divForBuy && (
-<div style={{
-  position: "fixed",
-  bottom: "0",
-  left: "50%",
-  transform: "translateX(-50%)", 
-  width: "100%",
-  maxWidth: "800px",            
-  backgroundColor: "#fdfdfdff",
-  boxShadow: "0 -2px 10px rgba(0,0,0,0.2)",
-  borderTopLeftRadius: "15px",
-  borderTopRightRadius: "15px",
-  padding: "20px",
-  zIndex: 1000,
-  animation: "slideUp 0.3s ease-in-out"
-}}>
-    {/*this will show exact product details and go to order page navigation bcz i passed item as argument when user click buy */}
-<div className="container mb-4">
-  <div className="row justify-content-center">
-    <div className="col-12 col-md-6">
-      <div className="card border-0 shadow-lg rounded-4" style={{   backgroundColor: "#ffffffff"}}>
-        <div className="card-body text-center">
-          <h5 className="card-title fw-bold text-dark">{userBuyMessage.name}</h5>
-          <p className="card-text fs-4 text-primary mb-1">₹{userBuyMessage.price}</p>
-          <p className="card-text text-muted">ML: {userBuyMessage.ml}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  {/*this will take you to order page*/}
-    <button className="btn btn-warning w-100 mb-2">Continue</button>
-    <button 
-      className="btn btn-outline-secondary w-100"
-      onClick={function(){
-        setDivForBuy(false)}}
-    >
-      Cancel
-    </button>
-  </div>
-)}
+
 </>
 
     )

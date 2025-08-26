@@ -1,37 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios";
 import Navbar from "../../Navbar/Navbar";
 import { SearchContext } from "../SearchContext/SearchContext";
-import { useNavigate } from "react-router-dom";
 import BackButton from "../BackWardButtton/BackButton";
+import { fetchProducts, updateUser } from "../Fetch/FetchUser";
+import { useNavigate } from "react-router-dom";
 export default function Cart() {
- 
-  
-  
-  
-
-
-
   const [addedProducts, setAddedProducts] = useState([]);
   const [cartTotalItems, setCartTotalItems] = useState(0);
   const { setCartCount } = useContext(SearchContext);
   const [isLogin, setIsLogin] = useState(false);
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  const {setBookingProducts}=useContext(SearchContext);
+ const navigate=useNavigate()
  useEffect(() => {
     async function fetchUser() {
       const savedUser = JSON.parse(localStorage.getItem("existingUser"));
@@ -51,25 +31,13 @@ export default function Cart() {
     fetchUser();
   }, [setCartCount]);
 
-
-
-
-
-
-
-
-
-
-
-
-  
   const handleRemove = async (item) => {
     try {
       const result = addedProducts.filter(i => i !== item);
       const savedUser = JSON.parse(localStorage.getItem("existingUser"));
 
       // Update backend
-      await axios.patch(`http://localhost:5000/users/${savedUser.id}`, {
+      await updateUser(savedUser.id, {
         cart: result
       });
 
@@ -80,7 +48,7 @@ export default function Cart() {
       // Update state
       setAddedProducts(result);
       setCartTotalItems(result.length);
-      setCartCount(result.length);  // ✅ update navbar count immediately
+      setCartCount(result.length); //✅ update navbar count immediately
 
       console.log("Successfully removed from cart");
     } catch (err) {
@@ -88,21 +56,6 @@ export default function Cart() {
       console.log("Failed to remove item from cart");
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <>
       <Navbar />
@@ -144,13 +97,49 @@ export default function Cart() {
                   <p className="text-muted small mb-1">Offer: {item.offer}</p>
                   <p className="text-muted small mb-1">Category: {item.category}</p>
                   <p className="text-muted small mb-1">Ratings: ⭐ {item.rating}</p>
-                  <p className="fw-semibold mb-1">Price: ₹{item.price}</p>
+                  <p className="fw-semibold mb-1">Price: ₹{item.quantity*item.price}</p>
                   <p className="text-muted small mb-3">{item.ml} ML</p>
 
-                  <button className="btn btn-warning rounded-pill w-100 mb-2">
-                    Confirm Order
-                  </button>
+                  <div style={{display:'flex',justifyContent:'center',gap:'20px'}}className="mb-3"><button
+               onClick={async function () {
+                 const savedUser = JSON.parse(localStorage.getItem("existingUser"));
 
+               const updatedCart = savedUser.cart.map(p => {
+      if (p.id === item.id) {
+        // 👇 Prevent going below 1
+        const newQty = (p.quantity || 1) - 1;
+        return { ...p, quantity: newQty > 0 ? newQty : 1 };
+      }
+      return p;
+    });
+
+    // Update backend
+    await updateUser(savedUser.id, { cart: updatedCart });
+
+    // Update localStorage
+    const updatedUser = { ...savedUser, cart: updatedCart };
+    localStorage.setItem("existingUser", JSON.stringify(updatedUser));
+
+    // Update React state
+    setAddedProducts(updatedCart.reverse());
+    setCartTotalItems(updatedCart.reduce((sum, p) => sum + (p.quantity || 1), 0));
+    setCartCount(updatedCart.reduce((sum, p) => sum + (p.quantity || 1), 0));
+  }}
+>
+-
+</button>
+                  <h5>qnty {item.quantity}</h5> <button onClick={async function(){
+                    const savedUser=JSON.parse(localStorage.getItem("existingUser"));
+                  const updatedUserWithQnty=savedUser.cart.map(function(p){
+                    if(p.id===item.id){
+                      return {...p,quantity: (p.quantity || 1) + 1 }
+                    }
+                    return p;
+                  })
+                  localStorage.setItem("existingUser",JSON.stringify({...savedUser,cart:updatedUserWithQnty}))
+                 await updateUser(savedUser.id,{cart:updatedUserWithQnty})
+                 setAddedProducts(updatedUserWithQnty.reverse())
+                  }}>+</button></div>
                   <button
                     className="btn btn-danger rounded-pill w-100"
                     onClick={() => handleRemove(item)}
@@ -161,6 +150,24 @@ export default function Cart() {
               </div>
             </div>
           ))}
+<div className="d-flex justify-content-center my-4">
+  <button
+    className="btn btn-dark btn-lg rounded-pill px-5 py-3 shadow-lg fw-bold text-uppercase"
+    onClick={function(){
+   const savedUser = JSON.parse(localStorage.getItem("existingUser"));
+setBookingProducts(savedUser.cart);
+      if(!savedUser.cart.length>0){
+        return;
+      }else{
+      // Navigate to booking page
+      navigate("/booking");
+      }
+    }}
+  >
+    🛒 Buy All
+  </button>
+</div>
+
         </div>
       </div>
     </>

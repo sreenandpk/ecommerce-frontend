@@ -4,7 +4,6 @@ import { SearchProvider } from "./Pages/Components/SearchContext/SearchContext";
 import loaderAnimation from "../jsonAnimation/loading.json";
 import ErrorAnimation from "../jsonAnimation/error.json";
 import Lottie from "lottie-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const Login = lazy(() => import("./Pages/Auth/Login"));
 const Register = lazy(() => import("./Pages/Auth/Register"));
 const Account = lazy(() => import("./Pages/Components/Account/Account"));
@@ -17,9 +16,23 @@ const Wishlist = lazy(() => import("./Pages/Components/Wishlist/Wishlist"));
 const ProductDetails = lazy(() =>
   import("./Pages/Components/Products/ProductDetails")
 );
+const Home = lazy(() =>
+  import("./Pages/Components/Home/Home")
+);
 
+const Recent = lazy(() =>
+  import("./Pages/Components/Products/recentlyViewed")
+);
 
-
+const MyOrders = lazy(() =>
+  import("./Pages/Components/Order/MyOrder")
+);
+const Booking = lazy(() =>
+  import("./Pages/Components/Order/Booking")
+);
+const PaymentPage = lazy(() =>
+  import("./Pages/Components/Order/Payment")
+);
 function App() {
   const [showApp, setShowApp] = useState(false);
   const loaderRef = useRef();
@@ -62,12 +75,16 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/" element={<Products />} />
+          <Route path="/products" element={<Products />} />
           <Route path="/search" element={<FilteredSearchProducts />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/productDetails/:id" element={<ProductDetails />} />
-
+          <Route path="/" element={<Home />} />
+          <Route path="/recentlyViewed" element={<Recent />} />
+    <Route path="/myOrders" element={<MyOrders />} />
+       <Route path="/booking" element={<Booking />} />
+        <Route path="/payment/:bookingId" element={<PaymentPage />}/>
           {/* catch unwanted routes */}
           <Route
             path="*"

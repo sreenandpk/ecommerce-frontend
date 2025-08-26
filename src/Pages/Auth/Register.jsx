@@ -17,8 +17,11 @@ import { useNavigate } from "react-router-dom";
 const navigate=useNavigate()
     const cart=[];
     const wishlist=[];
-    const recentlyViewed=[]
-  useEffect(function(){
+    const recentlyViewed=[];
+    const myOrders=[];
+    const booking=[];
+        
+    useEffect(function(){
    
 
     if(savedUser){
@@ -59,7 +62,7 @@ const navigate=useNavigate()
          
            
 
-        await axios.post("http://localhost:5000/users",{name,email,password,cart,wishlist,recentlyViewed});
+        await axios.post("http://localhost:5000/users",{name,email,password,cart,wishlist,recentlyViewed,myOrders,booking});
        
        
         setEmail("");

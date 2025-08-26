@@ -1,18 +1,42 @@
-import {  useEffect, useState } from "react";
+import {  useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { fetchProductById} from "../Fetch/FetchUser";
+import { fetchProductById, updateUser} from "../Fetch/FetchUser";
+import { SearchContext } from "../SearchContext/SearchContext";
 export default function ProductDetails(){
    const [product, setProduct] = useState(null);
    const {id}=useParams();
+   const {setRecentlyViewedProducts}=useContext(SearchContext);
    console.log(id)
     useEffect(()=>{
       async function fetchproduct() {
         try{
             const response=await fetchProductById(id)
             setProduct(response)
+            const savedUser=JSON.parse(localStorage.getItem("existingUser"));
+            console.log(savedUser)
+
+            const recentlyViewedItem=savedUser.recentlyViewed ||[];
+
+          const alreadyExist=recentlyViewedItem.some((p)=>p.id===response.id)
+
+          if(!alreadyExist){
+            recentlyViewedItem.push(response)
+          
+            const updatedUserRec={...savedUser,recentlyViewed:recentlyViewedItem}
+            setRecentlyViewedProducts(recentlyViewedItem)
+            await updateUser(savedUser.id,
+              {
+                recentlyViewed:recentlyViewedItem
+              }
+            )
+          localStorage.setItem("existingUser",JSON.stringify(updatedUserRec));
+          }
+            
+            
+            else return;
         }catch{
           console.log("something happend")
         }

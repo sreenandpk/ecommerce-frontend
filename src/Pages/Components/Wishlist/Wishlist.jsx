@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "../../Navbar/Navbar";
 import { SearchContext } from "../SearchContext/SearchContext";
 import BackButton from "../BackWardButtton/BackButton";
+import { fetchUser, updateUser } from "../Fetch/FetchUser";
 export default function Wishlist() {
   const [likedProducts, setLikedProducts] = useState([]);
   const { setWishlistIds, setWishlistCount } = useContext(SearchContext);
@@ -15,8 +16,8 @@ export default function Wishlist() {
       if (!savedUser) return;
 
       try {
-        const userResponse = await axios.get(`http://localhost:5000/users/${savedUser.id}`);
-        const wishlist = userResponse.data.wishlist.reverse();
+        const userResponse = await fetchUser(savedUser.id)
+        const wishlist = userResponse.wishlist.reverse();
         setLikedProducts(wishlist);
         setWishlistIds(wishlist.map(item => item.id)); // update context IDs
         setWishlistCount(wishlist.length); // update Navbar count
@@ -33,15 +34,15 @@ export default function Wishlist() {
       const savedUser = JSON.parse(localStorage.getItem("existingUser"));
       if (!savedUser) return;
 
-      const userResponse = await axios.get(`http://localhost:5000/users/${savedUser.id}`);
-      const filteredWishlist = userResponse.data.wishlist.filter(i => i.id !== item.id);
+      const userResponse = await fetchUser(savedUser.id)
+      const filteredWishlist = userResponse.wishlist.filter(i => i.id !== item.id);
 
-      await axios.patch(`http://localhost:5000/users/${savedUser.id}`, {
+      await updateUser(savedUser.id, {
         wishlist: filteredWishlist,
       });
 
       localStorage.setItem("existingUser", JSON.stringify({
-        ...userResponse.data,
+        ...userResponse,
         wishlist: filteredWishlist,
       }));
 
@@ -95,7 +96,7 @@ export default function Wishlist() {
                   <p className="card-text fw-bold">Price: ₹{item.price}</p>
 
                   <button className="btn btn-secondary rounded-pill w-100 mb-2">
-                    See Details
+                    Add to Cart
                   </button>
                   <button
                     className="btn btn-danger rounded-pill w-100"

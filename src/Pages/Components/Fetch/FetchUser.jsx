@@ -48,7 +48,7 @@ export const updateUser = async (userId, data) => {
 // POST
 export const createUser = async (data) => {
   try {
-    const res = await axios.post(`${BASE_URL}/users`, data);
+    const res = await axios.post(`${BASE_URL}/users, ${data}`);
     return res.data;
   } catch {
     console.log("error while creating user");
@@ -64,3 +64,29 @@ export const deleteUser = async (userId) => {
     console.log("error while deleting user");
   }
 };
+
+
+
+
+// GET cities
+export async function fetchAvailableCitiesFromDb() {
+  try {
+    const res = await axios.get(`${BASE_URL}/available_cities`);
+    return res.data;
+  } catch {
+    console.log("error while fetching cities");
+    return null;
+  }
+}
+
+
+// GET pincode
+export async function fetchAvailablePincodeFromDb() {
+  try {
+    const res = await axios.get(`${BASE_URL}/available_pincode`);
+    return res.data;
+  } catch {
+    console.log("error while fetching cities");
+    return null;
+  }
+}
