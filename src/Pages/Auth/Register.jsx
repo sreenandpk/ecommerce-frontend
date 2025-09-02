@@ -119,7 +119,7 @@ const navigate=useNavigate()
         width: "100%",
         padding: "25px",
         borderRadius: "12px",
-        backgroundColor: "white",
+        backgroundColor: "#fff8f0",
         boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
       }}
     >
@@ -138,6 +138,7 @@ const navigate=useNavigate()
           borderRadius: "8px",
           border: "1px solid #ccc",
           fontSize: "14px",
+          backgroundColor: "#fff8f0",
         }}
       />
 
@@ -152,6 +153,7 @@ const navigate=useNavigate()
           borderRadius: "8px",
           border: "1px solid #ccc",
           fontSize: "14px",
+          backgroundColor: "#fff8f0",
         }}
       />
 
@@ -168,6 +170,7 @@ const navigate=useNavigate()
             borderRadius: "8px",
             border: "1px solid #ccc",
             fontSize: "14px",
+            backgroundColor: "#fff8f0",
           }}
         />
         <button
@@ -196,6 +199,7 @@ const navigate=useNavigate()
           borderRadius: "8px",
           border: "1px solid #ccc",
           fontSize: "14px",
+          backgroundColor: "#fff8f0",
         }}
       />
 

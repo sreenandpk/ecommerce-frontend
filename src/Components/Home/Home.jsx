@@ -2,14 +2,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import Navbar from "../../Navbar/Navbar";
-import Icecream1 from "../../../homeImages/icecream5.jpg";
+import Icecream1 from "../../../homeImages/iceCreamTopHome6.png";
 import Icecream3 from "../../../homeImages/icecream3.jpg";
-import Icecream4 from "../../../homeImages/icecream4.jpg";
-import Icecream2 from "../../../homeImages/icecream6.jpg";
+import Icecream4 from "../../../homeImages/iceCreamHomeTop7.png";
+import Icecream2 from "../../../homeImages/iceCreamHomeTop8.png";
 import strawBerryHome from "../../../homeImages/strawberryHome.jpg";
 import pistaaHome from "../../../homeImages/pistaaHome.jpg";
 import blueberryHome from "../../../homeImages/bluberryHome.jpg";
 import chocolateHome from "../../../homeImages/chocolateHome.jpg";
+import icecreamHome5 from "../../../homeImages/icecreamHome55.jpg";
 import { fetchProducts, fetchUser } from "../Fetch/FetchUser";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +55,7 @@ export default function Home() {
       <div style={{ height: "80px" }}></div>
 
       {/* Hero Section */}
-      <div className="text-center mb-2 position-relative">
+      <div className="text-center mb-2 position-relative"    data-aos="fade-up">
         <h1
           style={{
             fontFamily: "Poppins, sans-serif",
@@ -83,7 +84,7 @@ export default function Home() {
       </div>
 
       {/* Main Carousel */}
-      <div className="d-flex justify-content-center mb-5">
+      <div className="d-flex justify-content-center mb-5"     data-aos="fade-up">
         <div
           id="icecreamCarousel"
           className="carousel slide shadow-lg rounded"
@@ -144,15 +145,15 @@ export default function Home() {
     {/* Best Sellers */}
 <h2
   className="text-center mb-4 fw-bold text-dark"
-  style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}
+  style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}    data-aos="fade-up"
 >
   Best Sellers
 </h2>
 
-<div className="container">
+<div className="container"    >
   <div className="row g-4 justify-content-center">
     {bestSellerProducts.map((item, index) => (
-      <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
+      <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2"data-aos="fade-up">
         <div
           onClick={() => navigate(`/productDetails/${item.id}`)}
           className="card shadow-sm h-100 border-0"
@@ -198,10 +199,10 @@ export default function Home() {
       {/* Hero + Flavor Section */}
       <div className="d-flex flex-wrap justify-content-between align-items-center px-3 px-lg-5 py-5 "style={{background:" #fff8f0"}}>
         <div className="flex-grow-1 mb-4 mb-lg-0" style={{ minWidth: "300px", maxWidth: "500px" }}>
-          <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}className="mx-5">
+          <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}className="mx-5"    data-aos="fade-up">
              Delicious Milkshakes <br /> Just for You
           </h1>
-          <p style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1.5rem" }}className="mx-5">
+          <p style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1.5rem" }}className="mx-5"    data-aos="fade-up">
              Explore our creamy milkshakes <br /> and find your favorite flavor.
           </p>
           <button onClick={()=>navigate("/products")}
@@ -213,21 +214,21 @@ export default function Home() {
               borderRadius: "12px",
               fontSize: "1rem",
               cursor: "pointer",
-            }}className="mx-5"
+            }}className="mx-5"    data-aos="fade-up"
           >
             Explore Milkshakes →
           </button>
         </div>
-        <div className="flex-grow-1 text-center mt-3" style={{ minWidth: "250px", maxWidth: "600px" }}>
-          <FlavorSection icecream1={icecreamG} icecream2={icecreamGG} />
+        <div  data-aos="fade-up" className="flex-grow-1 text-center mt-3" style={{ minWidth: "250px", maxWidth: "600px" }}>
+          <FlavorSection icecream1={icecreamG} icecream2={icecreamGG} icecream3={icecreamHome5} />
         </div>
       </div>
 
       {/* Recently Viewed */}
-      <div className="container my-4">
+      <div className="container my-5" >
         <div
           className="d-flex flex-wrap justify-content-between align-items-center p-3 shadow-sm rounded-3"
-          style={{ background: " #fff8f0" }}
+          style={{ background: " #fff8f0" }}data-aos="fade-up"
         >
           <h2
             className="m-0 fw-bold"
@@ -265,7 +266,7 @@ export default function Home() {
           cursor: "pointer",
           transition: "transform 0.3s ease, box-shadow 0.3s ease",
         }}
-        onClick={() => console.log(`Clicked image ${index + 1}`)}
+        onClick={() => console.log(`Clicked image ${index + 1}`)}data-aos="fade-up"
       >
         <img
           src={src}
@@ -283,7 +284,7 @@ export default function Home() {
   </div>
 </div>
 
-      <Footer />
+      <Footer data-aos="fade-up"/>
 
       {/* Responsive Carousel Heights */}
       <style>{`

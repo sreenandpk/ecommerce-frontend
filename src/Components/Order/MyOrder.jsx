@@ -44,7 +44,7 @@ export default function Orders() {
               <div key={index} className="order-card" style={{
                 display: "flex",
                 flexDirection: "column",
-                background: "#fff",
+                background: "#fff8f0",
                 borderRadius: "22px",
                 overflow: "hidden",
                 boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
@@ -79,10 +79,10 @@ export default function Orders() {
                     <div key={item.id} style={{
                       display: "flex",
                       alignItems: "center",
-                      background: "#f7f7f8",
+                      background:"#fff8f0",
                       borderRadius: "15px",
                       padding: "0.5rem",
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                     
                       transition: "transform 0.3s, box-shadow 0.3s"
                     }} className="product-card">
                       <img
@@ -100,15 +100,15 @@ export default function Orders() {
                         <p style={{ margin: 0, fontSize: "0.85rem", fontWeight: 600, color: "#111" }}>
                           {item.name} x{item.quantity}
                         </p>
-                        <p style={{ margin: "0.2rem 0", fontSize: "0.8rem", color: "#28a745", fontWeight: 600 }}>
-                          ₹{item.price * (item.quantity || 1)}
-                        </p>
-                        <p style={{ margin: 0, fontSize: "0.7rem", color: "#666" }}>
-                          {order.deliveryTime ? order.deliveryTime : "within 30 min"}
-                        </p>
+                        
+                        
                       </div>
+                      
                     </div>
-                  ))}
+                    
+                  ))}<p style={{ margin: 0, fontSize: "0.7rem", color: "#666" }}>
+                        delivered  {order.deliveryTime ? order.deliveryTime : "within 30 min"}
+                        </p>
                 </div>
 
                 {/* Footer */}
@@ -119,7 +119,7 @@ export default function Orders() {
                   padding: "0.6rem 1rem",
                   fontSize: "0.8rem",
                   fontWeight: 600,
-                  background: "#f4f5f7",
+                  background: "#fff8f0",
                   borderTop: "1px solid #e5e5e5"
                 }}>
                   <span>ID: {order.razorpayId || "N/A"}</span>
@@ -162,10 +162,7 @@ export default function Orders() {
           transform: translateY(-8px);
           box-shadow: 0 18px 40px rgba(0,0,0,0.12);
         }
-        .product-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+       
         @media (max-width: 576px) {
           .order-card {
             margin-bottom: 1rem;

@@ -3,9 +3,11 @@ import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { SearchProvider } from "./Components/SearchContext/SearchContext";
 import loaderAnimation from "../jsonAnimation/loading.json";
 import ErrorAnimation from "../jsonAnimation/error.json";
+import loaded from "../jsonAnimation/loaded.json";
 import Lottie from "lottie-react";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
 const Login = lazy(() => import("./Pages/Auth/Login"));
 const Register = lazy(() => import("./Pages/Auth/Register"));
 const Account = lazy(() => import("./Components/Account/Account"));
@@ -49,11 +51,19 @@ function App() {
   const [showApp, setShowApp] = useState(false);
   const loaderRef = useRef();
 
+
+    useEffect(() => {
+    AOS.init({
+      duration: 2000,  // default duration
+      once: false,      // only animate once
+    });
+  }, []);
+
   useEffect(() => {
     if (!loaderRef.current) return;
     const timer = setTimeout(() => {
       setShowApp(true);
-    }, 800);
+    }, 2700);
 
     return () => clearTimeout(timer);
   }, []);
@@ -91,7 +101,19 @@ function App() {
         pauseOnHover
         draggable
       />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div  style={{
+    height: "100vh",
+    width: "100vw",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden"   // 👈 important
+  }}>  <Lottie
+    animationData={loaded}
+    loop={false}
+    autoplay={true}
+    style={{ width: "80%", maxWidth: 300, height: "auto" }} // 👈 responsive
+  /></div>}>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

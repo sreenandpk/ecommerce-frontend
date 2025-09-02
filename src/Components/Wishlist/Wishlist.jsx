@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "../../Navbar/Navbar";
 import { SearchContext } from "../SearchContext/SearchContext";
-import { toast } from "react-toastify";
+import { infoToast } from "../toast";
 import { fetchUser, updateUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
 export default function Wishlist() {
@@ -23,7 +23,7 @@ export default function Wishlist() {
       let updatedCart = removeItemFromCart
         ? user.cart.filter((product) => product.id !== item.id)
         : [...user.cart, item];
-      if (!removeItemFromCart) toast.info(`${item.name} added to cart ✅`);
+      if (!removeItemFromCart) infoToast(`${item.name} added to cart `);
 
       await updateUser(savedUser.id, { cart: updatedCart });
       const updatedUser = { ...user, cart: updatedCart };
@@ -74,7 +74,7 @@ export default function Wishlist() {
       setLikedProducts(filteredWishlist);
       setWishlistIds(filteredWishlist.map(i => i.id));
       setWishlistCount(filteredWishlist.length);
-      toast.info(`${item.name} removed from wishlist`);
+      infoToast(`${item.name} removed from wishlist`);
     } catch (err) {
       console.log("Error removing item from wishlist", err);
     }
@@ -84,7 +84,7 @@ export default function Wishlist() {
     <>
       <Navbar />
       <div style={{height:'40px'}}></div>
-    <h3 style={{textAlign:'center'}}className="mb-4">my wishlist</h3>
+    <h3 style={{textAlign:'center'}}className="mb-4 mt-4">My wishlist</h3>
  <div className="row justify-content-center g-4">
   {likedProducts.length > 0 ? likedProducts.map((item, index) => (
     <div 
@@ -98,7 +98,7 @@ export default function Wishlist() {
           width: '100%',
           maxWidth: '280px', // smaller max width
           padding: '15px',   // slightly smaller padding
-          backgroundColor: '#fff',
+         background:' #fff8f0',
           transition: 'transform 0.25s ease, box-shadow 0.25s ease',
           cursor: 'pointer',
         }}
@@ -117,16 +117,13 @@ export default function Wishlist() {
             alt={item.name}
             className="img-fluid mb-3"
             style={{
-              height: '140px',       // smaller image height
+              height: '180px',       // smaller image height
               objectFit: 'contain',
               maxWidth: '100%',       // fit inside card
-            }}
+            }} onClick={()=>navigate(`/productDetails/${item.id}`)}
           />
-          <h5 className="card-title fw-semibold" style={{ fontSize: '0.95rem' }}>{item.name}</h5>
-          <p className="text-muted small mb-1" style={{ fontSize: '0.75rem' }}>Offer: {item.offer}</p>
-          <p className="text-muted small mb-1" style={{ fontSize: '0.75rem' }}>Category: {item.category}</p>
-          <p className="card-text" style={{ fontSize: '0.8rem' }}>Ratings: {item.rating}</p>
-          <p className="card-text fw-bold" style={{ fontSize: '0.85rem' }}>Price: ₹{item.price}</p>
+          <h5 className="card-title fw-semibold mb-3" style={{ fontSize: '0.95rem' }}>{item.name}</h5>
+          
 
           <button 
             className="btn btn-dark rounded-pill w-100 mb-2" 

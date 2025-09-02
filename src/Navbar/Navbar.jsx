@@ -5,8 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { SearchContext } from "../Components/SearchContext/SearchContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search } from "@mui/icons-material";
-import { useEffect } from "react";
-import { fetchUser } from "../Components/Fetch/FetchUser";
+import profile from "../../homeImages/profileDD.jpeg";
 export default function Navbar() {
  
   const [inputValue, setInputValue] = useState("");
@@ -14,12 +13,10 @@ export default function Navbar() {
   const { setSearchValue } = useContext(SearchContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const { cartCount = 0, wishlistIds = [] ,setCartCount} = useContext(SearchContext);
+  const { cartCount = 0, wishlistIds = [] } = useContext(SearchContext);
   const [savedUser, setSavedUser] = useState(
     JSON.parse(localStorage.getItem("existingUser"))
   );
-
-
 
 
   const active =
@@ -46,7 +43,7 @@ export default function Navbar() {
       <div
         className="d-none d-md-flex justify-content-between align-items-center container-fluid mt-3"
         style={{
-          backgroundColor: "white",
+          backgroundColor: "  #fff8f0",
           maxWidth: "1200px",
           margin: "0 auto",
           padding: "10px 15px",
@@ -95,8 +92,8 @@ export default function Navbar() {
           <input
             placeholder="Search"
             onChange={(event) => setInputValue(event.target.value)}
-            className="form-control rounded-pill ps-3 pe-5"
-            style={{ height: "35px", fontSize: "14px" }}
+            className="form-control rounded-pill ps-3 pe-5 "
+            style={{ height: "35px", fontSize: "14px" ,color:'none',background:'none'}}
           />
           <button
             type="submit"
@@ -110,7 +107,8 @@ export default function Navbar() {
         <div className="d-flex gap-2 align-items-center">
           <button
             onClick={() => navigate("/wishlist")}
-            className="btn btn-light rounded-pill px-4 position-relative"
+            className="btn  rounded-pill px-4 position-relative"
+            style={{border:'none'}}
           >
             Wishlist
             {wishlistIds.length > 0 && (
@@ -122,7 +120,8 @@ export default function Navbar() {
 
           <button
             onClick={() => navigate("/cart")}
-            className="btn btn-light rounded-pill px-3 position-relative"
+            className="btn  rounded-pill px-3 position-relative"
+            style={{border:'none'}}
           >
             Cart
             {cartCount > 0 && (
@@ -135,14 +134,14 @@ export default function Navbar() {
           <div className="dropdown">
             <button className="btn  px-3" type="button" data-bs-toggle="dropdown"style={{border:'none'}}>
            <img 
-  src={savedUser?.image || "/images/defaultProfile.png"} 
-  style={{height:'35px',borderRadius:'50%'}} 
+  src={savedUser?.image || profile} 
+  style={{height:'40px',borderRadius:'50%'}} 
 />
 
             </button>
-            <ul className="dropdown-menu dropdown-menu-end shadow">
+            <ul className="dropdown-menu dropdown-menu-end shadow"style={{background:' #fff8f0'}}>
               <li>
-                <button className="dropdown-item" onClick={() => navigate("/account")}>
+                <button className="dropdown-item " onClick={() => navigate("/account")}>
                   Profile
                 </button>
               </li>  <li>
@@ -173,13 +172,12 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Navbar */}
-      <div className="d-block d-md-none container-fluid" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: "white", boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }}>
+      <div className="d-block d-md-none container-fluid" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: " #fff8f0", boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }}>
         {/* Top Row */}
         <div className="d-flex justify-content-between align-items-center p-2">
           <div className="fw-bold fs-5" style={{ fontFamily: "fantasy", color: "black" }}>
             Diary
           </div>
-
           <div className="d-flex gap-2">
             <button className="btn  p-2" onClick={() => setMobileSearchOpen(!mobileSearchOpen)} style={{border:'none'}}>
               <Search />
@@ -187,14 +185,14 @@ export default function Navbar() {
             <div className="dropdown">
               <button className="btn  p-2" type="button" data-bs-toggle="dropdown"style={{border:'none'}}>
                <img 
-  src={savedUser?.image || "/images/defaultProfile.png"} 
+  src={savedUser?.image || profile} 
   style={{height:'40px',borderRadius:'50%'}} 
 />
 
               </button>
-              <ul className="dropdown-menu dropdown-menu-end shadow text-center">
+              <ul className="dropdown-menu dropdown-menu-end shadow text-center"style={{background:'#fff8f0'}}>
                 <li>
-                  <button className="dropdown-item" onClick={() => navigate("/wishlist")}>
+                  <button className="dropdown-item " onClick={() => navigate("/wishlist")}>
                     Wishlist {wishlistIds.length > 0 && `(${wishlistIds.length})`}
                   </button>
                 </li>
@@ -204,7 +202,7 @@ export default function Navbar() {
                   </button>
                 </li>
                 <li>
-                  <button className="dropdown-item" onClick={() => navigate("/account")}>
+                  <button className="dropdown-item " onClick={() => navigate("/account")}>
                     Profile
                   </button>
                 </li>
@@ -234,11 +232,11 @@ export default function Navbar() {
         {/* Mobile Search */}
         {mobileSearchOpen && (
           <form onSubmit={handleSearchSubmit} className="px-2 pb-2">
-            <input
+            <input 
               placeholder="Search"
               onChange={(e) => setInputValue(e.target.value)}
               className="form-control ps-3 pe-4"
-              style={{ height: "40px", fontSize: "14px", borderRadius: "20px" }}
+              style={{ height: "40px", fontSize: "14px", borderRadius: "20px",background:'#fff8f0' }}
               autoFocus
             />
           </form>

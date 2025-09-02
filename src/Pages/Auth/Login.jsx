@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginAnimation from "../../../jsonAnimation/Login.json"
 import Lottie from "lottie-react";
+import { fetchUserLogin } from "../../Components/Fetch/FetchUser";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -24,9 +25,7 @@ function Login() {
     setError("");
 
     try {
-      const existingUser = await axios.get(
-        `http://localhost:5000/users?email=${email}&password=${password}`
-      );
+      const existingUser = await fetchUserLogin(email,password)
 
       if (existingUser.data.length > 0) {
          const user = existingUser.data[0];
@@ -58,7 +57,7 @@ function Login() {
 
   {/* Right side - Form */}
   <div className="right">
-    <form onSubmit={submit}>
+    <form onSubmit={submit}style={{background:'#fff8f0'}}>
       <h2>Login</h2>
 
       <label htmlFor="email">Email:</label>
@@ -68,6 +67,7 @@ function Login() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Enter your email"
+        style={{backgroundColor: "#fff8f0",}}
       />
 
       <label htmlFor="password">Password:</label>
@@ -77,6 +77,7 @@ function Login() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Enter your password"
+           style={{backgroundColor: "#fff8f0",}}
       />
 
       <button type="button" onClick={() => setShowPassword(!showPassword)}>

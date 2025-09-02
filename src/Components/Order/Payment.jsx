@@ -3,7 +3,8 @@ import { fetchUser, updateUser } from "../Fetch/FetchUser";
 import { useNavigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../../Navbar/Navbar";
-
+import { FaMapMarkerAlt } from "react-icons/fa"; 
+import Footer from "../Home/Footer";
 export default function PaymentPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
@@ -83,13 +84,13 @@ export default function PaymentPage() {
     <>
       <Navbar />
 
-      <div className="container my-5">
-        <div className="card premium-card mx-auto shadow-lg">
-          <div className="card-body p-4">
+      <div className="container my-5"style={{backgroundColor:'#fff8f0'}}>
+        <div className="card premium-card mx-auto shadow-lg"style={{backgroundColor:'#fff8f0'}}>
+          <div className="card-body p-4"style={{backgroundColor:'#fff8f0',}}>
 
             {/* Shipping Address */}
-            <div className="address-card mb-4 p-3 rounded-4 shadow-sm bg-light">
-              <h5 className="fw-bold mb-3">Shipping Address</h5>
+            <div className="address-card mb-4 p-3 rounded-4  "style={{backgroundColor:'#fff8f0',}}>
+              <h5 className="fw-bold mb-3"><FaMapMarkerAlt/><span className="mx-2 mt-5">Shipping Address </span></h5>
               <p className="mb-1"><strong>Name:</strong> {name}</p>
               <p className="mb-1"><strong>Pin:</strong> {pin}</p>
               <p className="mb-1"><strong>Address:</strong> {address}</p>
@@ -97,9 +98,9 @@ export default function PaymentPage() {
             </div>
 
             {/* Products */}
-            <div className="mb-4">
+            <div className="mb-4"style={{backgroundColor:'#fff8f0'}}>
               {Products.map((item) => (
-                <div key={item.id} className="product-card d-flex justify-content-between align-items-center mb-3 p-3 rounded-4 shadow-sm bg-white">
+                <div key={item.id} className="product-card d-flex justify-content-between align-items-center mb-3 p-3 rounded-4 shadow-sm">
                   <div className="d-flex align-items-center">
                     <img src={item.image} alt={item.name} className="me-3" />
                     <span className="fw-semibold">{item.name} x {item.quantity}</span>
@@ -143,10 +144,7 @@ export default function PaymentPage() {
     padding: 1rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .address-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-  }
+ 
   .product-card {
     padding: 0.5rem 0.75rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -156,8 +154,8 @@ export default function PaymentPage() {
     box-shadow: 0 8px 20px rgba(0,0,0,0.08);
   }
   .product-card img {
-    width: 45px;
-    height: 45px;
+    width: 55px;
+    height: 55px;
     object-fit: cover;
     border-radius: 10px;
   }
@@ -175,7 +173,7 @@ export default function PaymentPage() {
     }
   }
 `}</style>
-
+<Footer />
     </>
   );
 }

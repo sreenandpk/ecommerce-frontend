@@ -5,6 +5,7 @@ import Lottie from "lottie-react";
 import Navbar from "../../Navbar/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchUser, updateUser,fetchProducts} from "../Fetch/FetchUser"
+import { infoToast } from "../toast";
 export default function FilteredSearchProducts(){
 const navigate=useNavigate();
 const {setProductDetails}=useContext(SearchContext);
@@ -46,7 +47,7 @@ const  addToCartAndRemoveFromCart=async function (item) {
                       localStorage.getItem("existingUser")
                     );
                     if (!savedUser) {
-                      alert("Login first");
+                      infoToast("Login first");
                       navigate("/login");
                       return;
                     }
@@ -64,10 +65,10 @@ const  addToCartAndRemoveFromCart=async function (item) {
                       updatedCart = user.cart.filter(function (product) {
                         return product.id !== item.id;
                       });
-                      alert("Item removed from cart");
+                      infoToast("Item removed from cart");
                       
                     } else {
-                      alert(`${item.name} added to cart ✅`);
+                      infoToast(`${item.name} added to cart `);
                    
                       updatedCart = [...user.cart, item];
                     }
@@ -91,18 +92,7 @@ const  addToCartAndRemoveFromCart=async function (item) {
                   }
                 }
                 {/*when user click buy*/}
-         const  userClickedBuy= async function (item) {
-                     const savedUser = JSON.parse(
-                    localStorage.getItem("existingUser")
-                  );
-                  if (!savedUser) {
-                    alert("login first");
-                    navigate("/login");
-                  } else {
-                    setUserBuyMessage(item);
-                    setDivForBuy(true);
-                  }
-                }
+        
     return(
 <>
       <Navbar />
@@ -113,10 +103,10 @@ const  addToCartAndRemoveFromCart=async function (item) {
     {/*map products when component mounts and useffect will set products asychronasily*/}
   {products.length>0?products.map((item, index) => (
   <div key={index} className="col-12 col-sm-12 col-md-6 col-lg-4">
-  <div className="card h-100 shadow-sm border-0 p-2" style={{ borderRadius: "15px" }}>
-    <div className="d-flex flex-column flex-md-row align-items-center">
+  <div className="card h-100 shadow-sm border-0 p-2" style={{ borderRadius: "15px",background:'#fff8f0'}}>
+    <div className="d-flex flex-column flex-md-row align-items-center"style={{background:'#fff8f0'}}>
       {/* Image */}
-      <div className="flex-shrink-0 text-center p-2">
+      <div className="flex-shrink-0 text-center p-2"style={{background:'#fff8f0'}}>
         <img 
           src={item.image} 
           alt={item.name} 
@@ -131,24 +121,7 @@ const  addToCartAndRemoveFromCart=async function (item) {
         <p className="card-text mb-1">Price: ₹{item.price}</p>
         <p className="card-text mb-2">ML: {item.ml}</p>
         <div className="d-flex flex-wrap gap-2 mt-2">
-        {/*button buy*/}
-          <button 
-            className="btn"
-                style={{
-                  flex: "1",
-                  background: "linear-gradient(135deg, #ffffff, #f0f0f0)",
-                  border: "2px solid #333",
-                  color: "#333",
-                  borderRadius: "30px",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  height: "40px",
-                  width:'100px'
-                }}
-                onClick={()=>userClickedBuy(item)}
-          >
-            Buy
-          </button>
+        
                 {/*butoon add to cart and remove from cart*/}
           <button
                 className="btn text-white"

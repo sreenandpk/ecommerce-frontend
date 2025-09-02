@@ -1,7 +1,4 @@
 import { useEffect, useState, useContext } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import { Heart } from "lucide-react";
 import { SearchContext } from "../SearchContext/SearchContext";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +73,7 @@ export default function Products() {
     try {
       const savedUser = JSON.parse(localStorage.getItem("existingUser"));
       if (!savedUser) {
-        toast.info("Login first");
+        infoToast("Login first");
         navigate("/login");
         return;
       }
@@ -119,7 +116,7 @@ export default function Products() {
           setActive(btn.key);
           btn.fn();
         }}
-        className={`btn rounded-pill px-4 py-2 ${
+        className={`btn rounded-pill  px-4 py-2 ${
           active === btn.key ? "btn-dark" : "btn-outline-secondary"
         }`}
         style={{
@@ -137,7 +134,7 @@ export default function Products() {
     {(filtered.length > 0 ? filtered : products).map((item, index) => (
       <div
         key={index}
-        className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+        className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"data-aos="fade-up"
       >
         <div
           className="card shadow-sm border-0"
@@ -158,7 +155,7 @@ export default function Products() {
             e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
           }}
         >
-          <div className="d-flex justify-content-center align-items-center p-3">
+          <div className="d-flex justify-content-center align-items-center p-3"style={{background:' #fff8f0'}}>
             <img
               onClick={() => navigate(`/productDetails/${item.id}`)}
               src={item.image}
@@ -167,20 +164,22 @@ export default function Products() {
                 width: "200px",
                 height: "200px",
                 objectFit: "contain",
+                background:' #fff8f0'
               }}
             />
           </div>
 
-          <div className="card-body text-center p-3">
+          <div className="card-body text-center p-3"style={{background:' #fff8f0'}}>
             <div className="d-flex justify-content-between align-items-center mb-2">
               <h5
                 style={{
                   fontFamily: "SF Pro, -apple-system, sans-serif",
                   fontWeight: 500,
-                  fontSize: "1.1rem",
+                  fontSize: "0.9rem",
                   margin: 0,
                   color: "#111",
-                }}
+                  
+                }}className="mx-4"
               >
                 {item.name}
               </h5>
@@ -193,9 +192,7 @@ export default function Products() {
               />
             </div>
 
-            <p style={{ color: "#6e6e73", margin: "0", fontSize: "0.9rem" }}>
-              {item.ml} ML
-            </p>
+          
 
             <p
               onClick={() => navigate(`/productDetails/${item.id}`)}
@@ -206,7 +203,7 @@ export default function Products() {
                 cursor: "pointer",
               }}
             >
-              Product Details
+              Product Details  →
             </p>
 
             <p
@@ -243,8 +240,10 @@ export default function Products() {
       </div>
     ))}
   </div>
+  
 </div>
 
+<div style={{height:'40px'}}></div>
 
       <Footer />
     </>

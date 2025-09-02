@@ -5,33 +5,33 @@
       "name": "sreenand",
       "email": "sreenandpk3@gmail.com",
       "password": "David@123",
-      "cart": [],
-      "wishlist": [],
-      "recentlyViewed": [
+      "cart": [
         {
-          "id": "2",
-          "name": "strawberry milkshake",
-          "price": "120",
-          "ml": "500ml",
-          "section": "milk",
-          "image": "/images/strawberryMilkshakeMix.png",
-          "rating": "rating : 4",
-          "offer": "200rs",
-          "category": "strawberry",
-          "bestseller": "true",
-          "quantity": 1
-        },
-        {
-          "id": "10",
-          "name": "strawberry",
+          "id": "7",
+          "name": "chocolate milkshake",
           "price": "205",
           "ml": "500ml",
-          "image": "/images/strawberry2.png",
+          "image": "/images/choclateMilkshake.png",
           "rating": "rating : 4",
-          "category": "strawberry",
-          "bestseller": "true",
+          "category": "choclate",
+          "bestseller": "",
           "quantity": 1
         },
+        {
+          "id": "3",
+          "name": "vanila milkshake",
+          "price": "130",
+          "ml": "500ml",
+          "image": "/images/vanilamilkshake.png",
+          "rating": "rating : 4",
+          "offer": "200rs",
+          "category": "vanila",
+          "bestseller": "",
+          "quantity": 1
+        }
+      ],
+      "wishlist": [],
+      "recentlyViewed": [
         {
           "id": "12",
           "name": "choclate milkshake",
@@ -40,6 +40,17 @@
           "image": "/images/choclateMilkshake5.png",
           "rating": "rating : 4",
           "category": "choclate",
+          "bestseller": "true",
+          "quantity": 1
+        },
+        {
+          "id": "13",
+          "name": "mango milkshake",
+          "price": "205",
+          "ml": "500ml",
+          "image": "/images/mangoMilkshake.png",
+          "rating": "rating : 4",
+          "category": "mango",
           "bestseller": "true",
           "quantity": 1
         }
@@ -75,6 +86,173 @@
               "category": "milk",
               "bestseller": "",
               "quantity": 4
+            }
+          ]
+        },
+        {
+          "id": "1756831386470",
+          "name": "sreenand",
+          "ph": "9539379577",
+          "addr": "alapra",
+          "pin": 670703,
+          "time": "10:13 PM",
+          "products": [
+            {
+              "id": "2",
+              "name": "strawberry milkshake",
+              "price": "120",
+              "ml": "500ml",
+              "section": "milk",
+              "image": "/images/strawberryMilkshakeMix.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "strawberry",
+              "bestseller": "",
+              "quantity": 2
+            },
+            {
+              "id": "3",
+              "name": "vanila milkshake",
+              "price": "130",
+              "ml": "500ml",
+              "image": "/images/vanilamilkshake.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "vanila",
+              "bestseller": "true",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "id": "1756831607291",
+          "name": "sreenand",
+          "ph": "9539379577",
+          "addr": "alapra",
+          "pin": 670703,
+          "time": "10:16 PM",
+          "products": [
+            {
+              "id": "3",
+              "name": "vanila milkshake",
+              "price": "130",
+              "ml": "500ml",
+              "image": "/images/vanilamilkshake.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "vanila",
+              "bestseller": "true",
+              "quantity": 1
+            },
+            {
+              "id": "7",
+              "name": "chocolate milkshake",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/choclateMilkshake.png",
+              "rating": "rating : 4",
+              "category": "choclate",
+              "bestseller": "",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "id": "1756832019465",
+          "name": "sreenand",
+          "ph": "9539379577",
+          "addr": "alapra",
+          "pin": 670703,
+          "time": "10:23 PM",
+          "products": [
+            {
+              "id": "3",
+              "name": "vanila milkshake",
+              "price": "130",
+              "ml": "500ml",
+              "image": "/images/vanilamilkshake.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "vanila",
+              "bestseller": "true",
+              "quantity": 1
+            },
+            {
+              "id": "7",
+              "name": "chocolate milkshake",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/choclateMilkshake.png",
+              "rating": "rating : 4",
+              "category": "choclate",
+              "bestseller": "",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "id": "1756832378553",
+          "name": "sreenand",
+          "ph": "9539379577",
+          "addr": "alapra",
+          "pin": 670703,
+          "time": "10:29 PM",
+          "products": [
+            {
+              "id": "3",
+              "name": "vanila milkshake",
+              "price": "130",
+              "ml": "500ml",
+              "image": "/images/vanilamilkshake.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "vanila",
+              "bestseller": "true",
+              "quantity": 1
+            },
+            {
+              "id": "7",
+              "name": "chocolate milkshake",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/choclateMilkshake.png",
+              "rating": "rating : 4",
+              "category": "choclate",
+              "bestseller": "",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "id": "1756832554585",
+          "name": "sreenand",
+          "ph": "9539379577",
+          "addr": "alapra",
+          "pin": 670703,
+          "time": "10:32 PM",
+          "products": [
+            {
+              "id": "3",
+              "name": "vanila milkshake",
+              "price": "130",
+              "ml": "500ml",
+              "image": "/images/vanilamilkshake.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "vanila",
+              "bestseller": "true",
+              "quantity": 1
+            },
+            {
+              "id": "7",
+              "name": "chocolate milkshake",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/choclateMilkshake.png",
+              "rating": "rating : 4",
+              "category": "choclate",
+              "bestseller": "",
+              "quantity": 1
             }
           ]
         }
@@ -114,9 +292,48 @@
           "pin": 670703,
           "ph": "9539379577",
           "name": "sreenand",
-          "deliveryTime": "",
+          "deliveryTime": "within 45 min",
           "userId": "808a",
           "createdAt": "2025-09-01T08:54:49.419Z"
+        },
+        {
+          "status": "paid",
+          "razorpayId": "pay_RCoBi5iavfVMCt",
+          "amount": 335,
+          "time": "10:32 PM",
+          "bookingId": "1756832554585",
+          "products": [
+            {
+              "id": "3",
+              "name": "vanila milkshake",
+              "price": "130",
+              "ml": "500ml",
+              "image": "/images/vanilamilkshake.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "vanila",
+              "bestseller": "true",
+              "quantity": 1
+            },
+            {
+              "id": "7",
+              "name": "chocolate milkshake",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/choclateMilkshake.png",
+              "rating": "rating : 4",
+              "category": "choclate",
+              "bestseller": "",
+              "quantity": 1
+            }
+          ],
+          "address": "alapra",
+          "pin": 670703,
+          "ph": "9539379577",
+          "name": "sreenand",
+          "deliveryTime": "",
+          "userId": "808a",
+          "createdAt": "2025-09-02T17:02:34.631Z"
         }
       ],
       "block": false,
@@ -134,7 +351,7 @@
       "rating": "rating : 4",
       "offer": "200rs",
       "category": "strawberry",
-      "bestseller": "true",
+      "bestseller": "",
       "quantity": 1
     },
     {
@@ -146,12 +363,12 @@
       "rating": "rating : 4",
       "offer": "200rs",
       "category": "vanila",
-      "bestseller": "true",
+      "bestseller": "",
       "quantity": 1
     },
     {
       "id": "7",
-      "name": "choclate milkshake",
+      "name": "chocolate milkshake",
       "price": "205",
       "ml": "500ml",
       "image": "/images/choclateMilkshake.png",

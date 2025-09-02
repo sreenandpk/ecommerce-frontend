@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { updateUser } from "../Fetch/FetchUser";
 import Footer from "../Home/Footer";
 import Navbar from "../../Navbar/Navbar";
-
+import { infoToast } from "../toast";
+import profile from "../../../homeImages/profileDD.jpeg";
 export default function Account() {
   const savedUser = JSON.parse(localStorage.getItem("existingUser"));
   const [imageUrl, setImageUrl] = useState(savedUser?.image || "");
@@ -12,26 +13,33 @@ export default function Account() {
 
   const imageFn = async function () {
     try {
+      if(savedUser){
       await updateUser(savedUser.id, { image: imageUrl, name, email });
       localStorage.setItem(
         "existingUser",
         JSON.stringify({ ...savedUser, image: imageUrl, name, email })
       );
-      alert("Profile updated successfully!");
+      infoToast("Profile updated successfully!");
+    }else{
+      infoToast("login first")
+    }
     } catch {
       setError("Failed to update profile");
     }
   };
 
   const handleImageChange = (e) => {
+    if(savedUser){
     const file = e.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onloadend = () => setImageUrl(reader.result);
     reader.readAsDataURL(file);
-  };
-
+  }else{
+    infoToast("login first")
+  }
+  }
   return (
     <>
     <Navbar />
@@ -40,18 +48,18 @@ export default function Account() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #fdfbfb, #ebedee)",
+        
+        background: "#fff8f0",
         fontFamily: "'San Francisco', 'Helvetica Neue', Arial, sans-serif",
         padding: "20px",
       }}
     >
       <div
         style={{
-          backgroundColor: "#ffffff",
+          backgroundColor: "#fff8f0",
           padding: "40px 35px",
           borderRadius: "28px",
-          boxShadow: "0 25px 50px rgba(0,0,0,0.08)",
+     
           maxWidth: "480px",
           width: "100%",
           display: "flex",
@@ -95,7 +103,7 @@ export default function Account() {
           <img
             src={
               imageUrl ||
-              "https://dummyimage.com/160x160/cccccc/000000&text=Profile"
+              profile
             }
             alt="Profile"
             style={{
@@ -120,6 +128,7 @@ export default function Account() {
               width: "160px",
               height: "160px",
               cursor: "pointer",
+              
             }}
           />
         </div>
@@ -138,7 +147,7 @@ export default function Account() {
             fontSize: "16px",
             color: "#2c2c2e",
             fontWeight: "500",
-            backgroundColor: "#fafafa",
+            background:'#fff8f0',
             outline: "none",
             transition: "all 0.3s ease",
           }}
@@ -162,7 +171,7 @@ export default function Account() {
             fontSize: "16px",
             color: "#2c2c2e",
             fontWeight: "500",
-            backgroundColor: "#fafafa",
+           background:'#fff8f0',
             outline: "none",
             transition: "all 0.3s ease",
           }}

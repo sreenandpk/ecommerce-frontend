@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "../../Navbar/Navbar";
 import { SearchContext } from "../SearchContext/SearchContext";
 import { infoToast } from "../toast";
@@ -103,7 +102,7 @@ export default function Cart() {
                   borderRadius: '20px',
                   maxWidth: '280px',
                   width: '100%',
-                  backgroundColor: "#fff",
+                  backgroundColor: "#fff8f0",
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                   cursor: 'pointer',
                   padding: '15px',
@@ -124,8 +123,6 @@ export default function Cart() {
                   style={{ height: '160px', objectFit: 'contain' }}
                 />
                 <h6 className="fw-bold mb-1">{item.name}</h6>
-                <p className="text-muted small mb-1">Offer: {item.offer}</p>
-                <p className="text-muted small mb-1">Category: {item.category}</p>
                 <p className="fw-semibold mb-1">Price: ₹{(item.quantity || 1) * item.price}</p>
                 <p className="text-muted small mb-3">{item.ml} ML</p>
 
@@ -136,20 +133,20 @@ export default function Cart() {
                       width: '35px',
                       height: '35px',
                       borderRadius: "50%",
-                      backgroundColor: '#f0f0f0',
+                      backgroundColor: '#fff8f0',
                       border: 'none',
                       fontSize: '18px',
                       fontWeight: 'bold',
                     }}
                   >-</button>
-                  <span>{item.quantity || 1}</span>
+                  <span>qty : {item.quantity || 1}</span>
                   <button
                     onClick={() => incrementQuantity(item)}
                     style={{
                       width: '35px',
                       height: '35px',
                       borderRadius: "50%",
-                      backgroundColor: '#f0f0f0',
+                      backgroundColor: '#fff8f0',
                       border: 'none',
                       fontSize: '18px',
                       fontWeight: 'bold',

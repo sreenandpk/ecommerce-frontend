@@ -1,11 +1,47 @@
 import Navbar from "../../Navbar/Navbar";
 import Footer from "../Home/Footer";
-
+import icecreamG from "../../../homeImages/AboutImage1.jpg";
+import icecreamGG from "../../../homeImages/AboutImage2.jpg";
+import icecreamGGG from "../../../homeImages/AboutImage3.jpg";
+import FlavorSection from "../FlaverSection";
+import Lottie from "lottie-react";
+import animationData from "../../../jsonAnimation/icecream.json"; 
 export default function About() {
   return (
 
     <>
     <Navbar/>
+    <div style={{height:'30px'}}></div>
+      <div className="d-flex flex-wrap justify-content-between align-items-center px-3 px-lg-5 py-5  "style={{background:" #fff8f0"}}>
+          
+         
+            <div className="flex-grow-1 mb-4 mb-lg-0 " style={{ minWidth: "300px", maxWidth: "500px" }}>
+               <h5 className=" mb-5 mx-5">the best ice cream brands</h5>
+              <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}className="mx-5">
+                You think you’re
+old? <br /> Ice cream is
+older!
+              </h1>
+              
+              <button onClick={()=>navigate("/products")}
+                style={{
+                  padding: "0.9rem 1.8rem",
+                  background: "#0a2141",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "12px",
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                }}className="mx-5 mt-5"
+              >
+                Explore ice creams →
+              </button>
+            </div>
+            <div className="flex-grow-1 text-center mt-3 " style={{ minWidth: "300px", maxWidth: "550px" }}>
+            <FlavorSection icecream1={icecreamG} icecream2={icecreamGG} icecream3={icecreamGGG} />
+            </div>
+          </div>
+    
     <div
       style={{
         minHeight: "100vh",
@@ -13,18 +49,19 @@ export default function About() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "40px 20px",
+        
         fontFamily: "'San Francisco', 'Helvetica Neue', Arial, sans-serif",
+        
       }}
     >
       <div
         style={{
           maxWidth: "900px",
           width: "100%",
-          backgroundColor: "white",
+         background:" #fff8f0",
           borderRadius: "28px",
           padding: "50px 40px",
-          boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
+          
           display: "flex",
           flexDirection: "column",
           gap: "30px",
@@ -37,9 +74,19 @@ export default function About() {
             fontWeight: "600",
             color: "#2c2c2e",
             textAlign: "center",
+            display:'flex',
+            justifyContent:'center'
           }}
         >
+         <span className="mt-4">
           About Our Dairy Products
+          </span>  <span>
+            <Lottie 
+    animationData={animationData} 
+    loop={true} 
+    style={{ height: "70px" }} 
+  />
+            </span> 
         </h1>
 
         {/* Subheading */}
@@ -72,9 +119,9 @@ export default function About() {
           {/* Example Product Card */}
           <div
             style={{
-              backgroundColor: "#fdfdfd",
+              background:" #fff8f0",
               borderRadius: "20px",
-              boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
+             
               width: "250px",
               padding: "20px",
               display: "flex",
@@ -109,9 +156,9 @@ export default function About() {
 
           <div
             style={{
-              backgroundColor: "#fdfdfd",
+            background:" #fff8f0",
               borderRadius: "20px",
-              boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
+             
               width: "250px",
               padding: "20px",
               display: "flex",
@@ -146,9 +193,9 @@ export default function About() {
 
           <div
             style={{
-              backgroundColor: "#fdfdfd",
+             background: "#fff8f0",
               borderRadius: "20px",
-              boxShadow: "0 10px 25px rgba(0,0,0,0.06)",
+             
               width: "250px",
               padding: "20px",
               display: "flex",

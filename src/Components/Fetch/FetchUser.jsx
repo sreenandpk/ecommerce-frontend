@@ -75,3 +75,11 @@ export async function fetchAvailablePincodeFromDb() {
 
 
 
+export const fetchUserLogin = async (email,password) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/users/?email=${email}&password=${password}`);
+    return res;
+  } catch {
+    console.log("error in fetching user");
+  }
+};

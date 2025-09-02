@@ -1,12 +1,12 @@
 import {  useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "bootstrap-icons/font/bootstrap-icons.css";
+
 import { fetchProductById, updateUser} from "../Fetch/FetchUser";
 import { SearchContext } from "../SearchContext/SearchContext";
 import { fetchUser } from "../Fetch/FetchUser";
 import { infoToast } from "../toast";
+import Navbar from "../../Navbar/Navbar";
+import Footer from "../Home/Footer";
 
 export default function ProductDetails(){
   const {setCartCount}=useContext(SearchContext);
@@ -113,12 +113,13 @@ const addtoCart=async function (item) {
 
     return(
         <>
+        <Navbar />
 {/*will run when user click product image*/}
-<div className="container mt-4">
+<div className="container mt-4"style={{background:' #fff8f0'}}>
   {product && (
     <div className="row g-3 align-items-start">
       <div className="col-12 col-md-5">
-        <div className="card h-100 border-0 shadow-sm" style={{ borderRadius: "20px", overflow: "hidden" }}>
+        <div className="card h-100 border-0 shadow-sm" style={{ borderRadius: "20px", overflow: "hidden",background:' #fff8f0' }}>
           <img
             src={product.image}
             alt={product.name}
@@ -126,28 +127,41 @@ const addtoCart=async function (item) {
             style={{
               width: "100%",
               height: "auto",
-              maxHeight: "400px",
+              maxHeight: "500px",
               objectFit: "contain",
             }}
           />
         </div>
       </div>
       <div className="col-12 col-md-7">
-        <div className="card h-100 border-0 shadow-sm p-3" style={{ borderRadius: "20px" }}>
-          <h3 className="fw-bold mb-3">{product.name}</h3>
-          <p className="mb-2"><strong>Price:</strong> ₹{product.price}</p>
-          <p className="mb-2"><strong>ML:</strong> {product.ml}</p> <h6 className="fw-bold mb-2">{product.name}</h6>
-            <p className="text-muted small mb-1">Offer: {product.offer}</p>
-            <p className="text-muted small mb-1">Category: {product.category}</p>
-            <p className="text-muted small mb-1">Ratings: ⭐ {product.rating}</p>
+        <div className="card h-100 border-0 shadow-sm p-3" style={{ borderRadius: "20px" ,background:' #fff8f0'}}>
+       <h2
+  style={{
+    fontFamily: "'Fredoka One', 'Cooper Black', cursive",
+    fontSize: "2.5rem",
+    fontWeight: "bold",
+    color: "#5b1111",
+  }} className="mb-5"
+>
+  {product.name}
+</h2>
+
+
+          <p className="mb-4 "><strong style={{ fontFamily: "'Fredoka One', 'Cooper Black', cursive", fontSize: "1.5rem",}}>Price:</strong> <span style={{color:'black',fontSize: "1.5rem",fontWeight:'bold'}}>₹{product.price}</span></p>
+          <p className="mb-2"><strong>ML:</strong> <span style={{
+    fontSize: "1.2rem",}}><strong>{product.ml}</strong>  </span></p> 
+            <p className=" small mb-3"><strong>Category:</strong> <span style={{
+    fontSize: "1.2rem",}}><strong>{product.category}</strong></span></p>
+            <p className=" small mb-1"> <strong> ⭐</strong> <span style={{ 
+    fontSize: "1.2rem",}}><strong>{product.rating}</strong></span></p>
             
               <button
-                className="btn text-white"
+                className="btn text-white mt-4"
                 style={{
                   flex: "1",
-                  backgroundColor: "#1e3253ff",
+                  backgroundColor: "black",
                   borderRadius: "20px",
-                  height: "40px",
+                  height: "50px",
                 }}
                 onClick={()=>addtoCart(product)}
               >
@@ -162,13 +176,17 @@ const addtoCart=async function (item) {
           <hr />
 
           
-          <p className="text-muted mb-1"><strong>Captions:</strong> {product.captions || "No captions available"}</p>
-          <p className="text-muted"><strong>Reviews:</strong> {product.reviews || "No reviews yet"}</p>
+          <p className="text-muted mb-1"style={{
+    fontSize: "1.2rem"}}><strong>Captions:</strong> {product.captions || "No captions available"}</p>
+          <p className="text-muted"style={{
+    fontSize: "1.2rem"}}><strong>Reviews:</strong> {product.reviews || "No reviews yet"}</p>
         </div>
       </div>
     </div>
   )}
 </div>
+<div style={{height:'20px'}}></div>
+<Footer />
         </>
     )
 }

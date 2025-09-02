@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { SearchContext } from "../SearchContext/SearchContext";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../../Navbar/Navbar";
 import { updateUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
@@ -67,6 +66,7 @@ const navigate=useNavigate()
                   borderRadius: "15px",
                   transition: "transform 0.3s, box-shadow 0.3s",
                   cursor: "pointer",
+                  background:'#fff8f0'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";

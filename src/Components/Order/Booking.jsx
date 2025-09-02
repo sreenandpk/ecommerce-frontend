@@ -5,7 +5,8 @@ import { SearchContext } from "../SearchContext/SearchContext";
 import { useNavigate } from "react-router-dom";
 import { fetchAvailableCitiesFromDb, updateUser } from "../Fetch/FetchUser";
 import Navbar from "../../Navbar/Navbar";
-import { toast } from "react-toastify";
+import { infoToast } from "../toast";
+import Footer from "../Home/Footer";
 
 export default function BookingPage() {
   const [availableCities, setAvailableCities] = useState([]);
@@ -39,12 +40,12 @@ export default function BookingPage() {
     event.preventDefault();
     const regex = /^[a-zA-Z0-9\s,.-]+$/;
 
-    if (!pincode) return toast.info("Select city");
-    if (!fullName) return toast.info("Enter full name");
-    if (!address) return toast.info("Fill address");
-    if (!phoneNo) return toast.info("Enter phone number");
-    if (phoneNo.length < 10) return toast.info("Enter a valid phone number");
-    if (!regex.test(address)) return toast.info("Special characters are not allowed in address");
+    if (!pincode) return infoToast("Select city");
+    if (!fullName) return infoToast("Enter full name");
+    if (!address) return infoToast("Fill address");
+    if (!phoneNo) return infoToast("Enter phone number");
+    if (phoneNo.length < 10) return infoToast("Enter a valid phone number");
+    if (!regex.test(address)) return infoToast("Special characters are not allowed in address");
 
     const options = { timeZone: "Asia/Kolkata", hour12: true, hour: "2-digit", minute: "2-digit" };
     const istTime = new Intl.DateTimeFormat("en-US", options).format(new Date());
@@ -88,7 +89,7 @@ export default function BookingPage() {
               className="card shadow-sm border-0 p-4 h-100"
               style={{
                 borderRadius: "20px",
-                backgroundColor: "#f9f9f9",
+                backgroundColor: "#fff8f0",
                 fontFamily: "SF Pro, -apple-system, sans-serif",
               }}
             >
@@ -102,6 +103,7 @@ export default function BookingPage() {
                     placeholder="Enter your name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
+                    style={{backgroundColor:'#fff8f0'}}
                   />
                 </div>
 
@@ -113,13 +115,13 @@ export default function BookingPage() {
                     placeholder="Enter phone number"
                     value={phoneNo}
                     maxLength={10}
-                    onChange={(e) => setPhoneNo(e.target.value.replace(/\D/g, ""))}
+                    onChange={(e) => setPhoneNo(e.target.value.replace(/\D/g, ""))}style={{backgroundColor:'#fff8f0'}}
                   />
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label fw-semibold">City</label>
-                  <select
+                  <select style={{backgroundColor:'#fff8f0'}}
                     className="form-select rounded-pill"
                     onChange={(e) => {
                       const selectedCity = availableCities.find((city) => city.name === e.target.value);
@@ -136,8 +138,8 @@ export default function BookingPage() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label fw-semibold">Pin Code</label>
-                  <input
+                  <label style={{backgroundColor:'#fff8f0'}} className="form-label fw-semibold">Pin Code</label>
+                  <input style={{backgroundColor:'#fff8f0'}}
                     type="text"
                     className="form-control rounded-pill"
                     value={pincode || ""}
@@ -148,7 +150,7 @@ export default function BookingPage() {
 
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Address</label>
-                  <textarea
+                  <textarea style={{backgroundColor:'#fff8f0'}}
                     className="form-control rounded-3"
                     rows="2"
                     placeholder="Enter delivery address"
@@ -168,7 +170,7 @@ export default function BookingPage() {
           <div className="col-12 col-lg-6">
             <div
               className="card shadow-sm border-0 p-4 h-100"
-              style={{ borderRadius: "20px", backgroundColor: "#f9f9f9" }}
+              style={{ borderRadius: "20px", backgroundColor: "#fff8f0" }}
             >
               <h5 className="fw-bold mb-3">Order Summary</h5>
               {bookingProducts && bookingProducts.length > 0 ? (
@@ -197,6 +199,7 @@ export default function BookingPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

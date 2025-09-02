@@ -4,14 +4,14 @@ import "react-toastify/dist/ReactToastify.css";
 // Apple-like style toast
 export function infoToast(message) {
   toast.info(message, {
-    position: "top-right",
-    autoClose: 3000,
+    position: "top-center",
+    autoClose: 1000,
     hideProgressBar: true,
     closeOnClick: true,
-    pauseOnHover: true,
+    pauseOnHover: false,
     draggable: true,
     style: {
-      background: "rgba(255, 255, 255, 0.95)", // soft white
+      background: "#fff8f0", // soft white
       color: "#1c1c1e", // dark text
       borderRadius: "16px",
       padding: "16px 22px",
@@ -21,8 +21,9 @@ export function infoToast(message) {
       fontSize: "15px",
       border: "1px solid rgba(0,0,0,0.08)",
       backdropFilter: "blur(6px)", // frosted glass effect
+      marginTop:'2%'
     },
-    icon: false, // clean, no icon
+    icon: true, // clean, no icon
     theme: "light",
   });
 }
