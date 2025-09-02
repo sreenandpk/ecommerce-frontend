@@ -13,6 +13,7 @@ function Login() {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("existingUser");
+    
     if (savedUser) {
       navigate("/");
     }
@@ -28,7 +29,13 @@ function Login() {
       );
 
       if (existingUser.data.length > 0) {
-        localStorage.setItem("existingUser", JSON.stringify(existingUser.data[0]));
+         const user = existingUser.data[0];
+          if (user.block === true) {
+    setError("Your account is blocked. Contact admin.");
+    return;
+  }
+
+        localStorage.setItem("existingUser", JSON.stringify(user));
         navigate("/");
       } else {
         setError("Invalid email or password");

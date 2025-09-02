@@ -20,6 +20,9 @@ const navigate=useNavigate()
     const recentlyViewed=[];
     const myOrders=[];
     const booking=[];
+    const payment=[];
+    const block=false;
+    const image="";
         
     useEffect(function(){
    
@@ -62,7 +65,7 @@ const navigate=useNavigate()
          
            
 
-        await axios.post("http://localhost:5000/users",{name,email,password,cart,wishlist,recentlyViewed,myOrders,booking});
+        await axios.post("http://localhost:5000/users",{name,email,password,cart,wishlist,recentlyViewed,myOrders,booking,payment,block,image});
        
        
         setEmail("");
