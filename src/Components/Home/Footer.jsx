@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom"
+
 export default function Footer(){
 
-
+const navigate=useNavigate()
 
 
     return(
@@ -52,10 +54,16 @@ export default function Footer(){
           Quick Links
         </h5>
         <ul className="list-unstyled mb-0">
-          <li><a href="/" className="text-dark text-decoration-none">🏠 Home</a></li>
-          <li><a href="/products" className="text-dark text-decoration-none">🍦 Products</a></li>
-          <li><a href="/about" className="text-dark text-decoration-none">📖 About</a></li>
-          <li><a href="/contact" className="text-dark text-decoration-none">📩 Contact</a></li>
+          <li><span className="text-dark text-decoration-none" onClick={function(){
+            navigate("/")
+          }}>🏠 Home</span></li>
+          <li><span  onClick={function(){
+            navigate("/products")
+          }}  className="text-dark text-decoration-none">🍦 Products</span></li>
+          <li><span  onClick={function(){
+            navigate("/about")
+          }}  className="text-dark text-decoration-none">📖 About</span></li>
+        
         </ul>
       </div>
 
@@ -72,9 +80,8 @@ export default function Footer(){
           Contact
         </h5>
         <p style={{ fontSize: "0.90rem", color: "#4b2e2e" }}>
-          📍 123 Dairy Street, Bangalore <br />
-          📞 +91 98765 43210 <br />
-          ✉️ diary@gmail.com
+          📍 kannur,iritty,kerala <br />
+          
         </p>
       </div>
     </div>
