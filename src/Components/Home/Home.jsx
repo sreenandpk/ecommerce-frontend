@@ -19,7 +19,7 @@ import Footer from "./Footer";
 import icecreamGG from "../../../homeImages/milkHome.jpg";
 import icecreamG from "../../../homeImages/MoodHome.jpg";
 import FlavorSection from "../FlaverSection";
-
+import ScrollToTop from "../ScrollTop";
 export default function Home() {
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const navigate = useNavigate();
@@ -92,7 +92,7 @@ export default function Home() {
           data-bs-interval="2000"
           style={{
             width: "100%",
-            maxWidth: "1200px",
+            maxWidth: "1100px",
             
           }}
         >
@@ -285,7 +285,7 @@ export default function Home() {
 </div>
 
       <Footer data-aos="fade-up"/>
-
+ <ScrollToTop/>
       {/* Responsive Carousel Heights */}
       <style>{`
         @media (max-width: 992px) {

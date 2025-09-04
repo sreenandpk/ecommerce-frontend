@@ -3,7 +3,7 @@ import { SearchContext } from "../SearchContext/SearchContext";
 import Navbar from "../../Navbar/Navbar";
 import { updateUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
-
+import ScrollToTop from "../ScrollTop";
 export default function RecentlyViewed() {
   const { recentlyViewedProduct, setRecentlyViewedProducts } = useContext(SearchContext);
 const navigate=useNavigate()
@@ -30,6 +30,7 @@ const navigate=useNavigate()
     <>
       <Navbar />
       <div style={{ height: "80px" }}></div>
+      
       <div className="container my-4">
         <h4 className="mb-4 fw-bold text-center">Recently Viewed </h4>
         <div className="d-flex justify-content-end mb-3">
@@ -133,6 +134,7 @@ const navigate=useNavigate()
             ))}
         </div>
       </div>
+        <ScrollToTop />
     </>
   );
 }

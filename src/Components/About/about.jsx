@@ -16,8 +16,8 @@ export default function About() {
           
          
             <div className="flex-grow-1 mb-4 mb-lg-0 " style={{ minWidth: "300px", maxWidth: "500px" }}>
-               <h5 className=" mb-5 mx-5">the best ice cream brands</h5>
-              <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}className="mx-5">
+               <h5 className=" mb-5 mx-5"data-aos="fade-up">the best ice cream brands</h5>
+              <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}className="mx-5"data-aos="fade-up">
                 You think you’re
 old? <br /> Ice cream is
 older!
@@ -33,12 +33,12 @@ older!
                   fontSize: "1.5rem",
                   cursor: "pointer",
                 }}className="mx-5 mt-5"
-              >
+              data-aos="fade-up">
                 Explore ice creams →
               </button>
             </div>
-            <div className="flex-grow-1 text-center mt-3 " style={{ minWidth: "300px", maxWidth: "550px" }}>
-            <FlavorSection icecream1={icecreamG} icecream2={icecreamGG} icecream3={icecreamGGG} />
+            <div className="flex-grow-1 text-center mt-3 " style={{ minWidth: "300px", maxWidth: "550px" }}data-aos="fade-up">
+            <FlavorSection icecream1={icecreamG} icecream2={icecreamGG} icecream3={icecreamGGG} data-aos="fade-up"/>
             </div>
           </div>
     
@@ -77,7 +77,7 @@ older!
             display:'flex',
             justifyContent:'center'
           }}
-        >
+       data-aos="fade-up">
          <span className="mt-4">
           About Our Dairy Products
           </span>  <span>
@@ -99,7 +99,7 @@ older!
             margin: "0 auto",
             lineHeight: "1.6",
           }}
-        >
+        data-aos="fade-up">
           We are committed to delivering the freshest, highest quality dairy
           products directly to your home. From creamy milkshakes to rich
           cheeses and butter, our products are crafted with care and
@@ -114,7 +114,7 @@ older!
             justifyContent: "space-around",
             gap: "20px",
             marginTop: "20px",
-          }}
+          }}data-aos="fade-up"
         >
           {/* Example Product Card */}
           <div
@@ -230,7 +230,7 @@ older!
         </div>
       </div>
     </div>
-    <Footer />
+    <Footer data-aos="fade-up"/>
     
     </>
     

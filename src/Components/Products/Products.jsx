@@ -3,23 +3,41 @@ import { Heart } from "lucide-react";
 import { SearchContext } from "../SearchContext/SearchContext";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
-import { toast } from "react-toastify";
+
 import { fetchUser, updateUser, fetchProducts } from "../Fetch/FetchUser";
 import Footer from "../Home/Footer";
 import { infoToast } from "../toast";
+import ScrollToTop from "../ScrollTop";
+import icecreamGGG from "../../../homeImages/iceCreamVideo.mp4";
+import { fetchAllProducts } from "../../Admin/fetch";
 export default function Products() {
   const [products, setProducts] = useState([]);
+    const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const { wishlistIds = [], setWishlistIds, setCartCount } = useContext(SearchContext);
   const [active, setActive] = useState("");
   const [filtered, setFilterd] = useState([]);
+  const [hotProducts,setHotProducts]=useState([]);
+  
   const navigate = useNavigate();
-
+  // Fetch bestseller products
+  useEffect(() => {
+    async function fetchBestseller() {
+      const products = await fetchProducts();
+      const bestSeller = products.filter((p) => p.bestseller === "true");
+      if (bestSeller) setBestSellerProducts(bestSeller);
+    }
+    fetchBestseller();
+  }, []);
   // Fetch products
   useEffect(() => {
     async function fetchProductsFromFetch() {
       try {
         const res = await fetchProducts();
         setProducts(res);
+         // filter only hot items
+      const hotRes = res.filter((p) => p.hot === "true");
+      setHotProducts(hotRes);
+    
       } catch {
         console.log("failed to fetch");
       }
@@ -101,9 +119,243 @@ export default function Products() {
   return (
     <>
       <Navbar />
-      <div style={{ height: "30px" }}></div>
+      <div style={{height:'20px'}}></div>
+     <h2
+  style={{
+    textAlign: "center",
+    fontFamily: "'Pacifico', cursive", // playful script font
+    fontSize: "2.3rem",
+    color: "#ff4d6d", // nice accent color
+    textShadow: "2px 2px 6px rgba(0,0,0,0.15)",
+    margin: "30px 0",
+  }}data-aos="fade-up"
+>
+  Discover Our Flavors
+</h2>
+<div className="container my-4 text-center">
+  <div
+    style={{
+      position: "relative",
+      maxWidth: "800px", // smaller max width (adjust as needed)
+      margin: "0 auto",
+      borderRadius: "20px",
+      overflow: "hidden",
+      boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+    }}
+    className="videoContainer"data-aos="fade-up"
+  >
+    <video
+      src={icecreamGGG}
+      autoPlay
+      loop
+      muted
+      style={{
+        width: "100%",
+        height: "auto",
+        display: "block",
+        borderRadius: "20px",
+      }}
+    />
+  </div>
+</div>
+
+<style>{`
+  @media (max-width: 576px) {
+    .videoContainer {
+      max-width: 100% !important; /* allow full width on small devices */
+    }
+  }
+`}</style>
+
+
+<div className="container my-5">
+  <h2
+    className="text-center mb-4 fw-bold"
+    style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}data-aos="fade-up"
+  >
+    Hot Products
+  </h2>
+
+  <div className="row g-4 justify-content-center">
+    {hotProducts.length > 0 &&
+      hotProducts.map((item) => (
+        <div
+          key={item.id}
+          className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"data-aos="fade-up"
+        >
+          <div
+            className="card shadow-lg position-relative overflow-hidden"
+            style={{
+              width: "100%",
+              borderRadius: "20px",
+              cursor: "pointer",
+              transition: "transform 0.3s, box-shadow 0.3s",
+              backgroundColor: "#fff8f0"
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "scale(1.05)";
+              e.currentTarget.style.boxShadow = "0 25px 50px rgba(0,0,0,0.2)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
+            }}
+          >
+            {/* Product Image */}
+            <div
+              style={{
+                position: "relative",
+                height: "180px", // reduced height
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#fff8f0",
+              }} onClick={() => navigate(`/productDetails/${item.id}`)}
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                style={{
+                  maxHeight: "100%",
+                  width: "auto",
+                  objectFit: "contain",
+                }}
+              />
+              <span className="badge bg-danger position-absolute top-0 start-0 m-2">
+                Hot Deal
+              </span>
+
+              {/* Hover overlay */}
+              <div
+                className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center"
+                style={{
+                  background: "rgba(0,0,0,0.4)",
+                  opacity: 0,
+                  transition: "opacity 0.3s",
+                }}
+              >
+                <button
+                  className="btn btn-sm btn-primary mb-2"
+                  style={{ borderRadius: "20px", padding: "5px 15px" }}
+                >
+                  Add to Cart
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-light"
+                  style={{ borderRadius: "20px", padding: "5px 15px" }}
+                >
+                  <i className="bi bi-heart"></i> Wishlist
+                </button>
+              </div>
+            </div>
+
+            {/* Card Body */}
+            <div className="card-body text-center p-3">
+              <h6
+                className="card-title mb-2"
+                style={{ fontWeight: 600, fontSize: "1rem", color: "#1e3253" }}
+              >
+                {item.name}
+              </h6>
+              <p
+                style={{ fontWeight: 700, fontSize: "1.1rem", color: "#111", marginBottom: "0" }}
+              >
+                ₹{item.price}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+  </div>
+</div>
+
+{/* CSS for hover overlay */}
+<style>
+{`
+  .card:hover .position-absolute div {
+    opacity: 1 !important;
+    
+  }
+`}
+</style>
+
+
+         {/* Best Sellers */}
+<h2
+  className="text-center mb-4 mt-3 fw-bold text-dark"
+  style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}    data-aos="fade-up"
+>
+  Best Sellers
+</h2>
+
+<div className="container"    >
+  <div className="row g-4 justify-content-center">
+    {bestSellerProducts.map((item, index) => (
+      <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2"data-aos="fade-up">
+        <div
+          onClick={() => navigate(`/productDetails/${item.id}`)}
+          className="card shadow-sm h-100 border-0"
+          style={{
+            borderRadius: "20px",
+            cursor: "pointer",
+            overflow: "hidden",
+            backgroundColor: "#fff8f0", // matches your website theme
+            transition: "all 0.3s ease",
+          }}
+        >
+          <img
+            src={item.image}
+            className="card-img-top"
+            alt={item.name}
+            style={{
+              height: "130px",
+              objectFit: "contain",
+              padding: "10px",
+              transition: "transform 0.3s ease",
+            }}
+          />
+          <div className="card-body text-center p-2">
+            <h6
+              className="card-title mb-4"
+              style={{
+                textAlign: "center",
+                fontFamily: "revert-layer",
+                fontSize: "13px",
+                color: "#0a2141",
+                transition: "color 0.3s ease",
+              }}
+            >
+              {item.name}
+            </h6>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+  <style>{`
+        @media (max-width: 992px) {
+          .carousel-inner img { height: 300px !important; }
+        }
+        @media (max-width: 768px) {
+          .carousel-inner img { height: 250px !important; }
+        }
+        @media (max-width: 576px) {
+          .carousel-inner img { height: 200px !important; }
+        }
+          .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 1);
+  }
+
+  .card:hover .card-title {
+    color: #e63946;
+  }  
+      `}</style>
+  <div style={{ height: "30px" }}></div>
   {/* Flavor Filters */}
-  <div className="container my-3 d-flex flex-wrap justify-content-center gap-2">
+  <div className="container my-3 d-flex flex-wrap justify-content-center gap-2" data-aos="fade-up">
     {[
       { label: "Vanilla", key: "vanilla", fn: vanila },
       { label: "Strawberry", key: "strawberry", fn: strawberry },
@@ -246,6 +498,7 @@ export default function Products() {
 <div style={{height:'40px'}}></div>
 
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

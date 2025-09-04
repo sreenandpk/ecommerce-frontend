@@ -15,7 +15,8 @@
           "rating": "rating : 4",
           "category": "choclate",
           "bestseller": "",
-          "quantity": 1
+          "quantity": 1,
+          "hot": ""
         },
         {
           "id": "3",
@@ -27,7 +28,34 @@
           "offer": "200rs",
           "category": "vanila",
           "bestseller": "",
-          "quantity": 1
+          "quantity": 1,
+          "hot": ""
+        },
+        {
+          "id": "2",
+          "name": "strawberry milkshake",
+          "price": "120",
+          "ml": "500ml",
+          "section": "milk",
+          "image": "/images/strawberryMilkshakeMix.png",
+          "rating": "rating : 4",
+          "offer": "200rs",
+          "category": "strawberry",
+          "bestseller": "",
+          "quantity": 1,
+          "hot": "true"
+        },
+        {
+          "id": "8",
+          "name": "milk",
+          "price": "205",
+          "ml": "500ml",
+          "image": "/images/cowMilk.png",
+          "rating": "rating : 4",
+          "category": "milk",
+          "bestseller": "",
+          "quantity": 1,
+          "hot": ""
         }
       ],
       "wishlist": [],
@@ -41,7 +69,68 @@
           "rating": "rating : 4",
           "category": "choclate",
           "bestseller": "true",
-          "quantity": 1
+          "quantity": 1,
+          "hot": ""
+        },
+        {
+          "id": "7",
+          "name": "chocolate milkshake",
+          "price": "205",
+          "ml": "500ml",
+          "image": "/images/choclateMilkshake.png",
+          "rating": "rating : 4",
+          "category": "choclate",
+          "bestseller": "",
+          "quantity": 1,
+          "hot": ""
+        },
+        {
+          "id": "11",
+          "name": "strawberry milkshake",
+          "price": "205",
+          "ml": "500ml",
+          "image": "/images/strawberryMilkshakeMix.png",
+          "rating": "rating : 4",
+          "category": "crusha",
+          "bestseller": "",
+          "quantity": 1,
+          "hot": ""
+        },
+        {
+          "id": "10",
+          "name": "strawberry",
+          "price": "205",
+          "ml": "500ml",
+          "image": "/images/strawberry2.png",
+          "rating": "rating : 4",
+          "category": "strawberry",
+          "bestseller": "true",
+          "quantity": 1,
+          "hot": "true"
+        },
+        {
+          "id": "8",
+          "name": "milk",
+          "price": "205",
+          "ml": "500ml",
+          "image": "/images/cowMilk.png",
+          "rating": "rating : 4",
+          "category": "milk",
+          "bestseller": "",
+          "quantity": 1,
+          "hot": ""
+        },
+        {
+          "id": "9",
+          "name": "frijj",
+          "price": "205",
+          "ml": "500ml",
+          "image": "/images/frijj.png",
+          "rating": "rating : 4",
+          "category": "choclate",
+          "bestseller": "",
+          "quantity": 1,
+          "hot": ""
         },
         {
           "id": "13",
@@ -52,7 +141,34 @@
           "rating": "rating : 4",
           "category": "mango",
           "bestseller": "true",
-          "quantity": 1
+          "quantity": 1,
+          "hot": "true"
+        },
+        {
+          "id": "14",
+          "name": "Pistachio Delight Milkshake ",
+          "price": "200",
+          "ml": "500ml",
+          "image": "/images/Pistachio Delight Milkshake .png",
+          "rating": "rating : 4",
+          "category": "pista",
+          "bestseller": "true",
+          "quantity": 1,
+          "hot": "true"
+        },
+        {
+          "id": "2",
+          "name": "strawberry milkshake",
+          "price": "120",
+          "ml": "500ml",
+          "section": "milk",
+          "image": "/images/strawberryMilkshakeMix.png",
+          "rating": "rating : 4",
+          "offer": "200rs",
+          "category": "strawberry",
+          "bestseller": "",
+          "quantity": 1,
+          "hot": "true"
         }
       ],
       "myOrders": [],
@@ -255,6 +371,63 @@
               "quantity": 1
             }
           ]
+        },
+        {
+          "id": "1756920850363",
+          "name": "sreenand",
+          "ph": "9534234242",
+          "addr": "alpra",
+          "pin": 670703,
+          "time": "11:04 PM",
+          "products": [
+            {
+              "id": "3",
+              "name": "vanila milkshake",
+              "price": "130",
+              "ml": "500ml",
+              "image": "/images/vanilamilkshake.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "vanila",
+              "bestseller": "",
+              "quantity": 1,
+              "hot": ""
+            },
+            {
+              "id": "16",
+              "name": "apple Milkshake ",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/appleMilkshake.png",
+              "rating": "rating : 4",
+              "category": "apple",
+              "bestseller": "",
+              "quantity": 4
+            },
+            {
+              "id": "15",
+              "name": "bluberry Milkshake ",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/bluberryMilkshake.png",
+              "rating": "rating : 4",
+              "category": "blueberry",
+              "bestseller": "",
+              "quantity": 3
+            },
+            {
+              "id": "7",
+              "name": "chocolate milkshake",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/choclateMilkshake.png",
+              "rating": "rating : 4",
+              "category": "choclate",
+              "bestseller": "",
+              "quantity": 5,
+              "hot": ""
+            }
+          ]
         }
       ],
       "payment": [
@@ -334,6 +507,69 @@
           "deliveryTime": "",
           "userId": "808a",
           "createdAt": "2025-09-02T17:02:34.631Z"
+        },
+        {
+          "status": "paid",
+          "razorpayId": "pay_RDDGJdANrmcVP6",
+          "amount": 2590,
+          "time": "11:04 PM",
+          "bookingId": "1756920850363",
+          "products": [
+            {
+              "id": "3",
+              "name": "vanila milkshake",
+              "price": "130",
+              "ml": "500ml",
+              "image": "/images/vanilamilkshake.png",
+              "rating": "rating : 4",
+              "offer": "200rs",
+              "category": "vanila",
+              "bestseller": "",
+              "quantity": 1,
+              "hot": ""
+            },
+            {
+              "id": "16",
+              "name": "apple Milkshake ",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/appleMilkshake.png",
+              "rating": "rating : 4",
+              "category": "apple",
+              "bestseller": "",
+              "quantity": 4
+            },
+            {
+              "id": "15",
+              "name": "bluberry Milkshake ",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/bluberryMilkshake.png",
+              "rating": "rating : 4",
+              "category": "blueberry",
+              "bestseller": "",
+              "quantity": 3
+            },
+            {
+              "id": "7",
+              "name": "chocolate milkshake",
+              "price": "205",
+              "ml": "500ml",
+              "image": "/images/choclateMilkshake.png",
+              "rating": "rating : 4",
+              "category": "choclate",
+              "bestseller": "",
+              "quantity": 5,
+              "hot": ""
+            }
+          ],
+          "address": "alpra",
+          "pin": 670703,
+          "ph": "9534234242",
+          "name": "sreenand",
+          "deliveryTime": "",
+          "userId": "808a",
+          "createdAt": "2025-09-03T17:34:10.509Z"
         }
       ],
       "block": false,
@@ -352,7 +588,8 @@
       "offer": "200rs",
       "category": "strawberry",
       "bestseller": "",
-      "quantity": 1
+      "quantity": 1,
+      "hot": "true"
     },
     {
       "id": "3",
@@ -364,7 +601,8 @@
       "offer": "200rs",
       "category": "vanila",
       "bestseller": "",
-      "quantity": 1
+      "quantity": 1,
+      "hot": ""
     },
     {
       "id": "7",
@@ -375,7 +613,8 @@
       "rating": "rating : 4",
       "category": "choclate",
       "bestseller": "",
-      "quantity": 1
+      "quantity": 1,
+      "hot": ""
     },
     {
       "id": "8",
@@ -386,7 +625,8 @@
       "rating": "rating : 4",
       "category": "milk",
       "bestseller": "",
-      "quantity": 1
+      "quantity": 1,
+      "hot": ""
     },
     {
       "id": "9",
@@ -397,7 +637,8 @@
       "rating": "rating : 4",
       "category": "choclate",
       "bestseller": "",
-      "quantity": 1
+      "quantity": 1,
+      "hot": ""
     },
     {
       "id": "10",
@@ -408,7 +649,8 @@
       "rating": "rating : 4",
       "category": "strawberry",
       "bestseller": "true",
-      "quantity": 1
+      "quantity": 1,
+      "hot": "true"
     },
     {
       "id": "11",
@@ -419,7 +661,8 @@
       "rating": "rating : 4",
       "category": "crusha",
       "bestseller": "",
-      "quantity": 1
+      "quantity": 1,
+      "hot": ""
     },
     {
       "id": "12",
@@ -430,7 +673,8 @@
       "rating": "rating : 4",
       "category": "choclate",
       "bestseller": "true",
-      "quantity": 1
+      "quantity": 1,
+      "hot": ""
     },
     {
       "id": "13",
@@ -441,7 +685,8 @@
       "rating": "rating : 4",
       "category": "mango",
       "bestseller": "true",
-      "quantity": 1
+      "quantity": 1,
+      "hot": "true"
     },
     {
       "id": "14",
@@ -452,7 +697,8 @@
       "rating": "rating : 4",
       "category": "pista",
       "bestseller": "true",
-      "quantity": 1
+      "quantity": 1,
+      "hot": "true"
     },
     {
       "id": "15",
@@ -463,7 +709,8 @@
       "rating": "rating : 4",
       "category": "blueberry",
       "bestseller": "",
-      "quantity": 1
+      "quantity": 1,
+      "hot": ""
     },
     {
       "id": "16",
@@ -474,7 +721,8 @@
       "rating": "rating : 4",
       "category": "apple",
       "bestseller": "",
-      "quantity": 1
+      "quantity": 1,
+      "hot": ""
     }
   ],
   "available_cities": [

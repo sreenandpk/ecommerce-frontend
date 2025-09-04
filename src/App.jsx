@@ -8,6 +8,7 @@ import Lottie from "lottie-react";
 import { ToastContainer } from "react-toastify";
 import AOS from "aos";
 import "aos/dist/aos.css";
+
 const Login = lazy(() => import("./Pages/Auth/Login"));
 const Register = lazy(() => import("./Pages/Auth/Register"));
 const Account = lazy(() => import("./Components/Account/Account"));
@@ -152,6 +153,7 @@ function App() {
             }
           />
         </Routes>
+    
       </Suspense>
     </SearchProvider>
   );

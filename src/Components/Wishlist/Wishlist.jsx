@@ -5,6 +5,7 @@ import { SearchContext } from "../SearchContext/SearchContext";
 import { infoToast } from "../toast";
 import { fetchUser, updateUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
+import ScrollToTop from "../ScrollTop";
 export default function Wishlist() {
   const [likedProducts, setLikedProducts] = useState([]);
   const { setWishlistIds, setWishlistCount,setCartCount } = useContext(SearchContext);
@@ -84,13 +85,13 @@ export default function Wishlist() {
     <>
       <Navbar />
       <div style={{height:'40px'}}></div>
-    <h3 style={{textAlign:'center'}}className="mb-4 mt-4">My wishlist</h3>
+    <h3 style={{textAlign:'center'}}className="mb-4 mt-4"data-aos="fade-up">My wishlist</h3>
  <div className="row justify-content-center g-4">
   {likedProducts.length > 0 ? likedProducts.map((item, index) => (
     <div 
       key={index} 
       className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
-    >
+    data-aos="fade-up">
       <div
         className="card h-100 shadow-lg border-0 text-center"
         style={{
@@ -110,7 +111,7 @@ export default function Wishlist() {
           e.currentTarget.style.transform = 'translateY(0)';
           e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
         }}
-      >
+     data-aos="fade-up" >
         <div className="card-body d-flex flex-column justify-content-between p-2">
           <img
             src={item.image}
@@ -136,7 +137,7 @@ export default function Wishlist() {
               ? "Remove"
               : "Add"}
           </button>
-          <button
+          <button 
             className="btn btn-danger rounded-pill w-100"
             style={{ padding: '8px 0', fontSize: '0.85rem' }}
             onClick={() => removeFromWishlist(item)}
@@ -146,9 +147,9 @@ export default function Wishlist() {
         </div>
       </div>
     </div>
-  )) : <p className="text-center text-muted">Your wishlist is empty.</p>}
+  )) : <p data-aos="fade-up" className="text-center text-muted">Your wishlist is empty.</p>}
 </div>
-
+  <ScrollToTop />
     </>
   );
 }

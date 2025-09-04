@@ -4,6 +4,7 @@ import { SearchContext } from "../SearchContext/SearchContext";
 import { infoToast } from "../toast";
 import { fetchProducts, updateUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
+import Footer from "../Home/Footer";
 
 export default function Cart() {
   const [addedProducts, setAddedProducts] = useState([]);
@@ -88,14 +89,14 @@ export default function Cart() {
     <>
       <Navbar />
       <div className="container my-5">
-        <h4 className="text-center mb-2">My Cart</h4>
-        <p className="text-center mb-4" style={{ fontFamily: 'revert' }}>
+        <h4 className="text-center mb-2"data-aos="fade-up">My Cart</h4>
+        <p className="text-center mb-4" style={{ fontFamily: 'revert' }}data-aos="fade-up">
           Total ({cartTotalItems}) items in cart
         </p>
 
         <div className="row justify-content-center g-4">
           {isLogin && addedProducts.map((item, index) => (
-            <div key={index} className="col-12 col-sm-8 col-md-6 col-lg-4 col-xl-3 d-flex justify-content-center">
+            <div key={index} className="col-12 col-sm-8 col-md-6 col-lg-4 col-xl-3 d-flex justify-content-center"data-aos="fade-up">
               <div
                 className="card h-100 shadow-sm border-0 text-center"
                 style={{
@@ -169,11 +170,13 @@ export default function Cart() {
           <button
             className="btn btn-dark btn-lg rounded-pill px-5 py-3 shadow-lg fw-bold text-uppercase"
             onClick={handleBuyAll}
-          >
+          data-aos="fade-up">
             🛒 Buy All
           </button>
         </div>
       </div>
+      <div style={{height:'20px'}}></div>
+      <Footer data-aos="fade-up"/>
     </>
   );
 }
