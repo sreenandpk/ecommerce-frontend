@@ -14,7 +14,7 @@ export default function Products() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newProduct, setNewProduct] = useState({ name: "", price: "", image: "" });
+  const [newProduct, setNewProduct] = useState({ name: "", price: "", image: "",category:"" ,hot:"",ml:""});
 
   const submitAdd = async () => {
     try {
@@ -233,6 +233,42 @@ export default function Products() {
                         style={{ fontSize: "0.95rem", padding: "0.6rem 1rem" }}
                         value={newProduct.name}
                         onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                      />
+                    </div>
+                       <div className="col-md-6">
+                      <label className="form-label small text-muted"> Category</label>
+                      <input
+                        required
+                        type="text"
+                        className="form-control rounded-4 shadow-sm border-light"
+                        placeholder="Enter Category"
+                        style={{ fontSize: "0.95rem", padding: "0.6rem 1rem" }}
+                        value={newProduct.category}
+                        onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                      />
+                    </div>
+                             <div className="col-md-6">
+                      <label className="form-label small text-muted"> Hot Product</label>
+                      <input
+                        required
+                        type="text"
+                        className="form-control rounded-4 shadow-sm border-light"
+                        placeholder="true"
+                        style={{ fontSize: "0.95rem", padding: "0.6rem 1rem" }}
+                        value={newProduct.hot}
+                        onChange={(e) => setNewProduct({ ...newProduct, hot: e.target.value })}
+                      />
+                    </div>
+                             <div className="col-md-6">
+                      <label className="form-label small text-muted"> Ml</label>
+                      <input
+                        required
+                        type="text"
+                        className="form-control rounded-4 shadow-sm border-light"
+                        placeholder="Enter ml"
+                        style={{ fontSize: "0.95rem", padding: "0.6rem 1rem" }}
+                        value={newProduct.ml}
+                        onChange={(e) => setNewProduct({ ...newProduct, ml: e.target.value })}
                       />
                     </div>
                     <div className="col-md-6">

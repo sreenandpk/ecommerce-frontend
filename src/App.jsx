@@ -13,6 +13,7 @@ const Login = lazy(() => import("./Pages/Auth/Login"));
 const Register = lazy(() => import("./Pages/Auth/Register"));
 const Account = lazy(() => import("./Components/Account/Account"));
 const Products = lazy(() => import("./Components/Products/Products"));
+const Category = lazy(() => import("./Components/Products/Category"));
 const FilteredSearchProducts = lazy(() =>
   import("./Components/Products/FilteredSearchProducts")
 );
@@ -120,18 +121,19 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account />} />
           <Route path="/products" element={<Products />} />
-                    <Route path="/about" element={<About />} />
+          <Route path="/about" element={<About />} />
           <Route path="/search" element={<FilteredSearchProducts />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/productDetails/:id" element={<ProductDetails />} />
           <Route path="/" element={<Home />} />
+          <Route path="/category" element={<Category />} />
           <Route path="/recentlyViewed" element={<Recent />} />
           <Route path="/myOrders" element={<MyOrders />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/payment/:bookingId" element={<PaymentPage />}/>
           <Route path="/admin/*" element={<Admin />}/>
-     
+          
           {/* catch unwanted routes */}
           <Route
             path="*"

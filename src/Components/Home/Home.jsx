@@ -12,7 +12,7 @@ import blueberryHome from "../../../homeImages/bluberryHome.jpg";
 import chocolateHome from "../../../homeImages/chocolateHome.jpg";
 import icecreamHome5 from "../../../homeImages/icecreamHome55.jpg";
 import { fetchProducts, fetchUser } from "../Fetch/FetchUser";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Footer from "./Footer";
@@ -20,10 +20,12 @@ import icecreamGG from "../../../homeImages/milkHome.jpg";
 import icecreamG from "../../../homeImages/MoodHome.jpg";
 import FlavorSection from "../FlaverSection";
 import ScrollToTop from "../ScrollTop";
+import { SearchContext } from "../SearchContext/SearchContext";
 export default function Home() {
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const navigate = useNavigate();
-
+  const {setCategory}=useContext(SearchContext);
+  const categories = ["strawberry", "pistachio", "blueberry", "chocolate"]; 
   // Fetch bestseller products
   useEffect(() => {
     async function fetchBestseller() {
@@ -253,10 +255,24 @@ export default function Home() {
           </button>
         </div>
       </div>
+  <h4
+  style={{
+    textAlign: "center",
+    fontFamily: "'Poppins', sans-serif", // clean modern font
+    fontSize: "2rem", // bigger and responsive
+    color: "#333",
+    letterSpacing: "1px",
+    margin: "20px 0",
+  }}data-aos="fade-up"
+>
+  Categories
+</h4>
+
    <div className="container my-4 mt-5">
 
   <div className="d-flex flex-wrap justify-content-center gap-5" style={{ overflow: "visible" }}>
     {[strawBerryHome, pistaaHome, blueberryHome, chocolateHome].map((src, index) => (
+     
       <div
         key={index}
         style={{
@@ -266,7 +282,11 @@ export default function Home() {
           cursor: "pointer",
           transition: "transform 0.3s ease, box-shadow 0.3s ease",
         }}
-        onClick={() => console.log(`Clicked image ${index + 1}`)}data-aos="fade-up"
+        onClick={() => {
+            
+          setCategory(categories[index]);
+          navigate("/category");
+        }}data-aos="fade-up"
       >
         <img
           src={src}

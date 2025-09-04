@@ -55,7 +55,7 @@ export default function Products() {
   };
   const choclate = async () => {
     const productChoclates = await fetchProducts();
-    setFilterd(productChoclates.filter((p) => p.category === "choclate"));
+    setFilterd(productChoclates.filter((p) => p.category === "chocolate"));
   };
   const showAll = async () => {
     const productAll = await fetchProducts();

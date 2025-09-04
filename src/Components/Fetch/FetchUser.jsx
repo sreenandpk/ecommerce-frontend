@@ -84,3 +84,9 @@ export const fetchUserLogin = async (email,password) => {
   }
 };
 
+
+export const fetchByCategory=async function(cat){
+    const response=await axios.get(`${BASE_URL}/products/?category=${cat}`);
+    return response.data
+}
+

@@ -1,8 +1,7 @@
 import { createContext, useState } from "react";
-
 export const SearchContext = createContext();
-
 export function SearchProvider({ children }) {
+  const [category,setCategory]=useState([]);
   const savedUser = JSON.parse(localStorage.getItem("existingUser"));
   const [searchValue, setSearchValue] = useState("");
   const [cartCount, setCartCount] = useState(
@@ -20,7 +19,7 @@ export function SearchProvider({ children }) {
   return (
     <SearchContext.Provider value={{ searchValue, setSearchValue,cartCount, setCartCount, wishlistIds, setWishlistIds ,wishlistCount,
       setWishlistCount,recentlyViewedProduct,setRecentlyViewedProducts, productDetails,          // ✅ added
-        setProductDetails,bookingProducts,setBookingProducts }}>
+        setProductDetails,bookingProducts,setBookingProducts ,category,setCategory}}>
       {children}
     </SearchContext.Provider>
   );
