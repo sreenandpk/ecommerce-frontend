@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://fake-backend-2.onrender.com"; // keep one place for easy change
+const BASE_URL = process.env.REACT_APP_API_URL; // keep one place for easy change
 
 
 // For fetching products by search term
