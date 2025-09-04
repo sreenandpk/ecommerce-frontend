@@ -1,12 +1,13 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000"; // keep one place for easy change
+const BASE_URL = "https://fake-backend-2.onrender.com"; // keep one place for easy change
 
 
 // For fetching products by search term
-export async function fetchProducts(query="") {
+export async function fetchProducts() {
   try {
-    const res = await axios.get(`${BASE_URL}/products?name=${query}`);
+    const res = await axios.get(`${BASE_URL}/products`);
+
     return res.data;
   } catch {
     console.log("error while fetching products");
@@ -18,6 +19,7 @@ export async function fetchProducts(query="") {
 export async function fetchProductById(id) {
   try {
     const res = await axios.get(`${BASE_URL}/products/${id}`);
+    console.log("API DATA:", res.data); 
     return res.data;
   } catch {
     console.log("error while fetching product by id");

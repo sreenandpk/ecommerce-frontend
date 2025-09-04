@@ -23,6 +23,7 @@ export default function Products() {
   useEffect(() => {
     async function fetchBestseller() {
       const products = await fetchProducts();
+      
       const bestSeller = products.filter((p) => p.bestseller === "true");
       if (bestSeller) setBestSellerProducts(bestSeller);
     }

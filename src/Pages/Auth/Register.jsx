@@ -55,7 +55,7 @@ const navigate=useNavigate()
             }
             
 
-         const existing=await axios.get(`http://localhost:5000/users?email=${email}`);
+         const existing=await axios.get(`https://fake-backend-2.onrender.com/users?email=${email}`);
 
            if(existing.data.length>0){
             setError("user with this email olready exist");
@@ -65,7 +65,7 @@ const navigate=useNavigate()
          
            
 
-        await axios.post("http://localhost:5000/users",{name,email,password,cart,wishlist,recentlyViewed,myOrders,booking,payment,block,image});
+        await axios.post("https://fake-backend-2.onrender.com/users",{name,email,password,cart,wishlist,recentlyViewed,myOrders,booking,payment,block,image});
        
        
         setEmail("");
