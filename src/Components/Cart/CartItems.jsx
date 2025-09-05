@@ -171,7 +171,7 @@ export default function Cart() {
           <button
             className="btn btn-dark btn-lg rounded-pill px-5 py-3 shadow-lg fw-bold text-uppercase"
             onClick={handleBuyAll}
-          data-aos="fade-up">
+          >
             🛒 Buy All
           </button>
         </div>
