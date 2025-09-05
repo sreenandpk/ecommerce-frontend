@@ -127,7 +127,7 @@ const addtoCart=async function (item) {
             style={{
               width: "100%",
               height: "auto",
-              maxHeight: "400px",
+              maxHeight: "300px",
               objectFit: "contain",
             }}
           />
