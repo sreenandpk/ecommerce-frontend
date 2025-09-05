@@ -137,10 +137,10 @@ const addtoCart=async function (item) {
         <div className="card h-100 border-0 shadow-sm p-3" style={{ borderRadius: "20px" ,background:' #fff8f0'}}>
        <h2
   style={{
-    fontFamily: " cursive",
-    fontSize: "2.5rem",
+    
+    fontSize: "2rem",
     fontWeight: "bold",
-    color: "#5b1111",
+    
   }} className="mb-5"
 >
   {product.name}
