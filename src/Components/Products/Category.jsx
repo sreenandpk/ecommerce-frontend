@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { SearchContext } from "../SearchContext/SearchContext";
 import { fetchByCategory } from "../Fetch/FetchUser";
 import Footer from "../Home/Footer";
+import Navbar from "../../Navbar/Navbar";
 
 
 export default function Category() {
@@ -18,6 +19,7 @@ export default function Category() {
 
   return (
     <>
+    <Navbar />
         <div className="container my-5">
       {/* Heading */}
       <div className="text-center mb-4">
