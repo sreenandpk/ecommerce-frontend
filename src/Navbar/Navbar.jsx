@@ -56,9 +56,11 @@ export default function Navbar() {
           borderRadius: "50px",
         }}
       >
-        <div className="fw-bold fs-4" style={{ fontFamily: "fantasy", color: "black" }}>
-          Diary
-        </div>
+       
+<div className="fw-bold fs-4" style={{ fontFamily: "Montserrat, sans-serif", color: "black" }}>
+  Diary
+</div>
+
 
         <div className="d-flex gap-2">
           <span
