@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { SearchContext } from "../SearchContext/SearchContext";
 import { fetchByCategory } from "../Fetch/FetchUser";
+import Footer from "../Home/Footer";
+
 
 export default function Category() {
   const [products, setProducts] = useState([]);
@@ -15,7 +17,8 @@ export default function Category() {
   }, [category]); // ✅ avoids infinite loop
 
   return (
-    <div className="container my-5">
+    <>
+        <div className="container my-5">
       {/* Heading */}
       <div className="text-center mb-4">
         <h1 className="fw-bold text-capitalize">{category}</h1>
@@ -67,6 +70,11 @@ export default function Category() {
           <p className="text-center text-muted">No products found.</p>
         )}
       </div>
+      
     </div>
+    <Footer/>
+    </>
+
+    
   );
 }

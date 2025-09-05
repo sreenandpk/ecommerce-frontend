@@ -124,32 +124,37 @@ export default function Products() {
      <h2
   style={{
     textAlign: "center",
-    fontFamily: "'Pacifico', cursive", // playful script font
+    fontFamily: "'Pacifico', cursive",
     fontSize: "2.3rem",
-    color: "#ff4d6d", // nice accent color
+    color: "#ff4d6d",
     textShadow: "2px 2px 6px rgba(0,0,0,0.15)",
     margin: "30px 0",
-  }}data-aos="fade-up"
+  }}
+  data-aos="fade-up"
 >
   Discover Our Flavors
 </h2>
+
 <div className="container my-4 text-center">
   <div
+    className="videoContainer"
+    data-aos="fade-up"
     style={{
       position: "relative",
-      maxWidth: "800px", // smaller max width (adjust as needed)
+      maxWidth: "800px",
       margin: "0 auto",
       borderRadius: "20px",
       overflow: "hidden",
       boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+      pointerEvents: "none", // prevents any interaction
     }}
-    className="videoContainer"data-aos="fade-up"
   >
     <video
       src={icecreamGGG}
       autoPlay
       loop
       muted
+      playsInline // important for mobile autoplay
       style={{
         width: "100%",
         height: "auto",
@@ -163,10 +168,11 @@ export default function Products() {
 <style>{`
   @media (max-width: 576px) {
     .videoContainer {
-      max-width: 100% !important; /* allow full width on small devices */
+      max-width: 100% !important;
     }
   }
 `}</style>
+
 
 
 <div className="container my-5">
