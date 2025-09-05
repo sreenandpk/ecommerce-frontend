@@ -6,6 +6,7 @@ import icecreamGGG from "../../../homeImages/AboutImage3.jpg";
 import FlavorSection from "../FlaverSection";
 import Lottie from "lottie-react";
 import animationData from "../../../jsonAnimation/icecream.json"; 
+import ScrollToTop from "../ScrollTop";
 export default function About() {
   return (
 
@@ -231,7 +232,7 @@ older!
       </div>
     </div>
     <Footer data-aos="fade-up"/>
-    
+    <ScrollToTop />
     </>
     
   );

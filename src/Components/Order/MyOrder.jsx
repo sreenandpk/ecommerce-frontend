@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { fetchUser } from "../Fetch/FetchUser";
 import Navbar from "../../Navbar/Navbar";
 import Footer from "../Home/Footer";
+import ScrollToTop from "../ScrollTop";
 
 export default function Orders() {
   const [productBooked, setProductBooked] = useState([]);
@@ -175,6 +176,7 @@ export default function Orders() {
         }
       `}</style>
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

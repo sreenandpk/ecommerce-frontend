@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { fetchUser, updateUser,fetchProducts, fetchProductByName} from "../Fetch/FetchUser"
 import { infoToast } from "../toast";
 import Footer from "../Home/Footer";
+import ScrollToTop from "../ScrollTop";
 export default function FilteredSearchProducts(){
 const navigate=useNavigate();
 const {setProductDetails}=useContext(SearchContext);
@@ -177,6 +178,7 @@ const  addToCartAndRemoveFromCart=async function (item) {
 </div>
 {/*this div will only display when user click buy*/}
 <Footer />
+<ScrollToTop />
 </>
 
     )

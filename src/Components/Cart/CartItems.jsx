@@ -5,6 +5,7 @@ import { infoToast } from "../toast";
 import { fetchProducts, updateUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Home/Footer";
+import ScrollToTop from "../ScrollTop";
 
 export default function Cart() {
   const [addedProducts, setAddedProducts] = useState([]);
@@ -177,6 +178,7 @@ export default function Cart() {
       </div>
       <div style={{height:'20px'}}></div>
       <Footer data-aos="fade-up"/>
+      <ScrollToTop />
     </>
   );
 }

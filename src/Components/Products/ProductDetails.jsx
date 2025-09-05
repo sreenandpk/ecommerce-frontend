@@ -7,6 +7,7 @@ import { fetchUser } from "../Fetch/FetchUser";
 import { infoToast } from "../toast";
 import Navbar from "../../Navbar/Navbar";
 import Footer from "../Home/Footer";
+import ScrollToTop from "../ScrollTop";
 
 export default function ProductDetails(){
   const {setCartCount}=useContext(SearchContext);
@@ -187,6 +188,7 @@ const addtoCart=async function (item) {
 </div>
 <div style={{height:'20px'}}></div>
 <Footer />
+<ScrollToTop />
         </>
     )
 }

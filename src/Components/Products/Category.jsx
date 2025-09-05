@@ -3,6 +3,7 @@ import { SearchContext } from "../SearchContext/SearchContext";
 import { fetchByCategory } from "../Fetch/FetchUser";
 import Footer from "../Home/Footer";
 import Navbar from "../../Navbar/Navbar";
+import ScrollToTop from "../ScrollTop";
 
 
 export default function Category() {
@@ -75,6 +76,7 @@ export default function Category() {
       
     </div>
     <Footer/>
+    <ScrollToTop />
     </>
 
     

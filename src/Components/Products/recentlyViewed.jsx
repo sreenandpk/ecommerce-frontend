@@ -139,8 +139,9 @@ const navigate=useNavigate()
             ))}
         </div>
       </div>
-        <ScrollToTop />
+        
         <Footer />
+        <ScrollToTop />
     </>
   );
 }
