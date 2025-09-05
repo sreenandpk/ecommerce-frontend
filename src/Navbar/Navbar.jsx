@@ -137,7 +137,7 @@ export default function Navbar() {
             <button className="btn  px-3" type="button" data-bs-toggle="dropdown"style={{border:'none'}}>
            <img 
   src={savedUser?.image || profile} 
-  style={{height:'45px',width:'45px',borderRadius:'50%'}} 
+  style={{height:'45px',width:'45px',borderRadius:'50%',border:'1px solid gray'}} 
 />
 
             </button>
@@ -190,7 +190,7 @@ export default function Navbar() {
               <button className="btn  p-2" type="button" data-bs-toggle="dropdown"style={{border:'none'}}>
                <img 
   src={savedUser?.image || profile} 
-  style={{height:'45px',width:'45px',borderRadius:'50%'}} 
+  style={{height:'45px',width:'45px',borderRadius:'50%',border:'1px solid gray'}} 
 />
 
               </button>
