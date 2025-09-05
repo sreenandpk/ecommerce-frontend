@@ -125,7 +125,7 @@ export default function Products() {
   style={{
     textAlign: "center",
     fontFamily: "'Pacifico', cursive",
-    fontSize: "2.3rem",
+    fontSize: "1.8rem",
     color: "#ff4d6d",
     textShadow: "2px 2px 6px rgba(0,0,0,0.15)",
     margin: "30px 0",
