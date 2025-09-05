@@ -127,7 +127,7 @@ const addtoCart=async function (item) {
             style={{
               width: "100%",
               height: "auto",
-              maxHeight: "300px",
+              maxHeight: "250px",
               objectFit: "contain",
             }}
           />
@@ -138,7 +138,7 @@ const addtoCart=async function (item) {
        <h2
   style={{
     
-    fontSize: "2rem",
+    fontSize: "1.8rem",
     fontWeight: "bold",
     
   }} className="mb-5"
@@ -147,7 +147,7 @@ const addtoCart=async function (item) {
 </h2>
 
 
-          <p className="mb-4 "><span style={{ fontFamily: " cursive", fontSize: "1rem",}}>Price:</span> <span style={{color:'black',fontSize: "1.5rem",fontWeight:'bold'}}>₹{product.price}</span></p>
+          <p className="mb-4 "><span style={{ fontSize: "1rem",}}>Price:</span> <span style={{color:'black',fontSize: "1.5rem",fontWeight:'bold'}}>₹{product.price}</span></p>
           <p className="mb-2"><span>ML:</span> <span style={{
     fontSize: "1rem",}}><span>{product.ml}</span>  </span></p> 
             <p className=" small mb-3"><span>Category:</span> <span style={{
@@ -177,9 +177,9 @@ const addtoCart=async function (item) {
 
           
           <p className="text-muted mb-1"style={{
-    fontSize: "1.2rem"}}><strong>Captions:</strong> {product.captions || "No captions available"}</p>
+    fontSize: "1rem"}}><strong>Captions:</strong> {product.captions || "No captions available"}</p>
           <p className="text-muted"style={{
-    fontSize: "1.2rem"}}><strong>Reviews:</strong> {product.reviews || "No reviews yet"}</p>
+    fontSize: "1rem"}}><strong>Reviews:</strong> {product.reviews || "No reviews yet"}</p>
         </div>
       </div>
     </div>
