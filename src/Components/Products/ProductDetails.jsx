@@ -127,7 +127,7 @@ const addtoCart=async function (item) {
             style={{
               width: "100%",
               height: "auto",
-              maxHeight: "500px",
+              maxHeight: "400px",
               objectFit: "contain",
             }}
           />
@@ -137,7 +137,7 @@ const addtoCart=async function (item) {
         <div className="card h-100 border-0 shadow-sm p-3" style={{ borderRadius: "20px" ,background:' #fff8f0'}}>
        <h2
   style={{
-    fontFamily: "'Fredoka One', 'Cooper Black', cursive",
+    fontFamily: " cursive",
     fontSize: "2.5rem",
     fontWeight: "bold",
     color: "#5b1111",
@@ -149,11 +149,11 @@ const addtoCart=async function (item) {
 
           <p className="mb-4 "><strong style={{ fontFamily: "'Fredoka One', 'Cooper Black', cursive", fontSize: "1.5rem",}}>Price:</strong> <span style={{color:'black',fontSize: "1.5rem",fontWeight:'bold'}}>₹{product.price}</span></p>
           <p className="mb-2"><strong>ML:</strong> <span style={{
-    fontSize: "1.2rem",}}><strong>{product.ml}</strong>  </span></p> 
+    fontSize: "1rem",}}><strong>{product.ml}</strong>  </span></p> 
             <p className=" small mb-3"><strong>Category:</strong> <span style={{
-    fontSize: "1.2rem",}}><strong>{product.category}</strong></span></p>
+    fontSize: "1rem",}}><strong>{product.category}</strong></span></p>
             <p className=" small mb-1"> <strong> ⭐</strong> <span style={{ 
-    fontSize: "1.2rem",}}><strong>{product.rating}</strong></span></p>
+    fontSize: "1rem",}}><strong>{product.rating}</strong></span></p>
             
               <button
                 className="btn text-white mt-4"
