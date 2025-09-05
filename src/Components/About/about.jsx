@@ -82,11 +82,7 @@ older!
          <span className="mt-4">
           About Our Dairy Products
           </span>  <span>
-            <Lottie 
-    animationData={animationData} 
-    loop={true} 
-    style={{ height: "70px" }} 
-  />
+         
             </span> 
         </h1>
 
