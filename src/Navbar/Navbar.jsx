@@ -177,9 +177,11 @@ export default function Navbar() {
       <div className="d-block d-md-none container-fluid" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: " #fff8f0", boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }}>
         {/* Top Row */}
         <div className="d-flex justify-content-between align-items-center p-2">
-          <div className="fw-bold fs-5" style={{ fontFamily: "fantasy", color: "black" }}>
-            Diary
-          </div>
+          
+<div className="fw-bold fs-4" style={{ fontFamily: "Montserrat, sans-serif", color: "black" }}>
+  Diary
+</div>
+
           <div className="d-flex gap-2">
             <button className="btn  p-2" onClick={() => setMobileSearchOpen(!mobileSearchOpen)} style={{border:'none'}}>
               <Search />
