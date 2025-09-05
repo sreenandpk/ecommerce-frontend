@@ -1,7 +1,7 @@
 
 import axios from "axios";
 
-const BASE_URL = "https://fake-backend-2.onrender.com/";
+const BASE_URL = "https://fake-backend-2.onrender.com";
 
 
 export const fetchUsers=async function(){
