@@ -75,9 +75,12 @@ const navigate=useNavigate()
        console.log("registraion success");
        setError("");
        navigate("/login")
-        }catch{
-            setError("Error registoring user");
-        }
+        }catch(err){
+    const errorMessage = err.response?.data?.message || err.message || "Error registering user";
+    setError(errorMessage);
+    console.log(err);
+}
+
 
     }
     

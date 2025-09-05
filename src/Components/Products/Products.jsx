@@ -215,7 +215,7 @@ export default function Products() {
               }} onClick={() => navigate(`/productDetails/${item.id}`)}
             >
               <img
-                src={item.image}
+               src={item.image}
                 alt={item.name}
                 style={{
                   maxHeight: "100%",
@@ -306,7 +306,8 @@ export default function Products() {
           }}
         >
           <img
-            src={item.image}
+           src={item.image}
+
             className="card-img-top"
             alt={item.name}
             style={{
@@ -411,7 +412,8 @@ export default function Products() {
           <div className="d-flex justify-content-center align-items-center p-3"style={{background:' #fff8f0'}}>
             <img
               onClick={() => navigate(`/productDetails/${item.id}`)}
-              src={item.image}
+             src={item.image}
+
               alt={item.name}
               style={{
                 width: "200px",
