@@ -4,6 +4,7 @@ import Navbar from "../../Navbar/Navbar";
 import { updateUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
 import ScrollToTop from "../ScrollTop";
+import Footer from "../Home/Footer";
 export default function RecentlyViewed() {
   const { recentlyViewedProduct, setRecentlyViewedProducts } = useContext(SearchContext);
 const navigate=useNavigate()
@@ -135,6 +136,7 @@ const navigate=useNavigate()
         </div>
       </div>
         <ScrollToTop />
+        <Footer />
     </>
   );
 }
