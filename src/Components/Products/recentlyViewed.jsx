@@ -22,7 +22,7 @@ const navigate=useNavigate()
     return (
       <>
         <Navbar />
-        <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh'}}>
  <p className="text-center mt-3">No recently viewed products</p>
 
         </div>
