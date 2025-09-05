@@ -4,7 +4,7 @@ import ErrorAnimation from "../../../jsonAnimation/error.json"
 import Lottie from "lottie-react";
 import Navbar from "../../Navbar/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchUser, updateUser,fetchProducts} from "../Fetch/FetchUser"
+import { fetchUser, updateUser,fetchProducts, fetchProductByName} from "../Fetch/FetchUser"
 import { infoToast } from "../toast";
 export default function FilteredSearchProducts(){
 const navigate=useNavigate();
@@ -24,7 +24,7 @@ useEffect(function(){
                    try{
 if (!searchValue.trim()) return;
 
-const product = await fetchProducts(searchValue.toLowerCase());
+const product = await fetchProductByName(searchValue.toLowerCase());
 console.log(product);
  setProducts(product)
 

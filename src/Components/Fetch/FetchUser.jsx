@@ -4,9 +4,9 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 
 
 // For fetching products by search term
-export async function fetchProducts(query="") {
+export async function fetchProducts() {
   try {
-    const res = await axios.get(`${BASE_URL}/products/?name=${query}`);
+    const res = await axios.get(`${BASE_URL}/products`);
 
     return res.data;
   } catch {
@@ -92,3 +92,13 @@ export const fetchByCategory=async function(cat){
     return response.data
 }
 
+export async function fetchProductByName(query="") {
+  try {
+    const res = await axios.get(`${BASE_URL}/products/?name=${query}`);
+
+    return res.data;
+  } catch {
+    console.log("error while fetching products");
+    return [];
+  }
+}
