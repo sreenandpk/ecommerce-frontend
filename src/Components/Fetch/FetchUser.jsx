@@ -4,9 +4,9 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 
 
 // For fetching products by search term
-export async function fetchProducts() {
+export async function fetchProducts(query="") {
   try {
-    const res = await axios.get(`${BASE_URL}/products`);
+    const res = await axios.get(`${BASE_URL}/products/?name=${query}`);
 
     return res.data;
   } catch {
