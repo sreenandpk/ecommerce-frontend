@@ -147,13 +147,13 @@ const addtoCart=async function (item) {
 </h2>
 
 
-          <p className="mb-4 "><strong style={{ fontFamily: "'Fredoka One', 'Cooper Black', cursive", fontSize: "1.5rem",}}>Price:</strong> <span style={{color:'black',fontSize: "1.5rem",fontWeight:'bold'}}>₹{product.price}</span></p>
-          <p className="mb-2"><strong>ML:</strong> <span style={{
-    fontSize: "1rem",}}><strong>{product.ml}</strong>  </span></p> 
-            <p className=" small mb-3"><strong>Category:</strong> <span style={{
-    fontSize: "1rem",}}><strong>{product.category}</strong></span></p>
+          <p className="mb-4 "><span style={{ fontFamily: " cursive", fontSize: "1rem",}}>Price:</span> <span style={{color:'black',fontSize: "1.5rem",fontWeight:'bold'}}>₹{product.price}</span></p>
+          <p className="mb-2"><span>ML:</span> <span style={{
+    fontSize: "1rem",}}><span>{product.ml}</span>  </span></p> 
+            <p className=" small mb-3"><span>Category:</span> <span style={{
+    fontSize: "1rem",}}><span>{product.category}</span></span></p>
             <p className=" small mb-1"> <strong> ⭐</strong> <span style={{ 
-    fontSize: "1rem",}}><strong>{product.rating}</strong></span></p>
+    fontSize: "1rem",}}><span>{product.rating}</span></span></p>
             
               <button
                 className="btn text-white mt-4"
