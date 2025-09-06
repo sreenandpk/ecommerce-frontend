@@ -48,12 +48,7 @@ function Login() {
     <>
     <div className="parent">
   {/* Left side - Animation */}
-  <div className="left">
-    <Lottie
-      animationData={LoginAnimation}
-      loop={true}
-    />
-  </div>
+  
 
   {/* Right side - Form */}
   <div className="right">
