@@ -8,6 +8,7 @@ import Footer from "../Home/Footer";
 import { infoToast } from "../toast";
 import ScrollToTop from "../ScrollTop";
 import icecreamGGG from "../../../homeImages/iceCreamVideo.mp4";
+import ConfirmRemove from "./Conformation"; // adjust path
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -269,7 +270,7 @@ export default function Products() {
               <div
                 className="card shadow-sm border-0 w-100"
                 style={{
-                  maxWidth: "260px",
+                  maxWidth: "270px",
                   borderRadius: "20px",
                   overflow: "hidden",
                   backgroundColor: "#fff",
@@ -364,24 +365,32 @@ export default function Products() {
                     ₹{item.price}
                   </p>
 
-                  <button
-                    onClick={() => addtoCart(item)}
-                    className="btn w-100 mt-2 product-btn"
-                    style={{
-                      backgroundColor: "#0a2141",
-                      color: "#fff",
-                      borderRadius: "20px",
-                      padding: "7px 0",
-                      fontSize: "0.92rem",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
-                      (p) => p.id === item.id
-                    )
-                      ? "Remove"
-                      : "Add to cart"}
-                  </button>
+                {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
+  (p) => p.id === item.id
+) ? (
+  // If item is in cart → show confirmation modal for remove
+  <ConfirmRemove
+    itemName={item.name}
+    onConfirm={() => addtoCart(item)}
+  />
+) : (
+  // If item is not in cart → show regular Add to Cart button
+  <button
+    onClick={() => addtoCart(item)}
+    className="btn w-100 mt-2 product-btn"
+    style={{
+      backgroundColor: "#0a2141",
+      color: "#fff",
+      borderRadius: "20px",
+      padding: "7px 0",
+      fontSize: "0.92rem",
+      fontWeight: 500,
+    }}
+  >
+    Add to cart
+  </button>
+)}
+
                 </div>
               </div>
             </div>
