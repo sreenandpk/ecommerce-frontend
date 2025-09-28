@@ -199,15 +199,15 @@ export default function Products({ toastRef }) {
           {bestSellerProducts.map((item, index) => (
             <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
               <div
-                onClick={() => navigate(`/productDetails/${item.id}`)}
-                className="card shadow-sm h-100 border-0"
-                style={{
-                  borderRadius: "20px",
-                  cursor: "pointer",
-                  overflow: "hidden",
-                  backgroundColor: "#fff8f0",
-                  transition: "all 0.3s ease",
-                }}
+                 onClick={() => navigate(`/productDetails/${item.id}`)}
+  className="card shadow-sm h-100 border-0 best-seller-card"
+  style={{
+    borderRadius: "20px",
+    cursor: "pointer",
+    overflow: "hidden",
+    backgroundColor: "#fff8f0",
+    transition: "all 0.3s ease",
+  }}
               >
                 <img
                   src={item.image}
@@ -442,6 +442,10 @@ export default function Products({ toastRef }) {
           .wishlist-icon { width: 24px !important; height: 24px !important; }
           .product-btn { font-size: 0.9rem !important; padding: 10px 0 !important; }
         }
+          .best-seller-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
       `}</style>
       <ScrollToTop />
     </>
