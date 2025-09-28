@@ -75,7 +75,7 @@ export default function Navbar() {
             backgroundColor: "#fff8f0",
             maxWidth: "1200px",
             margin: "0 auto",
-            padding: "15px 15px",
+            padding: "17px 15px",
             borderRadius: "50px",
             boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
           }}

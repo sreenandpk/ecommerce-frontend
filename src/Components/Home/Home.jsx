@@ -59,7 +59,7 @@ export default function Home() {
     const carouselElement = document.getElementById("icecreamCarousel");
     if (carouselElement) {
       new BootstrapCarousel(carouselElement, {
-        interval: 3000, // auto scroll every 2 seconds
+        interval: 4000, // auto scroll every 2 seconds
         ride: "carousel",
       });
     }
