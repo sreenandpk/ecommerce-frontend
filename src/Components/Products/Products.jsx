@@ -17,7 +17,8 @@ export default function Products() {
   const { wishlistIds = [], setWishlistIds, setCartCount } =
     useContext(SearchContext);
   const [active, setActive] = useState("");
-  const [itemToRemoveFromWishlist, setItemToRemoveFromWishlist] = useState(null);
+  const [itemToRemoveFromWishlist, setItemToRemoveFromWishlist] = useState(null); // Added
+  const [itemToRemoveFromCart, setItemToRemoveFromCart] = useState(null); // Added
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -289,52 +290,44 @@ export default function Products() {
                     "0 5px 15px rgba(0,0,0,0.1)";
                 }}
               >
-               <div
-  className="d-flex justify-content-center align-items-center p-3 position-relative"
-  style={{ background: "#fff8f0" }}
->
-  {/* Product Image */}
-  <img
-    onClick={() => navigate(`/productDetails/${item.id}`)}
-    src={item.image}
-    alt={item.name}
-    className="img-fluid"
-    style={{
-      maxWidth: "120px",
-      maxHeight: "120px",
-      objectFit: "contain",
-    }}
-  />
-
-  {/* Wishlist Icon */}
-  <Heart
-  onClick={() => {
-    if (wishlistIds.includes(item.id)) {
-      // Item is already in wishlist → show confirmation modal
-      setItemToRemoveFromWishlist(item);
-    } else {
-      // Item not in wishlist → add directly
-      wishListFn(item);
-    }
-  }}
-  color={wishlistIds.includes(item.id) ? "#111" : "gray"}
-  fill={wishlistIds.includes(item.id) ? "#111" : "none"}
-  size={wishlistIds.includes(item.id) ? 26 : 24}
-  style={{
-    cursor: "pointer",
-    position: "absolute",
-    top: "8px",
-    right: "10px",
-  }}
-  className="wishlist-icon"
-/>
-</div>
-
                 <div
-                  className="card-body text-center p-3"
+                  className="d-flex justify-content-center align-items-center p-3 position-relative"
                   style={{ background: "#fff8f0" }}
                 >
-                  
+                  <img
+                    onClick={() => navigate(`/productDetails/${item.id}`)}
+                    src={item.image}
+                    alt={item.name}
+                    className="img-fluid"
+                    style={{
+                      maxWidth: "120px",
+                      maxHeight: "120px",
+                      objectFit: "contain",
+                    }}
+                  />
+
+                  <Heart
+                    onClick={() => {
+                      if (wishlistIds.includes(item.id)) {
+                        setItemToRemoveFromWishlist(item);
+                      } else {
+                        wishListFn(item);
+                      }
+                    }}
+                    color={wishlistIds.includes(item.id) ? "#111" : "gray"}
+                    fill={wishlistIds.includes(item.id) ? "#111" : "none"}
+                    size={wishlistIds.includes(item.id) ? 26 : 24}
+                    style={{
+                      cursor: "pointer",
+                      position: "absolute",
+                      top: "8px",
+                      right: "10px",
+                    }}
+                    className="wishlist-icon"
+                  />
+                </div>
+
+                <div className="card-body text-center p-3" style={{ background: "#fff8f0" }}>
                   <div className="d-flex justify-content-center align-items-center mb-2">
                     <h5
                       style={{
@@ -343,12 +336,10 @@ export default function Products() {
                         fontSize: "0.7rem",
                         margin: 0,
                         color: "#111",
-                        
                       }}
                     >
                       {item.name}
                     </h5>
-                   
                   </div>
 
                   <p
@@ -374,32 +365,29 @@ export default function Products() {
                     ₹{item.price}
                   </p>
 
-                {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
-  (p) => p.id === item.id
-) ? (
-  // If item is in cart → show confirmation modal for remove
-  <ConfirmRemove
-    itemName={item.name}
-    onConfirm={() => addtoCart(item)}
-  />
-) : (
-  // If item is not in cart → show regular Add to Cart button
-  <button
-    onClick={() => addtoCart(item)}
-    className="btn w-100 mt-2 product-btn"
-    style={{
-      backgroundColor: "#0a2141",
-      color: "#fff",
-      borderRadius: "20px",
-      padding: "7px 0",
-      fontSize: "0.92rem",
-      fontWeight: 500,
-    }}
-  >
-    Add to cart
-  </button>
-)}
-
+                  {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
+                    (p) => p.id === item.id
+                  ) ? (
+                    <ConfirmRemove
+                      itemName={item.name}
+                      onConfirm={() => addtoCart(item)}
+                    />
+                  ) : (
+                    <button
+                      onClick={() => addtoCart(item)}
+                      className="btn w-100 mt-2 product-btn"
+                      style={{
+                        backgroundColor: "#0a2141",
+                        color: "#fff",
+                        borderRadius: "20px",
+                        padding: "7px 0",
+                        fontSize: "0.92rem",
+                        fontWeight: 500,
+                      }}
+                    >
+                      Add to cart
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -410,6 +398,17 @@ export default function Products() {
       <div style={{ height: "40px" }}></div>
       <Footer />
 
+      {/* Wishlist Confirmation Modal */}
+      {itemToRemoveFromWishlist && (
+        <ConfirmRemove
+          itemName={itemToRemoveFromWishlist.name}
+          onConfirm={() => {
+            wishListFn(itemToRemoveFromWishlist);
+            setItemToRemoveFromWishlist(null);
+          }}
+        />
+      )}
+
       {/* Responsive Tweaks */}
       <style>{`
         @media (max-width: 576px) {
@@ -419,16 +418,6 @@ export default function Products() {
         }
       `}</style>
       <ScrollToTop />
-      {itemToRemoveFromWishlist && (
-  <ConfirmRemove
-    itemName={itemToRemoveFromWishlist.name}
-    onConfirm={() => {
-      wishListFn(itemToRemoveFromWishlist);
-      setItemToRemoveFromWishlist(null); // close modal
-    }}
-  />
-)}
-
     </>
   );
 }
