@@ -21,11 +21,14 @@ import icecreamG from "../../../homeImages/MoodHome.jpg";
 import FlavorSection from "../FlaverSection";
 import ScrollToTop from "../ScrollTop";
 import { SearchContext } from "../SearchContext/SearchContext";
+import { Carousel as BootstrapCarousel } from "bootstrap";
+
 export default function Home() {
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const navigate = useNavigate();
-  const {setCategory}=useContext(SearchContext);
-  const categories = ["strawberry", "pistachio", "blueberry", "chocolate"]; 
+  const { setCategory } = useContext(SearchContext);
+  const categories = ["strawberry", "pistachio", "blueberry", "chocolate"];
+
   // Fetch bestseller products
   useEffect(() => {
     async function fetchBestseller() {
@@ -51,13 +54,24 @@ export default function Home() {
     fetchUserBlocked();
   }, []);
 
+  // Auto-scroll carousel on page load
+  useEffect(() => {
+    const carouselElement = document.getElementById("icecreamCarousel");
+    if (carouselElement) {
+      new BootstrapCarousel(carouselElement, {
+        interval: 3000, // auto scroll every 2 seconds
+        ride: "carousel",
+      });
+    }
+  }, []);
+
   return (
     <>
       <Navbar />
       <div style={{ height: "80px" }}></div>
 
       {/* Hero Section */}
-      <div className="text-center mb-2 position-relative"data-aos="fade-up">
+      <div className="text-center mb-2 position-relative" data-aos="fade-up">
         <h1
           style={{
             fontFamily: "Poppins, sans-serif",
@@ -86,21 +100,21 @@ export default function Home() {
       </div>
 
       {/* Main Carousel */}
-      <div className="d-flex justify-content-center mb-5"     data-aos="fade-up">
+      <div className="d-flex justify-content-center mb-5" data-aos="fade-up">
         <div
           id="icecreamCarousel"
           className="carousel slide shadow-lg rounded"
-          data-bs-ride="carousel"
-          data-bs-interval="2000"
           style={{
             width: "100%",
             maxWidth: "1100px",
-            
           }}
         >
           <div className="carousel-inner">
             {[Icecream3, Icecream1, Icecream2, Icecream4].map((img, index) => (
-              <div key={index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
+              <div
+                key={index}
+                className={`carousel-item ${index === 0 ? "active" : ""}`}
+              >
                 <img
                   src={img}
                   className="d-block w-100"
@@ -144,70 +158,86 @@ export default function Home() {
         </div>
       </div>
 
-    {/* Best Sellers */}
-<h2
-  className="text-center mb-4 fw-bold text-dark"
-  style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}    data-aos="fade-up"
->
-  Best Sellers
-</h2>
+      {/* Best Sellers */}
+      <h2
+        className="text-center mb-4 fw-bold text-dark"
+        style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}
+        data-aos="fade-up"
+      >
+        Best Sellers
+      </h2>
 
-<div className="container"    >
-  <div className="row g-4 justify-content-center">
-    {bestSellerProducts.map((item, index) => (
-      <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2"data-aos="fade-up">
-        <div
-          onClick={() => navigate(`/productDetails/${item.id}`)}
-          className="card shadow-sm h-100 border-0"
-          style={{
-            borderRadius: "20px",
-            cursor: "pointer",
-            overflow: "hidden",
-            backgroundColor: "#fff8f0", // matches your website theme
-            transition: "all 0.3s ease",
-          }}
-        >
-          <img
-            src={item.image}
-            className="card-img-top"
-            alt={item.name}
-            style={{
-              height: "130px",
-              objectFit: "contain",
-              padding: "10px",
-              transition: "transform 0.3s ease",
-            }}
-          />
-          <div className="card-body text-center p-2">
-            <h6
-              className="card-title mb-4"
-              style={{
-                textAlign: "center",
-                fontFamily: "revert-layer",
-                fontSize: "13px",
-                color: "#0a2141",
-                transition: "color 0.3s ease",
-              }}
-            >
-              {item.name}
-            </h6>
-          </div>
+      <div className="container">
+        <div className="row g-4 justify-content-center">
+          {bestSellerProducts.map((item, index) => (
+            <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2" data-aos="fade-up">
+              <div
+                onClick={() => navigate(`/productDetails/${item.id}`)}
+                className="card shadow-sm h-100 border-0"
+                style={{
+                  borderRadius: "20px",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  backgroundColor: "#fff8f0",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <img
+                  src={item.image}
+                  className="card-img-top"
+                  alt={item.name}
+                  style={{
+                    height: "130px",
+                    objectFit: "contain",
+                    padding: "10px",
+                    transition: "transform 0.3s ease",
+                  }}
+                />
+                <div className="card-body text-center p-2">
+                  <h6
+                    className="card-title mb-4"
+                    style={{
+                      textAlign: "center",
+                      fontFamily: "revert-layer",
+                      fontSize: "13px",
+                      color: "#0a2141",
+                      transition: "color 0.3s ease",
+                    }}
+                  >
+                    {item.name}
+                  </h6>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    ))}
-  </div>
-</div>
 
       {/* Hero + Flavor Section */}
-      <div className="d-flex flex-wrap justify-content-between align-items-center px-3 px-lg-5 py-5 "style={{background:" #fff8f0"}}>
-        <div className="flex-grow-1 mb-4 mb-lg-0" style={{ minWidth: "300px", maxWidth: "500px" }}>
-          <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}className="mx-5"    data-aos="fade-up">
-             Delicious Milkshakes <br /> Just for You
+      <div
+        className="d-flex flex-wrap justify-content-between align-items-center px-3 px-lg-5 py-5"
+        style={{ background: " #fff8f0" }}
+      >
+        <div
+          className="flex-grow-1 mb-4 mb-lg-0"
+          style={{ minWidth: "300px", maxWidth: "500px" }}
+        >
+          <h1
+            style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}
+            className="mx-5"
+            data-aos="fade-up"
+          >
+            Delicious Milkshakes <br /> Just for You
           </h1>
-          <p style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1.5rem" }}className="mx-5"    data-aos="fade-up">
-             Explore our creamy milkshakes <br /> and find your favorite flavor.
+          <p
+            style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1.5rem" }}
+            className="mx-5"
+            data-aos="fade-up"
+          >
+            Explore our creamy milkshakes <br /> and find your favorite flavor.
           </p>
-          <button onClick={()=>navigate("/products")}
+          <button
+            onClick={() => navigate("/products")}
             style={{
               padding: "0.9rem 1.8rem",
               background: "#0a2141",
@@ -216,18 +246,28 @@ export default function Home() {
               borderRadius: "12px",
               fontSize: "1rem",
               cursor: "pointer",
-            }}className="mx-5"    data-aos="fade-up"
+            }}
+            className="mx-5"
+            data-aos="fade-up"
           >
             Explore Milkshakes →
           </button>
         </div>
-        <div  data-aos="fade-up" className="flex-grow-1 text-center mt-3" style={{ minWidth: "250px", maxWidth: "600px" }}>
-          <FlavorSection icecream1={icecreamG} icecream2={icecreamGG} icecream3={icecreamHome5} />
+        <div
+          data-aos="fade-up"
+          className="flex-grow-1 text-center mt-3"
+          style={{ minWidth: "250px", maxWidth: "600px" }}
+        >
+          <FlavorSection
+            icecream1={icecreamG}
+            icecream2={icecreamGG}
+            icecream3={icecreamHome5}
+          />
         </div>
       </div>
 
       {/* Recently Viewed */}
-      <div className="container my-5" >
+      <div className="container my-5">
         <div
           className="d-flex flex-wrap justify-content-between align-items-center p-3 shadow-sm rounded-3"
           style={{ background: " #fff8f0" }}
@@ -255,57 +295,62 @@ export default function Home() {
           </button>
         </div>
       </div>
-  <h4
-  style={{
-    textAlign: "center",
-    fontFamily: "'Poppins', sans-serif", // clean modern font
-    fontSize: "2rem", // bigger and responsive
-    color: "#333",
-    letterSpacing: "1px",
-    margin: "20px 0",
-  }}
->
-  Categories
-</h4>
 
-   <div className="container my-4 mt-5">
-
-  <div className="d-flex flex-wrap justify-content-center gap-5" style={{ overflow: "visible" }}>
-    {[strawBerryHome, pistaaHome, blueberryHome, chocolateHome].map((src, index) => (
-     
-      <div
-        key={index}
+      <h4
         style={{
-          flex: "0 0 240px", // card width
-          borderRadius: "15px",
-          overflow: "hidden",
-          cursor: "pointer",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          textAlign: "center",
+          fontFamily: "'Poppins', sans-serif",
+          fontSize: "2rem",
+          color: "#333",
+          letterSpacing: "1px",
+          margin: "20px 0",
         }}
-        onClick={() => {
-            
-          setCategory(categories[index]);
-          navigate("/category");
-        }}data-aos="fade-up"
       >
-        <img
-          src={src}
-          alt={`img-${index}`}
-          style={{
-            width: "100%",
-            height: "350px",   // fixed height
-            objectFit: "cover",
-            display: "block",
-            transition: "transform 0.3s ease",
-          }}
-        />
-      </div>
-    ))}
-  </div>
-</div>
+        Categories
+      </h4>
 
-      <Footer data-aos="fade-up"/>
- <ScrollToTop/>
+      <div className="container my-4 mt-5">
+        <div
+          className="d-flex flex-wrap justify-content-center gap-5"
+          style={{ overflow: "visible" }}
+        >
+          {[strawBerryHome, pistaaHome, blueberryHome, chocolateHome].map(
+            (src, index) => (
+              <div
+                key={index}
+                style={{
+                  flex: "0 0 240px",
+                  borderRadius: "15px",
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                }}
+                onClick={() => {
+                  setCategory(categories[index]);
+                  navigate("/category");
+                }}
+                data-aos="fade-up"
+              >
+                <img
+                  src={src}
+                  alt={`img-${index}`}
+                  style={{
+                    width: "100%",
+                    height: "350px",
+                    objectFit: "cover",
+                    display: "block",
+                    transition: "transform 0.3s ease",
+                  }}
+                />
+              </div>
+            )
+          )}
+        </div>
+      </div>
+
+      <Footer data-aos="fade-up" />
+      <ScrollToTop />
+
       {/* Responsive Carousel Heights */}
       <style>{`
         @media (max-width: 992px) {
@@ -317,32 +362,32 @@ export default function Home() {
         @media (max-width: 576px) {
           .carousel-inner img { height: 200px !important; }
         }
-          .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 1);
-  }
-  .card:hover img {
-    transform: scale(1.1);
-  }
-  .card:hover .card-title {
-    color: #e63946;
-  }      div[style*="flex: 0 0"] img:hover {
-      transform: scale(1.3);
-    }
-    div[style*="flex: 0 0"]:hover {
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      z-index: 10;
-    }
-
-    @media (max-width: 992px) {
-      div[style*="flex: 0 0"] { flex: 0 0 180px; }
-    }
-    @media (max-width: 768px) {
-      div[style*="flex: 0 0"] { flex: 0 0 150px; }
-    }
-    @media (max-width: 576px) {
-      div[style*="flex: 0 0"] { flex: 0 0 120px; }
-    }
+        .card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 25px rgba(0, 0, 0, 1);
+        }
+        .card:hover img {
+          transform: scale(1.1);
+        }
+        .card:hover .card-title {
+          color: #e63946;
+        }
+        div[style*="flex: 0 0"] img:hover {
+          transform: scale(1.3);
+        }
+        div[style*="flex: 0 0"]:hover {
+          box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+          z-index: 10;
+        }
+        @media (max-width: 992px) {
+          div[style*="flex: 0 0"] { flex: 0 0 180px; }
+        }
+        @media (max-width: 768px) {
+          div[style*="flex: 0 0"] { flex: 0 0 150px; }
+        }
+        @media (max-width: 576px) {
+          div[style*="flex: 0 0"] { flex: 0 0 120px; }
+        }
       `}</style>
     </>
   );
