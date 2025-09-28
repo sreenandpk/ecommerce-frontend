@@ -3,7 +3,6 @@ import { Heart } from "lucide-react";
 import { SearchContext } from "../SearchContext/SearchContext";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
-
 import { fetchUser, updateUser, fetchProducts } from "../Fetch/FetchUser";
 import Footer from "../Home/Footer";
 import { infoToast } from "../toast";
@@ -12,33 +11,26 @@ import icecreamGGG from "../../../homeImages/iceCreamVideo.mp4";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-    const [bestSellerProducts, setBestSellerProducts] = useState([]);
+  const [bestSellerProducts, setBestSellerProducts] = useState([]);
+  const [filtered, setFilterd] = useState([]);
   const { wishlistIds = [], setWishlistIds, setCartCount } = useContext(SearchContext);
   const [active, setActive] = useState("");
-  const [filtered, setFilterd] = useState([]);
-  const [hotProducts,setHotProducts]=useState([]);
-  
   const navigate = useNavigate();
-  // Fetch bestseller products
+
   useEffect(() => {
     async function fetchBestseller() {
       const products = await fetchProducts();
-      
       const bestSeller = products.filter((p) => p.bestseller === "true");
       if (bestSeller) setBestSellerProducts(bestSeller);
     }
     fetchBestseller();
   }, []);
-  // Fetch products
+
   useEffect(() => {
     async function fetchProductsFromFetch() {
       try {
         const res = await fetchProducts();
         setProducts(res);
-         // filter only hot items
-      const hotRes = res.filter((p) => p.hot === "true");
-      setHotProducts(hotRes);
-    
       } catch {
         console.log("failed to fetch");
       }
@@ -72,12 +64,11 @@ export default function Products() {
         return;
       }
       const user = await fetchUser(savedUser.id);
-      let removeItemFromCart = user.cart.some((product) => product.id === item.id);
-      let updatedCart = removeItemFromCart
-        ? user.cart.filter((product) => product.id !== item.id)
+      const exists = user.cart.some((p) => p.id === item.id);
+      const updatedCart = exists
+        ? user.cart.filter((p) => p.id !== item.id)
         : [...user.cart, item];
-      if (!removeItemFromCart) infoToast(`${item.name} added to cart `);
-       if (removeItemFromCart) infoToast(`${item.name} removed from cart `);
+      infoToast(`${item.name} ${exists ? "removed from" : "added to"} cart`);
       await updateUser(savedUser.id, { cart: updatedCart });
       const updatedUser = { ...user, cart: updatedCart };
       localStorage.setItem("existingUser", JSON.stringify(updatedUser));
@@ -120,281 +111,251 @@ export default function Products() {
   return (
     <>
       <Navbar />
-      <div style={{height:'20px'}}></div>
-      
-     <h2
-  style={{
-    textAlign: "center",
-    fontFamily: "'Pacifico', cursive",
-    fontSize: "1.8rem",
-    color: "#ff4d6d",
-    textShadow: "2px 2px 6px rgba(0,0,0,0.15)",
-    margin: "30px 0",
-  }}
-  
->
-  Discover Our Flavors
-</h2>
+      <div style={{ height: "20px" }}></div>
 
-<div className="container my-4 text-center">
-  <div
-    className="videoContainer"
+      {/* Banner */}
+      <h2
+        style={{
+          textAlign: "center",
+          fontFamily: "'Pacifico', cursive",
+          fontSize: "1.8rem",
+          color: "#ff4d6d",
+          textShadow: "2px 2px 6px rgba(0,0,0,0.15)",
+          margin: "30px 0",
+        }}
+      >
+        Discover Our Flavors
+      </h2>
 
-    style={{
-      position: "relative",
-      maxWidth: "800px",
-      margin: "0 auto",
-      borderRadius: "20px",
-      overflow: "hidden",
-      boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-      pointerEvents: "none", // prevents any interaction
-    }}
-  >
-    <video
-      src={icecreamGGG}
-      autoPlay
-      loop
-      muted
-      playsInline // important for mobile autoplay
-      style={{
-        width: "100%",
-        height: "auto",
-        display: "block",
-        borderRadius: "20px",
-      }}
-    />
-  </div>
-</div>
-
-<style>{`
-  @media (max-width: 576px) {
-    .videoContainer {
-      max-width: 100% !important;
-    }
-  }
-`}</style>
-
-
-
-
-         {/* Best Sellers */}
-<h2
-  className="text-center mb-4 mt-3 fw-bold text-dark"
-  style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}    
->
-  Best Sellers
-</h2>
-
-<div className="container"    >
-  <div className="row g-4 justify-content-center">
-    {bestSellerProducts.map((item, index) => (
-      <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
+      <div className="container my-4 text-center">
         <div
-          onClick={() => navigate(`/productDetails/${item.id}`)}
-          className="card shadow-sm h-100 border-0"
+          className="videoContainer"
           style={{
+            position: "relative",
+            maxWidth: "800px",
+            margin: "0 auto",
             borderRadius: "20px",
-            cursor: "pointer",
             overflow: "hidden",
-            backgroundColor: "#fff8f0", // matches your website theme
-            transition: "all 0.3s ease",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+            pointerEvents: "none",
           }}
         >
-          <img
-           src={item.image}
-
-            className="card-img-top"
-            alt={item.name}
+          <video
+            src={icecreamGGG}
+            autoPlay
+            loop
+            muted
+            playsInline
             style={{
-              height: "130px",
-              objectFit: "contain",
-              padding: "10px",
-              transition: "transform 0.3s ease",
+              width: "100%",
+              height: "auto",
+              display: "block",
+              borderRadius: "20px",
             }}
           />
-          <div className="card-body text-center p-2">
-            <h6
-              className="card-title mb-4"
-              style={{
-                textAlign: "center",
-                fontFamily: "revert-layer",
-                fontSize: "13px",
-                color: "#0a2141",
-                transition: "color 0.3s ease",
-              }}
-            >
-              {item.name}
-            </h6>
-          </div>
         </div>
       </div>
-    ))}
-  </div>
-</div>
-  <style>{`
-        @media (max-width: 992px) {
-          .carousel-inner img { height: 300px !important; }
-        }
-        @media (max-width: 768px) {
-          .carousel-inner img { height: 250px !important; }
-        }
+
+      <style>{`
         @media (max-width: 576px) {
-          .carousel-inner img { height: 200px !important; }
+          .videoContainer { max-width: 100% !important; }
         }
-          .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 1);
-  }
-
-  .card:hover .card-title {
-    color: #e63946;
-  }  
       `}</style>
-  <div style={{ height: "30px" }}></div>
-  {/* Flavor Filters */}
-  <div className="container  d-flex flex-wrap justify-content-center gap-1" >
-    {[
-      { label: "Vanilla", key: "vanilla", fn: vanila },
-      { label: "Strawberry", key: "strawberry", fn: strawberry },
-      { label: "Chocolate", key: "chocolate", fn: choclate },
-      { label: "Show All", key: "", fn: showAll },
-    ].map((btn) => (
-      <button
-        key={btn.key}
-        onClick={() => {
-          setActive(btn.key);
-          btn.fn();
-        }}
-        className={`btn rounded-pill  px-3 py-1 ${
-          active === btn.key ? "btn-dark" : "btn-outline-secondary"
-        }`}
-        style={{
-          fontWeight: 500,
-          fontFamily: "SF Pro, -apple-system, sans-serif",
-        }}
-      >
-        {btn.label}
-      </button>
-    ))}
-  </div>
-{/* Products Grid */}
-<div className="container mt-4">
-  <div className="row justify-content-center g-4">
-    {(filtered.length > 0 ? filtered : products).map((item, index) => (
-      <div
-        key={index}
-        className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
-      >
-        <div
-          className="card shadow-sm border-0"
-          style={{
-            width: "260px", // bigger card
-            borderRadius: "20px",
-            overflow: "hidden",
-            backgroundColor: "#fff",
-            transition: "transform 0.2s, box-shadow 0.2s",
-            cursor: "pointer",
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.transform = "scale(1.05)";
-            e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.15)";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
-          }}
-        >
-          <div className="d-flex justify-content-center align-items-center p-3"style={{background:' #fff8f0'}}>
-            <img
-              onClick={() => navigate(`/productDetails/${item.id}`)}
-             src={item.image}
 
-              alt={item.name}
-              style={{
-                width: "160px",
-                height: "160px",
-                objectFit: "contain",
-                background:' #fff8f0'
-              }}
-            />
-          </div>
+      {/* Best Sellers */}
+      <h2
+        className="text-center mb-4 mt-3 fw-bold text-dark"
+        style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}
+      >
+        Best Sellers
+      </h2>
 
-          <div className="card-body text-center p-3"style={{background:' #fff8f0'}}>
-            <div className="d-flex justify-content-between align-items-center mb-2">
-              <h5
+      <div className="container">
+        <div className="row g-4 justify-content-center">
+          {bestSellerProducts.map((item, index) => (
+            <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
+              <div
+                onClick={() => navigate(`/productDetails/${item.id}`)}
+                className="card shadow-sm h-100 border-0"
                 style={{
-                  fontFamily: "SF Pro, -apple-system, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "0.9rem",
-                  margin: 0,
-                  color: "#111",
-                  
-                }}className="mx-4"
+                  borderRadius: "20px",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  backgroundColor: "#fff8f0",
+                  transition: "all 0.3s ease",
+                }}
               >
-                {item.name}
-              </h5>
-              <Heart
-                onClick={() => wishListFn(item)}
-                color={wishlistIds.includes(item.id) ? "#111" : "gray"}
-                fill={wishlistIds.includes(item.id) ? "#111" : "none"}
-                size={20}
-                style={{ cursor: "pointer" }}
-              />
+                <img
+                  src={item.image}
+                  className="card-img-top"
+                  alt={item.name}
+                  style={{
+                    height: "130px",
+                    objectFit: "contain",
+                    padding: "10px",
+                    transition: "transform 0.3s ease",
+                  }}
+                />
+                <div className="card-body text-center p-2">
+                  <h6
+                    className="card-title mb-4"
+                    style={{
+                      textAlign: "center",
+                      fontFamily: "revert-layer",
+                      fontSize: "13px",
+                      color: "#0a2141",
+                      transition: "color 0.3s ease",
+                    }}
+                  >
+                    {item.name}
+                  </h6>
+                </div>
+              </div>
             </div>
-
-          
-
-            <p
-              onClick={() => navigate(`/productDetails/${item.id}`)}
-              style={{
-                color: "#6e6e73",
-                fontSize: "0.85rem",
-                margin: "3px 0",
-                cursor: "pointer",
-              }}
-            >
-              Product Details  →
-            </p>
-
-            <p
-              style={{
-                fontWeight: "600",
-                fontSize: "1.3rem",
-                color: "#1e3253",
-                margin: "8px 0",
-              }}
-            >
-              ₹{item.price}
-            </p>
-
-            <button
-              onClick={() => addtoCart(item)}
-              className="btn w-100 mt-2"
-              style={{
-                backgroundColor: "#0a2141",
-                color: "#fff",
-                borderRadius: "20px",
-                padding: "10px 0",
-                fontSize: "0.85rem",
-                fontWeight: 500,
-              }}
-            >
-              {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
-                (p) => p.id === item.id
-              )
-                ? "Remove"
-                : "Add"}
-            </button>
-          </div>
+          ))}
         </div>
       </div>
-    ))}
-  </div>
-  
-</div>
 
-<div style={{height:'40px'}}></div>
+      {/* Flavor Filters */}
+      <div className="container d-flex flex-wrap justify-content-center gap-1 mt-4">
+        {[
+          { label: "Vanilla", key: "vanilla", fn: vanila },
+          { label: "Strawberry", key: "strawberry", fn: strawberry },
+          { label: "Chocolate", key: "chocolate", fn: choclate },
+          { label: "Show All", key: "", fn: showAll },
+        ].map((btn) => (
+          <button
+            key={btn.key}
+            onClick={() => {
+              setActive(btn.key);
+              btn.fn();
+            }}
+            className={`btn rounded-pill px-3 py-1 ${
+              active === btn.key ? "btn-dark" : "btn-outline-secondary"
+            }`}
+            style={{
+              fontWeight: 500,
+              fontFamily: "SF Pro, -apple-system, sans-serif",
+            }}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
 
+      {/* Products Grid */}
+      <div className="container mt-4">
+        <div className="row justify-content-center g-4">
+          {(filtered.length > 0 ? filtered : products).map((item, index) => (
+            <div
+              key={index}
+              className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+            >
+              <div
+                className="card shadow-sm border-0"
+                style={{
+                  width: "260px",
+                  borderRadius: "20px",
+                  overflow: "hidden",
+                  backgroundColor: "#fff",
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  cursor: "pointer",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                  e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.15)";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
+                }}
+              >
+                <div className="d-flex justify-content-center align-items-center p-3" style={{ background: "#fff8f0" }}>
+                  <img
+                    onClick={() => navigate(`/productDetails/${item.id}`)}
+                    src={item.image}
+                    alt={item.name}
+                    style={{
+                      width: "120px",
+                      height: "120px",
+                      objectFit: "contain",
+                      background: "#fff8f0"
+                    }}
+                  />
+                </div>
+
+                <div className="card-body text-center p-3" style={{ background: "#fff8f0" }}>
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <h5
+                      style={{
+                        fontFamily: "SF Pro, -apple-system, sans-serif",
+                        fontWeight: 500,
+                        fontSize: "0.9rem",
+                        margin: 0,
+                        color: "#111",
+                      }}
+                      className="mx-4"
+                    >
+                      {item.name}
+                    </h5>
+                    <Heart
+                      onClick={() => wishListFn(item)}
+                      color={wishlistIds.includes(item.id) ? "#111" : "gray"}
+                      fill={wishlistIds.includes(item.id) ? "#111" : "none"}
+                      size={20}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </div>
+
+                  <p
+                    onClick={() => navigate(`/productDetails/${item.id}`)}
+                    style={{
+                      color: "#6e6e73",
+                      fontSize: "0.85rem",
+                      margin: "3px 0",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Product Details →
+                  </p>
+
+                  <p
+                    style={{
+                      fontWeight: "600",
+                      fontSize: "1.3rem",
+                      color: "#1e3253",
+                      margin: "8px 0",
+                    }}
+                  >
+                    ₹{item.price}
+                  </p>
+
+                  <button
+                    onClick={() => addtoCart(item)}
+                    className="btn w-100 mt-2"
+                    style={{
+                      backgroundColor: "#0a2141",
+                      color: "#fff",
+                      borderRadius: "20px",
+                      padding: "10px 0",
+                      fontSize: "0.85rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
+                      (p) => p.id === item.id
+                    )
+                      ? "Remove"
+                      : "Add"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ height: "40px" }}></div>
       <Footer />
       <ScrollToTop />
     </>
