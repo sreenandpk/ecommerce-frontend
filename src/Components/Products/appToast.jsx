@@ -1,25 +1,76 @@
 import * as Toast from "@radix-ui/react-toast";
-import { forwardRef, useImperativeHandle, useState } from "react";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { useState, forwardRef, useImperativeHandle } from "react";
+import { CheckCircle2 } from "lucide-react"; // optional icon
 
 const AppToast = forwardRef((props, ref) => {
-  const [toasts, setToasts] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const showToast = (message, type = "success") => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(() => removeToast(id), 4000); // auto hide after 4s
+  const showToast = (msg) => {
+    setMessage(msg);
+    setOpen(true);
   };
 
-  const removeToast = (id) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  useImperativeHandle(ref, () => ({ showToast }));
+  // Expose showToast to parent
+  useImperativeHandle(ref, () => ({
+    showToast,
+  }));
 
   return (
     <Toast.Provider swipeDirection="right">
-      <div
+      <Toast.Root
+        open={open}
+        onOpenChange={setOpen}
+        style={{
+          background: "#0a2141",
+          color: "#fff",
+          borderRadius: "16px",
+          padding: "16px 20px",
+          minWidth: "280px",
+          maxWidth: "350px",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          zIndex: 9999,
+          transform: "translateX(120%)",
+          animation: "slideIn 0.3s forwards",
+          position: "relative",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <CheckCircle2 size={20} />
+          <Toast.Title style={{ fontWeight: 600 }}>{message}</Toast.Title>
+        </div>
+        <Toast.Close
+          style={{
+            background: "transparent",
+            border: "none",
+            color: "#fff",
+            cursor: "pointer",
+            fontSize: "18px",
+          }}
+        >
+          ×
+        </Toast.Close>
+
+        {/* Progress Bar */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            height: "4px",
+            background: "#ff4d6d",
+            width: "100%",
+            animation: "progress 4s linear forwards",
+            borderBottomLeftRadius: "16px",
+            borderBottomRightRadius: "16px",
+          }}
+        ></div>
+      </Toast.Root>
+
+      <Toast.Viewport
         style={{
           position: "fixed",
           top: 20,
@@ -29,56 +80,17 @@ const AppToast = forwardRef((props, ref) => {
           gap: "12px",
           zIndex: 9999,
         }}
-      >
-        {toasts.map((toast) => (
-          <Toast.Root
-            key={toast.id}
-            open={true}
-            className="advanced-toast"
-            style={{
-              backgroundColor: toast.type === "success" ? "#0a2141" : "#d64b65",
-              color: "#fff",
-              borderRadius: "16px",
-              padding: "14px 20px",
-              minWidth: "280px",
-              maxWidth: "350px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.2)",
-              transform: "translateX(100%)",
-              animation: "slideIn 0.3s forwards",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              {toast.type === "success" ? (
-                <CheckCircle2 size={24} />
-              ) : (
-                <XCircle size={24} />
-              )}
-              <Toast.Title style={{ fontWeight: 600 }}>{toast.message}</Toast.Title>
-            </div>
-            <Toast.Close
-              onClick={() => removeToast(toast.id)}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "#fff",
-                fontSize: "18px",
-                cursor: "pointer",
-              }}
-            >
-              ×
-            </Toast.Close>
-          </Toast.Root>
-        ))}
-      </div>
+      />
 
       {/* Animations */}
       <style>{`
         @keyframes slideIn {
           from { transform: translateX(120%); opacity: 0; }
           to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes progress {
+          from { width: 100%; }
+          to { width: 0%; }
         }
       `}</style>
     </Toast.Provider>
