@@ -287,28 +287,45 @@ export default function Products() {
                     "0 5px 15px rgba(0,0,0,0.1)";
                 }}
               >
-                <div
-                  className="d-flex justify-content-center align-items-center p-3"
-                  style={{ background: "#fff8f0" }}
-                >
-                  <img
-                    onClick={() => navigate(`/productDetails/${item.id}`)}
-                    src={item.image}
-                    alt={item.name}
-                    className="img-fluid"
-                    style={{
-                      maxWidth: "120px",
-                      maxHeight: "120px",
-                      objectFit: "contain",
-                    }}
-                  />
-                </div>
+               <div
+  className="d-flex justify-content-center align-items-center p-3 position-relative"
+  style={{ background: "#fff8f0" }}
+>
+  {/* Product Image */}
+  <img
+    onClick={() => navigate(`/productDetails/${item.id}`)}
+    src={item.image}
+    alt={item.name}
+    className="img-fluid"
+    style={{
+      maxWidth: "120px",
+      maxHeight: "120px",
+      objectFit: "contain",
+    }}
+  />
+
+  {/* Wishlist Icon */}
+  <Heart
+    onClick={() => wishListFn(item)}
+    color={wishlistIds.includes(item.id) ? "#111" : "gray"}
+    fill={wishlistIds.includes(item.id) ? "#111" : "none"}
+    size={wishlistIds.includes(item.id) ? 26 : 24}
+    style={{
+      cursor: "pointer",
+      position: "absolute",
+      top: "8px",
+      right: "10px",
+    }}
+    className="wishlist-icon"
+  />
+</div>
 
                 <div
                   className="card-body text-center p-3"
                   style={{ background: "#fff8f0" }}
                 >
-                  <div className="d-flex justify-content-between align-items-center mb-2">
+                  
+                  <div className="d-flex justify-content-center align-items-center mb-2">
                     <h5
                       style={{
                         fontFamily: "SF Pro, -apple-system, sans-serif",
@@ -316,18 +333,12 @@ export default function Products() {
                         fontSize: "0.7rem",
                         margin: 0,
                         color: "#111",
+                        
                       }}
                     >
                       {item.name}
                     </h5>
-                    <Heart
-                      onClick={() => wishListFn(item)}
-                      color={wishlistIds.includes(item.id) ? "#111" : "gray"}
-                      fill={wishlistIds.includes(item.id) ? "#111" : "none"}
-                      size={wishlistIds.includes(item.id) ? 22 : 20}
-                      style={{ cursor: "pointer" }}
-                      className="wishlist-icon"
-                    />
+                   
                   </div>
 
                   <p
