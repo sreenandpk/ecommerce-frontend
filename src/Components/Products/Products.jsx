@@ -339,7 +339,7 @@ export default function Products({ toastRef }) {
                       color: "#fff",
                       borderRadius: "20px",
                       padding: "7px 0",
-                      fontSize: "0.92rem",
+                      fontSize: "0.80rem",
                       fontWeight: 500,
                     }}
                   >
