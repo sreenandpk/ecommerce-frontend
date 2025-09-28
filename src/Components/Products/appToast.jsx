@@ -11,7 +11,6 @@ const AppToast = forwardRef((props, ref) => {
     setOpen(true);
   };
 
-  // Expose showToast to parent
   useImperativeHandle(ref, () => ({
     showToast,
   }));
@@ -22,25 +21,30 @@ const AppToast = forwardRef((props, ref) => {
         open={open}
         onOpenChange={setOpen}
         style={{
-          background: "#0a2141",
+          background: "linear-gradient(135deg, #ff4d6d, #ff6f91)", // attractive gradient
           color: "#fff",
-          borderRadius: "16px",
-          padding: "16px 20px",
-          minWidth: "280px",
-          maxWidth: "350px",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+          borderRadius: "18px",
+          padding: "16px 24px",
+          width: "350px",
+          height: "70px",
+          boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           zIndex: 9999,
+          position: "fixed",
+          top: "20px",
+          right: "20px",
           transform: "translateX(120%)",
-          animation: "slideIn 0.3s forwards",
-          position: "relative",
+          animation: "slideIn 0.4s forwards",
+          fontFamily: "'SF Pro', sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <CheckCircle2 size={20} />
-          <Toast.Title style={{ fontWeight: 600 }}>{message}</Toast.Title>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <CheckCircle2 size={24} />
+          <Toast.Title style={{ fontWeight: 600, fontSize: "1rem" }}>
+            {message}
+          </Toast.Title>
         </div>
         <Toast.Close
           style={{
@@ -48,7 +52,7 @@ const AppToast = forwardRef((props, ref) => {
             border: "none",
             color: "#fff",
             cursor: "pointer",
-            fontSize: "18px",
+            fontSize: "20px",
           }}
         >
           ×
@@ -61,11 +65,11 @@ const AppToast = forwardRef((props, ref) => {
             bottom: 0,
             left: 0,
             height: "4px",
-            background: "#ff4d6d",
+            background: "rgba(255,255,255,0.8)",
             width: "100%",
             animation: "progress 4s linear forwards",
-            borderBottomLeftRadius: "16px",
-            borderBottomRightRadius: "16px",
+            borderBottomLeftRadius: "18px",
+            borderBottomRightRadius: "18px",
           }}
         ></div>
       </Toast.Root>
@@ -82,7 +86,6 @@ const AppToast = forwardRef((props, ref) => {
         }}
       />
 
-      {/* Animations */}
       <style>{`
         @keyframes slideIn {
           from { transform: translateX(120%); opacity: 0; }
