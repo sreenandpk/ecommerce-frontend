@@ -251,7 +251,7 @@ export default function Products({ toastRef }) {
               setActive(btn.key);
               btn.fn();
             }}
-            className={`btn rounded-pill ${active === btn.key ? "btn-secondary" : "btn-outline-secondary"}`}
+            className={`btn rounded-pill ${active === btn.key ? "btn-dark" : "btn-outline-secondary"}`}
             style={{
               fontWeight: 600,
               fontFamily: "SF Pro, -apple-system, sans-serif",
