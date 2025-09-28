@@ -16,81 +16,81 @@ const AppToast = forwardRef((props, ref) => {
   }));
 
   return (
-    <Toast.Provider swipeDirection="right">
+    <Toast.Provider swipeDirection="right" duration={4000}>
       <Toast.Root
         open={open}
         onOpenChange={setOpen}
-        style={{
-          background: "linear-gradient(135deg, #ff4d6d, #ff6f91)", // attractive gradient
-          color: "#fff",
-          borderRadius: "18px",
-          padding: "16px 24px",
-          width: "350px",
-          height: "70px",
-          boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          zIndex: 9999,
-          position: "fixed",
-          top: "20px",
-          right: "20px",
-          transform: "translateX(120%)",
-          animation: "slideIn 0.4s forwards",
-          fontFamily: "'SF Pro', sans-serif",
-        }}
+        duration={4000}
+        className="toast-root"
       >
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <CheckCircle2 size={24} />
-          <Toast.Title style={{ fontWeight: 600, fontSize: "0.7rem" }}>
+          <CheckCircle2 size={22} />
+          <Toast.Title style={{ fontWeight: 600, fontSize: "0.9rem" }}>
             {message}
           </Toast.Title>
         </div>
-        <Toast.Close
-          style={{
-            background: "transparent",
-            border: "none",
-            color: "#fff",
-            cursor: "pointer",
-            fontSize: "20px",
-          }}
-        >
-          ×
-        </Toast.Close>
+
+        <Toast.Close className="toast-close">×</Toast.Close>
 
         {/* Progress Bar */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            height: "4px",
-            background: "rgba(255,255,255,0.8)",
-            width: "100%",
-            animation: "progress 4s linear forwards",
-            borderBottomLeftRadius: "18px",
-            borderBottomRightRadius: "18px",
-          }}
-        ></div>
+        <div className="toast-progress"></div>
       </Toast.Root>
 
-      <Toast.Viewport
-        style={{
-          position: "fixed",
-          top: 20,
-          right: 20,
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-          zIndex: 9999,
-        }}
-      />
+      <Toast.Viewport className="toast-viewport" />
 
       <style>{`
+        .toast-root {
+          background: linear-gradient(135deg, #ff4d6d, #ff6f91);
+          color: #fff;
+          border-radius: 18px;
+          padding: 16px 24px;
+          width: 350px;
+          max-width: 90vw; /* responsive for mobile */
+          height: 70px;
+          box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+          font-family: 'SF Pro', sans-serif;
+          animation: slideIn 0.4s ease-out;
+        }
+
+        .toast-close {
+          background: transparent;
+          border: none;
+          color: #fff;
+          cursor: pointer;
+          font-size: 20px;
+        }
+
+        .toast-viewport {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          z-index: 9999;
+        }
+
+        .toast-progress {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          height: 4px;
+          background: rgba(255,255,255,0.8);
+          width: 100%;
+          animation: progress 4s linear forwards;
+          border-bottom-left-radius: 18px;
+          border-bottom-right-radius: 18px;
+        }
+
         @keyframes slideIn {
           from { transform: translateX(120%); opacity: 0; }
           to { transform: translateX(0); opacity: 1; }
         }
+
         @keyframes progress {
           from { width: 100%; }
           to { width: 0%; }
