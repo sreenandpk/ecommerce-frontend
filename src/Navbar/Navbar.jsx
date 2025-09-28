@@ -77,7 +77,7 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop Navbar */}
-      <animated.div style={{ ...desktopStyles, position: "fixed", top: 1, width: "100%", zIndex: 1000 }}>
+      <animated.div style={{ ...desktopStyles, position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
         <div
           className="d-none d-md-flex justify-content-between align-items-center container-fluid mt-3"
           style={{
@@ -190,7 +190,7 @@ export default function Navbar() {
       </animated.div>
 
       {/* Mobile Navbar */}
-      <animated.div style={{ ...mobileStyles, position: "fixed", top: 1, width: "100%", zIndex: 1000 }}>
+      <animated.div style={{ ...mobileStyles, position: "fixed", top: 0, width: "100%", zIndex: 1000 }}>
         <div className="d-block d-md-none container-fluid" style={{ backgroundColor: "#fff8f0", boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }}>
           {/* Top Row */}
           <div className="d-flex justify-content-between align-items-center p-2">
