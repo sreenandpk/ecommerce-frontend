@@ -300,7 +300,7 @@ export default function Products() {
                       style={{
                         fontFamily: "SF Pro, -apple-system, sans-serif",
                         fontWeight: 500,
-                        fontSize: "0.9rem",
+                        fontSize: "0.7rem",
                         margin: 0,
                         color: "#111",
                       }}
