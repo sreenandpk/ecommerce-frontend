@@ -335,7 +335,7 @@ export default function Products({ toastRef }) {
                     onClick={() => handleCartClick(item)}
                     className="btn w-100 mt-2 product-btn"
                     style={{
-                      backgroundColor: "#0a2141",
+                      backgroundColor: "black",
                       color: "#fff",
                       borderRadius: "20px",
                       padding: "7px 0",
