@@ -156,12 +156,6 @@ export default function Products() {
         </div>
       </div>
 
-      <style>{`
-        @media (max-width: 576px) {
-          .videoContainer { max-width: 100% !important; }
-        }
-      `}</style>
-
       {/* Best Sellers */}
       <h2
         className="text-center mb-4 mt-3 fw-bold text-dark"
@@ -215,46 +209,59 @@ export default function Products() {
           ))}
         </div>
       </div>
-
-      {/* Flavor Filters */}
-      <div className="container d-flex flex-wrap justify-content-center gap-1 mt-4">
-        {[
-          { label: "Vanilla", key: "vanilla", fn: vanila },
-          { label: "Strawberry", key: "strawberry", fn: strawberry },
-          { label: "Chocolate", key: "chocolate", fn: choclate },
-          { label: "Show All", key: "", fn: showAll },
-        ].map((btn) => (
-          <button
-            key={btn.key}
-            onClick={() => {
-              setActive(btn.key);
-              btn.fn();
-            }}
-            className={`btn rounded-pill px-3 py-1 ${
-              active === btn.key ? "btn-dark" : "btn-outline-secondary"
-            }`}
-            style={{
-              fontWeight: 500,
-              fontFamily: "SF Pro, -apple-system, sans-serif",
-            }}
-          >
-            {btn.label}
-          </button>
-        ))}
-      </div>
+       {/* Flavor Filters */}
+    {/* Flavor Filters */}
+<div
+  className="container d-flex flex-nowrap  gap-2 mt-4"
+  style={{
+    overflowX: "auto",
+    paddingBottom: "5px",
+    WebkitOverflowScrolling: "touch",
+  }}
+>
+  {[
+    { label: "Show All", key: "", fn: showAll },
+    { label: "Vanilla", key: "vanilla", fn: vanila },
+    { label: "Strawberry", key: "strawberry", fn: strawberry },
+    { label: "Chocolate", key: "chocolate", fn: choclate },
+    
+  ].map((btn) => (
+    <button
+      key={btn.key}
+      onClick={() => {
+        setActive(btn.key);
+        btn.fn();
+      }}
+      className={`btn rounded-pill ${
+        active === btn.key ? "btn-dark" : "btn-outline-secondary"
+      }`}
+      style={{
+        fontWeight: 600,
+        fontFamily: "SF Pro, -apple-system, sans-serif",
+        flex: "0 0 auto", // prevents shrinking
+        minWidth: "120px", // fixed width
+        padding: "10px 0",
+        fontSize: "1rem",
+        textAlign: "center",
+      }}
+    >
+      {btn.label}
+    </button>
+  ))}
+</div>
 
       {/* Products Grid */}
       <div className="container mt-4">
-        <div className="row justify-content-center g-4">
+        <div className="row justify-content-center g-3">
           {(filtered.length > 0 ? filtered : products).map((item, index) => (
             <div
               key={index}
               className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
             >
               <div
-                className="card shadow-sm border-0"
+                className="card shadow-sm border-0 w-100"
                 style={{
-                  width: "260px",
+                  maxWidth: "260px",
                   borderRadius: "20px",
                   overflow: "hidden",
                   backgroundColor: "#fff",
@@ -270,16 +277,19 @@ export default function Products() {
                   e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
                 }}
               >
-                <div className="d-flex justify-content-center align-items-center p-3" style={{ background: "#fff8f0" }}>
+                <div
+                  className="d-flex justify-content-center align-items-center p-3"
+                  style={{ background: "#fff8f0" }}
+                >
                   <img
                     onClick={() => navigate(`/productDetails/${item.id}`)}
                     src={item.image}
                     alt={item.name}
+                    className="img-fluid"
                     style={{
-                      width: "120px",
-                      height: "120px",
+                      maxWidth: "120px",
+                      maxHeight: "120px",
                       objectFit: "contain",
-                      background: "#fff8f0"
                     }}
                   />
                 </div>
@@ -294,7 +304,6 @@ export default function Products() {
                         margin: 0,
                         color: "#111",
                       }}
-                      className="mx-4"
                     >
                       {item.name}
                     </h5>
@@ -302,8 +311,9 @@ export default function Products() {
                       onClick={() => wishListFn(item)}
                       color={wishlistIds.includes(item.id) ? "#111" : "gray"}
                       fill={wishlistIds.includes(item.id) ? "#111" : "none"}
-                      size={20}
+                      size={wishlistIds.includes(item.id) ? 22 : 20}
                       style={{ cursor: "pointer" }}
+                      className="wishlist-icon"
                     />
                   </div>
 
@@ -338,7 +348,7 @@ export default function Products() {
                       color: "#fff",
                       borderRadius: "20px",
                       padding: "10px 0",
-                      fontSize: "0.85rem",
+                      fontSize: "0.95rem",
                       fontWeight: 500,
                     }}
                   >
@@ -358,6 +368,15 @@ export default function Products() {
       <div style={{ height: "40px" }}></div>
       <Footer />
       <ScrollToTop />
+
+      {/* Responsive Tweaks */}
+      <style>{`
+        @media (max-width: 576px) {
+          .card { max-width: 100% !important; }
+          .wishlist-icon { width: 24px !important; height: 24px !important; }
+          button.btn { font-size: 0.9rem !important; padding: 10px 0 !important; }
+        }
+      `}</style>
     </>
   );
 }
