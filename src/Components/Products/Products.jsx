@@ -369,7 +369,7 @@ export default function Products() {
                       (p) => p.id === item.id
                     )
                       ? "Remove"
-                      : "Add"}
+                      : "Add to cart"}
                   </button>
                 </div>
               </div>
