@@ -220,7 +220,7 @@ export default function Products() {
   />
   <Dialog.Content
     style={{
-      backgroundColor: "#fff",
+      backgroundColor: "#fff8f0",
       borderRadius: "15px",
       padding: "25px 20px",
       position: "fixed",
@@ -277,7 +277,7 @@ export default function Products() {
       <button
         className="btn"
         style={{
-          backgroundColor: "#ff4d6d",
+          backgroundColor: "#d64b65ff",
           color: "#fff",
           padding: "10px 0",
           fontSize: "0.95rem",
