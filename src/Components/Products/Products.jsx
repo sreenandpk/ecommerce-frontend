@@ -205,20 +205,84 @@ export default function Products() {
 
       <Footer />
 
-      {/* Radix Dialog for confirmation */}
-      <Dialog.Root open={confirmDialog.open} onOpenChange={(open) => setConfirmDialog({ ...confirmDialog, open })}>
-        <Dialog.Overlay style={{ backgroundColor: "rgba(0,0,0,0.5)", position: "fixed", inset: 0 }} />
-        <Dialog.Content style={{ backgroundColor: "#fff", borderRadius: "10px", padding: "20px", position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", maxWidth: "300px", textAlign: "center" }}>
-          <Dialog.Title style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "10px" }}>Are you sure?</Dialog.Title>
-          <Dialog.Description style={{ marginBottom: "20px" }}>
-            Do you want to remove {confirmDialog.item?.name} from {confirmDialog.type === "cart" ? "cart" : "wishlist"}?
-          </Dialog.Description>
-          <div className="d-flex justify-content-between gap-2">
-            <button className="btn btn-secondary w-50" onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}>Cancel</button>
-            <button className="btn btn-danger w-50" onClick={confirmRemove}>Remove</button>
-          </div>
-        </Dialog.Content>
-      </Dialog.Root>
+{/* Radix Dialog for confirmation */}
+<Dialog.Root
+  open={confirmDialog.open}
+  onOpenChange={(open) => setConfirmDialog({ ...confirmDialog, open })}
+>
+  <Dialog.Overlay
+    style={{
+      backgroundColor: "rgba(0,0,0,0.5)",
+      position: "fixed",
+      inset: 0,
+      zIndex: 1000,
+    }}
+  />
+  <Dialog.Content
+    style={{
+      backgroundColor: "#fff",
+      borderRadius: "15px",
+      padding: "30px 20px",
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "90%",
+      maxWidth: "400px",
+      textAlign: "center",
+      zIndex: 1001,
+      boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+    }}
+  >
+    <Dialog.Title
+      style={{
+        fontSize: "1.5rem",
+        fontWeight: 700,
+        marginBottom: "15px",
+        color: "#1e3253",
+      }}
+    >
+      Are you sure?
+    </Dialog.Title>
+    <Dialog.Description
+      style={{
+        fontSize: "1rem",
+        marginBottom: "25px",
+        color: "#555",
+      }}
+    >
+      Do you want to remove <strong>{confirmDialog.item?.name}</strong> from{" "}
+      {confirmDialog.type === "cart" ? "cart" : "wishlist"}?
+    </Dialog.Description>
+    <div className="d-flex flex-column flex-md-row justify-content-center gap-3">
+      <button
+        className="btn btn-secondary"
+        style={{
+          padding: "12px 0",
+          fontSize: "1.1rem",
+          borderRadius: "12px",
+          flex: 1,
+        }}
+        onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}
+      >
+        Cancel
+      </button>
+      <button
+        className="btn btn-danger"
+        style={{
+          padding: "12px 0",
+          fontSize: "1.1rem",
+          borderRadius: "12px",
+          flex: 1,
+        }}
+        onClick={confirmRemove}
+      >
+        Remove
+      </button>
+    </div>
+  </Dialog.Content>
+</Dialog.Root>
+
 
       {/* Responsive Tweaks */}
       <style>{`
