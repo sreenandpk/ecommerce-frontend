@@ -8,16 +8,17 @@ import Footer from "../Home/Footer";
 import { infoToast } from "../toast";
 import ScrollToTop from "../ScrollTop";
 import icecreamGGG from "../../../homeImages/iceCreamVideo.mp4";
-import ConfirmRemove from "./Conformation"; // make sure path is correct
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const [filtered, setFilterd] = useState([]);
-  const [itemToRemoveFromWishlist, setItemToRemoveFromWishlist] = useState(null);
   const { wishlistIds = [], setWishlistIds, setCartCount } =
     useContext(SearchContext);
   const [active, setActive] = useState("");
+  const [cartItems, setCartItems] = useState(
+    JSON.parse(localStorage.getItem("existingUser"))?.cart || []
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,12 +72,15 @@ export default function Products() {
       const updatedCart = exists
         ? user.cart.filter((p) => p.id !== item.id)
         : [...user.cart, item];
-      infoToast(`${item.name} ${exists ? "removed from" : "added to"} cart`);
+
       await updateUser(savedUser.id, { cart: updatedCart });
       const updatedUser = { ...user, cart: updatedCart };
       localStorage.setItem("existingUser", JSON.stringify(updatedUser));
       localStorage.setItem("cartTotalLength", updatedUser.cart.length);
+
       setCartCount(updatedUser.cart.length);
+      setCartItems(updatedCart); // <-- update local state
+      infoToast(`${item.name} ${exists ? "removed from" : "added to"} cart`);
     } catch (err) {
       console.log("error in cart update", err);
     }
@@ -96,8 +100,14 @@ export default function Products() {
         (element) => element.id === item.id
       );
       if (alreadyAdded) {
-        // Open confirmation modal
-        setItemToRemoveFromWishlist(item);
+        const newWishlist = newUserWishlist.filter((i) => i.id !== item.id);
+        await updateUser(savedUser.id, { wishlist: newWishlist });
+        infoToast(`${item.name} removed from wishlist`);
+        setWishlistIds((prev) => prev.filter((id) => id !== item.id));
+        localStorage.setItem(
+          "existingUser",
+          JSON.stringify({ ...user, wishlist: newWishlist })
+        );
       } else {
         infoToast(`${item.name} added to wishlist`);
         setWishlistIds((prev) => [...prev, item.id]);
@@ -110,25 +120,6 @@ export default function Products() {
       }
     } catch {
       console.log("error in wishlist toggle");
-    }
-  };
-
-  const removeFromWishlist = async (item) => {
-    try {
-      const savedUser = JSON.parse(localStorage.getItem("existingUser"));
-      if (!savedUser) return;
-      const user = await fetchUser(savedUser.id);
-      const newWishlist = user.wishlist.filter((i) => i.id !== item.id);
-      await updateUser(savedUser.id, { wishlist: newWishlist });
-      setWishlistIds((prev) => prev.filter((id) => id !== item.id));
-      localStorage.setItem(
-        "existingUser",
-        JSON.stringify({ ...user, wishlist: newWishlist })
-      );
-      infoToast(`${item.name} removed from wishlist`);
-      setItemToRemoveFromWishlist(null);
-    } catch (err) {
-      console.log("error removing wishlist item", err);
     }
   };
 
@@ -388,9 +379,7 @@ export default function Products() {
                       fontWeight: 500,
                     }}
                   >
-                    {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
-                      (p) => p.id === item.id
-                    )
+                    {cartItems.some((p) => p.id === item.id)
                       ? "Remove"
                       : "Add to cart"}
                   </button>
@@ -403,14 +392,6 @@ export default function Products() {
 
       <div style={{ height: "40px" }}></div>
       <Footer />
-
-      {/* Wishlist Remove Confirmation Modal */}
-      {itemToRemoveFromWishlist && (
-        <ConfirmRemove
-          itemName={itemToRemoveFromWishlist.name}
-          onConfirm={() => removeFromWishlist(itemToRemoveFromWishlist)}
-        />
-      )}
 
       {/* Responsive Tweaks */}
       <style>{`
