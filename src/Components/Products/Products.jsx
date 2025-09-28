@@ -8,17 +8,16 @@ import Footer from "../Home/Footer";
 import { infoToast } from "../toast";
 import ScrollToTop from "../ScrollTop";
 import icecreamGGG from "../../../homeImages/iceCreamVideo.mp4";
-import ConfirmRemove from "./Conformation"; // adjust path
+import ConfirmRemove from "./Conformation"; // make sure path is correct
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const [filtered, setFilterd] = useState([]);
+  const [itemToRemoveFromWishlist, setItemToRemoveFromWishlist] = useState(null);
   const { wishlistIds = [], setWishlistIds, setCartCount } =
     useContext(SearchContext);
   const [active, setActive] = useState("");
-  const [itemToRemoveFromWishlist, setItemToRemoveFromWishlist] = useState(null); // Added
-  const [itemToRemoveFromCart, setItemToRemoveFromCart] = useState(null); // Added
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -97,14 +96,8 @@ export default function Products() {
         (element) => element.id === item.id
       );
       if (alreadyAdded) {
-        const newWishlist = newUserWishlist.filter((i) => i.id !== item.id);
-        await updateUser(savedUser.id, { wishlist: newWishlist });
-        infoToast(`${item.name} removed from wishlist`);
-        setWishlistIds((prev) => prev.filter((id) => id !== item.id));
-        localStorage.setItem(
-          "existingUser",
-          JSON.stringify({ ...user, wishlist: newWishlist })
-        );
+        // Open confirmation modal
+        setItemToRemoveFromWishlist(item);
       } else {
         infoToast(`${item.name} added to wishlist`);
         setWishlistIds((prev) => [...prev, item.id]);
@@ -117,6 +110,25 @@ export default function Products() {
       }
     } catch {
       console.log("error in wishlist toggle");
+    }
+  };
+
+  const removeFromWishlist = async (item) => {
+    try {
+      const savedUser = JSON.parse(localStorage.getItem("existingUser"));
+      if (!savedUser) return;
+      const user = await fetchUser(savedUser.id);
+      const newWishlist = user.wishlist.filter((i) => i.id !== item.id);
+      await updateUser(savedUser.id, { wishlist: newWishlist });
+      setWishlistIds((prev) => prev.filter((id) => id !== item.id));
+      localStorage.setItem(
+        "existingUser",
+        JSON.stringify({ ...user, wishlist: newWishlist })
+      );
+      infoToast(`${item.name} removed from wishlist`);
+      setItemToRemoveFromWishlist(null);
+    } catch (err) {
+      console.log("error removing wishlist item", err);
     }
   };
 
@@ -294,6 +306,7 @@ export default function Products() {
                   className="d-flex justify-content-center align-items-center p-3 position-relative"
                   style={{ background: "#fff8f0" }}
                 >
+                  {/* Product Image */}
                   <img
                     onClick={() => navigate(`/productDetails/${item.id}`)}
                     src={item.image}
@@ -306,14 +319,9 @@ export default function Products() {
                     }}
                   />
 
+                  {/* Wishlist Icon */}
                   <Heart
-                    onClick={() => {
-                      if (wishlistIds.includes(item.id)) {
-                        setItemToRemoveFromWishlist(item);
-                      } else {
-                        wishListFn(item);
-                      }
-                    }}
+                    onClick={() => wishListFn(item)}
                     color={wishlistIds.includes(item.id) ? "#111" : "gray"}
                     fill={wishlistIds.includes(item.id) ? "#111" : "none"}
                     size={wishlistIds.includes(item.id) ? 26 : 24}
@@ -327,7 +335,10 @@ export default function Products() {
                   />
                 </div>
 
-                <div className="card-body text-center p-3" style={{ background: "#fff8f0" }}>
+                <div
+                  className="card-body text-center p-3"
+                  style={{ background: "#fff8f0" }}
+                >
                   <div className="d-flex justify-content-center align-items-center mb-2">
                     <h5
                       style={{
@@ -365,29 +376,24 @@ export default function Products() {
                     ₹{item.price}
                   </p>
 
-                  {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
-                    (p) => p.id === item.id
-                  ) ? (
-                    <ConfirmRemove
-                      itemName={item.name}
-                      onConfirm={() => addtoCart(item)}
-                    />
-                  ) : (
-                    <button
-                      onClick={() => addtoCart(item)}
-                      className="btn w-100 mt-2 product-btn"
-                      style={{
-                        backgroundColor: "#0a2141",
-                        color: "#fff",
-                        borderRadius: "20px",
-                        padding: "7px 0",
-                        fontSize: "0.92rem",
-                        fontWeight: 500,
-                      }}
-                    >
-                      Add to cart
-                    </button>
-                  )}
+                  <button
+                    onClick={() => addtoCart(item)}
+                    className="btn w-100 mt-2 product-btn"
+                    style={{
+                      backgroundColor: "#0a2141",
+                      color: "#fff",
+                      borderRadius: "20px",
+                      padding: "7px 0",
+                      fontSize: "0.92rem",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {JSON.parse(localStorage.getItem("existingUser"))?.cart?.some(
+                      (p) => p.id === item.id
+                    )
+                      ? "Remove"
+                      : "Add to cart"}
+                  </button>
                 </div>
               </div>
             </div>
@@ -398,14 +404,11 @@ export default function Products() {
       <div style={{ height: "40px" }}></div>
       <Footer />
 
-      {/* Wishlist Confirmation Modal */}
+      {/* Wishlist Remove Confirmation Modal */}
       {itemToRemoveFromWishlist && (
         <ConfirmRemove
           itemName={itemToRemoveFromWishlist.name}
-          onConfirm={() => {
-            wishListFn(itemToRemoveFromWishlist);
-            setItemToRemoveFromWishlist(null);
-          }}
+          onConfirm={() => removeFromWishlist(itemToRemoveFromWishlist)}
         />
       )}
 
