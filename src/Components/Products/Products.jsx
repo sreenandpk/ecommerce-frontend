@@ -351,7 +351,7 @@ export default function Products({ toastRef }) {
           ))}
         </div>
       </div>
-
+<div style={{height:'20px'}}></div>
       <Footer />
 
       {/* Radix Dialog for confirmation */}
