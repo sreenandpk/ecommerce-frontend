@@ -5,10 +5,10 @@ import loaderAnimation from "../jsonAnimation/loading.json";
 import ErrorAnimation from "../jsonAnimation/error.json";
 import loaded from "../jsonAnimation/loaded.json";
 import Lottie from "lottie-react";
-import { ToastContainer } from "react-toastify";
+
 import AOS from "aos";
 import "aos/dist/aos.css";
-
+import AppToast from "./Components/Products/appToast";
 const Login = lazy(() => import("./Pages/Auth/Login"));
 const Register = lazy(() => import("./Pages/Auth/Register"));
 const Account = lazy(() => import("./Components/Account/Account"));
@@ -49,10 +49,11 @@ const About = lazy(() =>
   import("./Components/About/about")
 );
 
+
 function App() {
   const [showApp, setShowApp] = useState(false);
   const loaderRef = useRef();
-
+const toastRef = useRef();
 
     useEffect(() => {
     AOS.init({
@@ -93,16 +94,9 @@ function App() {
   }
 
   return (
+    
     <SearchProvider>
-           <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
+         <AppToast ref={toastRef} /> 
       <Suspense fallback={<div  style={{
     height: "100vh",
     width: "100vw",
@@ -120,7 +114,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/products" element={<Products />} />
+          <Route path="/products" element={<Products toastRef={toastRef} />} />
           <Route path="/about" element={<About />} />
           <Route path="/search" element={<FilteredSearchProducts />} />
           <Route path="/cart" element={<Cart />} />
