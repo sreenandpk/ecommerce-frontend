@@ -13,7 +13,8 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const [filtered, setFilterd] = useState([]);
-  const { wishlistIds = [], setWishlistIds, setCartCount } = useContext(SearchContext);
+  const { wishlistIds = [], setWishlistIds, setCartCount } =
+    useContext(SearchContext);
   const [active, setActive] = useState("");
   const navigate = useNavigate();
 
@@ -89,19 +90,27 @@ export default function Products() {
       }
       const user = await fetchUser(savedUser.id);
       const newUserWishlist = [...user.wishlist];
-      const alreadyAdded = newUserWishlist.some((element) => element.id === item.id);
+      const alreadyAdded = newUserWishlist.some(
+        (element) => element.id === item.id
+      );
       if (alreadyAdded) {
         const newWishlist = newUserWishlist.filter((i) => i.id !== item.id);
         await updateUser(savedUser.id, { wishlist: newWishlist });
         infoToast(`${item.name} removed from wishlist`);
         setWishlistIds((prev) => prev.filter((id) => id !== item.id));
-        localStorage.setItem("existingUser", JSON.stringify({ ...user, wishlist: newWishlist }));
+        localStorage.setItem(
+          "existingUser",
+          JSON.stringify({ ...user, wishlist: newWishlist })
+        );
       } else {
         infoToast(`${item.name} added to wishlist`);
         setWishlistIds((prev) => [...prev, item.id]);
         newUserWishlist.push(item);
         await updateUser(savedUser.id, { wishlist: newUserWishlist });
-        localStorage.setItem("existingUser", JSON.stringify({ ...user, wishlist: newUserWishlist }));
+        localStorage.setItem(
+          "existingUser",
+          JSON.stringify({ ...user, wishlist: newUserWishlist })
+        );
       }
     } catch {
       console.log("error in wishlist toggle");
@@ -127,7 +136,7 @@ export default function Products() {
         Discover Our Flavors
       </h2>
 
-      <div className="container  text-center">
+      <div className="container text-center">
         <div
           className="videoContainer"
           style={{
@@ -209,46 +218,45 @@ export default function Products() {
           ))}
         </div>
       </div>
-       {/* Flavor Filters */}
-    {/* Flavor Filters */}
-<div
-  className="container d-flex flex-nowrap  gap-2 mt-4"
-  style={{
-    overflowX: "auto",
-    paddingBottom: "5px",
-    WebkitOverflowScrolling: "touch",
-  }}
->
-  {[
-    { label: "Show All", key: "", fn: showAll },
-    { label: "Vanilla", key: "vanilla", fn: vanila },
-    { label: "Strawberry", key: "strawberry", fn: strawberry },
-    { label: "Chocolate", key: "chocolate", fn: choclate },
-    
-  ].map((btn) => (
-    <button
-      key={btn.key}
-      onClick={() => {
-        setActive(btn.key);
-        btn.fn();
-      }}
-      className={`btn rounded-pill ${
-        active === btn.key ? "btn-dark" : "btn-outline-secondary"
-      }`}
-      style={{
-        fontWeight: 600,
-        fontFamily: "SF Pro, -apple-system, sans-serif",
-        flex: "0 0 auto", // prevents shrinking
-        minWidth: "120px", // fixed width
-        padding: "10px 0",
-        fontSize: "1rem",
-        textAlign: "center",
-      }}
-    >
-      {btn.label}
-    </button>
-  ))}
-</div>
+
+      {/* Flavor Filters */}
+      <div
+        className="container d-flex flex-nowrap gap-2 mt-4"
+        style={{
+          overflowX: "auto",
+          paddingBottom: "5px",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+        {[
+          { label: "Show All", key: "", fn: showAll },
+          { label: "Vanilla", key: "vanilla", fn: vanila },
+          { label: "Strawberry", key: "strawberry", fn: strawberry },
+          { label: "Chocolate", key: "chocolate", fn: choclate },
+        ].map((btn) => (
+          <button
+            key={btn.key}
+            onClick={() => {
+              setActive(btn.key);
+              btn.fn();
+            }}
+            className={`btn rounded-pill ${
+              active === btn.key ? "btn-dark" : "btn-outline-secondary"
+            }`}
+            style={{
+              fontWeight: 600,
+              fontFamily: "SF Pro, -apple-system, sans-serif",
+              flex: "0 0 auto",
+              minWidth: "120px",
+              padding: "10px 0",
+              fontSize: "1rem",
+              textAlign: "center",
+            }}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
 
       {/* Products Grid */}
       <div className="container mt-4">
@@ -270,11 +278,13 @@ export default function Products() {
                 }}
                 onMouseOver={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
-                  e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.15)";
+                  e.currentTarget.style.boxShadow =
+                    "0 20px 40px rgba(0,0,0,0.15)";
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
+                  e.currentTarget.style.boxShadow =
+                    "0 5px 15px rgba(0,0,0,0.1)";
                 }}
               >
                 <div
@@ -294,7 +304,10 @@ export default function Products() {
                   />
                 </div>
 
-                <div className="card-body text-center p-3" style={{ background: "#fff8f0" }}>
+                <div
+                  className="card-body text-center p-3"
+                  style={{ background: "#fff8f0" }}
+                >
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <h5
                       style={{
@@ -342,13 +355,13 @@ export default function Products() {
 
                   <button
                     onClick={() => addtoCart(item)}
-                    className="btn w-100 mt-2"
+                    className="btn w-100 mt-2 product-btn"
                     style={{
                       backgroundColor: "#0a2141",
                       color: "#fff",
                       borderRadius: "20px",
-                      padding: "10px 0",
-                      fontSize: "0.95rem",
+                      padding: "7px 0",
+                      fontSize: "0.92rem",
                       fontWeight: 500,
                     }}
                   >
@@ -367,16 +380,16 @@ export default function Products() {
 
       <div style={{ height: "40px" }}></div>
       <Footer />
-      <ScrollToTop />
 
       {/* Responsive Tweaks */}
       <style>{`
         @media (max-width: 576px) {
           .card { max-width: 100% !important; }
           .wishlist-icon { width: 24px !important; height: 24px !important; }
-          button.btn { font-size: 0.9rem !important; padding: 10px 0 !important; }
+          .product-btn { font-size: 0.9rem !important; padding: 10px 0 !important; }
         }
       `}</style>
+      <ScrollToTop />
     </>
   );
 }
