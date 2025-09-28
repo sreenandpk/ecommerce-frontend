@@ -9,7 +9,7 @@ import Footer from "../Home/Footer";
 import { infoToast } from "../toast";
 import ScrollToTop from "../ScrollTop";
 import icecreamGGG from "../../../homeImages/iceCreamVideo.mp4";
-import { fetchAllProducts } from "../../Admin/fetch";
+
 export default function Products() {
   const [products, setProducts] = useState([]);
     const [bestSellerProducts, setBestSellerProducts] = useState([]);
@@ -121,6 +121,7 @@ export default function Products() {
     <>
       <Navbar />
       <div style={{height:'20px'}}></div>
+      
      <h2
   style={{
     textAlign: "center",
@@ -130,7 +131,7 @@ export default function Products() {
     textShadow: "2px 2px 6px rgba(0,0,0,0.15)",
     margin: "30px 0",
   }}
-  data-aos="fade-up"
+  
 >
   Discover Our Flavors
 </h2>
@@ -138,7 +139,7 @@ export default function Products() {
 <div className="container my-4 text-center">
   <div
     className="videoContainer"
-    data-aos="fade-up"
+
     style={{
       position: "relative",
       maxWidth: "800px",
@@ -175,123 +176,11 @@ export default function Products() {
 
 
 
-<div className="container my-5">
-  <h2
-    className="text-center mb-4 fw-bold"
-    style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}data-aos="fade-up"
-  >
-    Hot Products
-  </h2>
-
-  <div className="row g-4 justify-content-center">
-    {hotProducts.length > 0 &&
-      hotProducts.map((item) => (
-        <div
-          key={item.id}
-          className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"data-aos="fade-up"
-        >
-          <div
-            className="card shadow-lg position-relative overflow-hidden"
-            style={{
-              width: "100%",
-              borderRadius: "20px",
-              cursor: "pointer",
-              transition: "transform 0.3s, box-shadow 0.3s",
-              backgroundColor: "#fff8f0"
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = "scale(1.05)";
-              e.currentTarget.style.boxShadow = "0 25px 50px rgba(0,0,0,0.2)";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
-            }}
-          >
-            {/* Product Image */}
-            <div
-              style={{
-                position: "relative",
-                height: "180px", // reduced height
-                overflow: "hidden",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#fff8f0",
-              }} onClick={() => navigate(`/productDetails/${item.id}`)}
-            >
-              <img
-               src={item.image}
-                alt={item.name}
-                style={{
-                  maxHeight: "100%",
-                  width: "auto",
-                  objectFit: "contain",
-                }}
-              />
-              <span className="badge bg-danger position-absolute top-0 start-0 m-2">
-                Hot Deal
-              </span>
-
-              {/* Hover overlay */}
-              <div
-                className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center"
-                style={{
-                  background: "rgba(0,0,0,0.4)",
-                  opacity: 0,
-                  transition: "opacity 0.3s",
-                }}
-              >
-                <button
-                  className="btn btn-sm btn-primary mb-2"
-                  style={{ borderRadius: "20px", padding: "5px 15px" }}
-                >
-                  Add to Cart
-                </button>
-                <button
-                  className="btn btn-sm btn-outline-light"
-                  style={{ borderRadius: "20px", padding: "5px 15px" }}
-                >
-                  <i className="bi bi-heart"></i> Wishlist
-                </button>
-              </div>
-            </div>
-
-            {/* Card Body */}
-            <div className="card-body text-center p-3">
-              <h6
-                className="card-title mb-2"
-                style={{ fontWeight: 600, fontSize: "1rem", color: "#1e3253" }}
-              >
-                {item.name}
-              </h6>
-              <p
-                style={{ fontWeight: 700, fontSize: "1.1rem", color: "#111", marginBottom: "0" }}
-              >
-                ₹{item.price}
-              </p>
-            </div>
-          </div>
-        </div>
-      ))}
-  </div>
-</div>
-
-{/* CSS for hover overlay */}
-<style>
-{`
-  .card:hover .position-absolute div {
-    opacity: 1 !important;
-    
-  }
-`}
-</style>
-
 
          {/* Best Sellers */}
 <h2
   className="text-center mb-4 mt-3 fw-bold text-dark"
-  style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}    data-aos="fade-up"
+  style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}    
 >
   Best Sellers
 </h2>
@@ -299,7 +188,7 @@ export default function Products() {
 <div className="container"    >
   <div className="row g-4 justify-content-center">
     {bestSellerProducts.map((item, index) => (
-      <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2"data-aos="fade-up">
+      <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
         <div
           onClick={() => navigate(`/productDetails/${item.id}`)}
           className="card shadow-sm h-100 border-0"
@@ -363,7 +252,7 @@ export default function Products() {
       `}</style>
   <div style={{ height: "30px" }}></div>
   {/* Flavor Filters */}
-  <div className="container my-3 d-flex flex-wrap justify-content-center gap-2" data-aos="fade-up">
+  <div className="container  d-flex flex-wrap justify-content-center gap-1" >
     {[
       { label: "Vanilla", key: "vanilla", fn: vanila },
       { label: "Strawberry", key: "strawberry", fn: strawberry },
@@ -376,7 +265,7 @@ export default function Products() {
           setActive(btn.key);
           btn.fn();
         }}
-        className={`btn rounded-pill  px-4 py-2 ${
+        className={`btn rounded-pill  px-3 py-1 ${
           active === btn.key ? "btn-dark" : "btn-outline-secondary"
         }`}
         style={{
@@ -394,7 +283,7 @@ export default function Products() {
     {(filtered.length > 0 ? filtered : products).map((item, index) => (
       <div
         key={index}
-        className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"data-aos="fade-up"
+        className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
       >
         <div
           className="card shadow-sm border-0"
@@ -422,8 +311,8 @@ export default function Products() {
 
               alt={item.name}
               style={{
-                width: "200px",
-                height: "200px",
+                width: "160px",
+                height: "160px",
                 objectFit: "contain",
                 background:' #fff8f0'
               }}
@@ -482,11 +371,11 @@ export default function Products() {
               onClick={() => addtoCart(item)}
               className="btn w-100 mt-2"
               style={{
-                backgroundColor: "#111",
+                backgroundColor: "#0a2141",
                 color: "#fff",
                 borderRadius: "20px",
                 padding: "10px 0",
-                fontSize: "0.95rem",
+                fontSize: "0.85rem",
                 fontWeight: 500,
               }}
             >

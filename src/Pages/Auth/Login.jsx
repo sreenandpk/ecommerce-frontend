@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginAnimation from "../../../jsonAnimation/Login.json"
-import Lottie from "lottie-react";
 import { fetchUserLogin } from "../../Components/Fetch/FetchUser";
 
 function Login() {
@@ -11,29 +9,23 @@ function Login() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
   useEffect(() => {
     const savedUser = localStorage.getItem("existingUser");
-    
     if (savedUser) {
       navigate("/");
     }
   }, [navigate]);
-
   const submit = async (event) => {
     event.preventDefault();
     setError("");
-
     try {
       const existingUser = await fetchUserLogin(email,password)
-
       if (existingUser.data.length > 0) {
          const user = existingUser.data[0];
           if (user.block === true) {
     setError("Your account is blocked. Contact admin.");
     return;
   }
-
         localStorage.setItem("existingUser", JSON.stringify(user));
         navigate("/");
       } else {
@@ -43,18 +35,14 @@ function Login() {
       setError("Server error. Try again later.");
     }
   };
-
   return (
     <>
     <div className="parent">
   {/* Left side - Animation */}
-  
-
   {/* Right side - Form */}
   <div className="right">
     <form onSubmit={submit}style={{background:'#fff8f0'}}>
       <h2>Login</h2>
-
       <label htmlFor="email">Email:</label>
       <input
         type="email"
@@ -64,7 +52,6 @@ function Login() {
         placeholder="Enter your email"
         style={{backgroundColor: "#fff8f0",}}
       />
-
       <label htmlFor="password">Password:</label>
       <input
         type={showPassword ? "text" : "password"}
@@ -74,13 +61,10 @@ function Login() {
         placeholder="Enter your password"
            style={{backgroundColor: "#fff8f0",}}
       />
-
       <button type="button" onClick={() => setShowPassword(!showPassword)}>
         {showPassword ? "Hide Password" : "👁️ Show Password"}
       </button>
-
       <button type="submit ">Login</button>
-
       {error && <p className="error">{error}</p>}
       <p style={{ textAlign: "center", marginTop: "10px", fontSize: "14px", color: "#555" }}>
   Don’t have an account?{" "}
@@ -91,10 +75,8 @@ function Login() {
     Register
   </span>
 </p>
-
     </form>
   </div>
-
   {/* CSS styles */}
   <style>
     {`
@@ -192,7 +174,6 @@ function Login() {
     `}
   </style>
 </div>
-
     </>
   );
 }

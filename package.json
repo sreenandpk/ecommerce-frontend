@@ -3,12 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview"
-}
-,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -20,6 +19,7 @@
     "bootstrap": "^5.3.7",
     "bootstrap-icons": "^1.13.1",
     "emailjs-com": "^3.2.0",
+    "framer-motion": "^12.23.22",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.540.0",
     "react": "^19.1.1",

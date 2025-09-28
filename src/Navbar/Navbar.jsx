@@ -6,6 +6,8 @@ import { SearchContext } from "../Components/SearchContext/SearchContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search } from "@mui/icons-material";
 import profile from "../../homeImages/profileDD.jpeg";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
+
 export default function Navbar() {
  
   const [inputValue, setInputValue] = useState("");
@@ -75,7 +77,7 @@ export default function Navbar() {
             className={`px-2 py-1 rounded ${active === "products" ? "bg-secondary text-white" : ""}`}
             style={{ cursor: "pointer" }}
           >
-            Products
+           <span>Products</span>
           </span>
           <span
             onClick={() => navigate("/about")}
@@ -112,7 +114,7 @@ export default function Navbar() {
             className="btn  rounded-pill px-4 position-relative"
             style={{border:'none'}}
           >
-            Wishlist
+           <FaHeart style={{color:'gray',marginBottom:'3px'}}/> Wishlist
             {wishlistIds.length > 0 && (
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {wishlistIds.length}
@@ -125,7 +127,7 @@ export default function Navbar() {
             className="btn  rounded-pill px-3 position-relative"
             style={{border:'none'}}
           >
-            Cart
+           <FaShoppingCart style={{color:'gray'}}/> Cart
             {cartCount > 0 && (
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {cartCount}

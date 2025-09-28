@@ -85,7 +85,7 @@ export default function Wishlist() {
     <>
       <Navbar />
       <div style={{height:'40px'}}></div>
-    <h3 style={{textAlign:'center'}}className="mb-4 mt-4"data-aos="fade-up">My wishlist</h3>
+    <h3 style={{textAlign:'center'}}className="mb-4 mt-4">My wishlist</h3>
  <div className="row justify-content-center g-4">
   {likedProducts.length > 0 ? likedProducts.map((item, index) => (
     <div 
@@ -147,7 +147,7 @@ export default function Wishlist() {
         </div>
       </div>
     </div>
-  )) : <p data-aos="fade-up" className="text-center text-muted">Your wishlist is empty.</p>}
+  )) : <p  className="text-center text-muted">Your wishlist is empty.</p>}
 </div>
   <ScrollToTop />
     </>

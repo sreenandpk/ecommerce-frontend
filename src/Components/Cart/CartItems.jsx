@@ -90,8 +90,8 @@ export default function Cart() {
     <>
       <Navbar />
       <div className="container my-5">
-        <h4 className="text-center mb-2"data-aos="fade-up">My Cart</h4>
-        <p className="text-center mb-4" style={{ fontFamily: 'revert' }}data-aos="fade-up">
+        <h4 className="text-center mb-2">My Cart</h4>
+        <p className="text-center mb-4" style={{ fontFamily: 'revert' }}>
           Total ({cartTotalItems}) items in cart
         </p>
 

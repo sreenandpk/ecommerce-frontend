@@ -57,7 +57,7 @@ export default function Home() {
       <div style={{ height: "80px" }}></div>
 
       {/* Hero Section */}
-      <div className="text-center mb-2 position-relative"    data-aos="fade-up">
+      <div className="text-center mb-2 position-relative"data-aos="fade-up">
         <h1
           style={{
             fontFamily: "Poppins, sans-serif",
@@ -230,7 +230,7 @@ export default function Home() {
       <div className="container my-5" >
         <div
           className="d-flex flex-wrap justify-content-between align-items-center p-3 shadow-sm rounded-3"
-          style={{ background: " #fff8f0" }}data-aos="fade-up"
+          style={{ background: " #fff8f0" }}
         >
           <h2
             className="m-0 fw-bold"
@@ -263,7 +263,7 @@ export default function Home() {
     color: "#333",
     letterSpacing: "1px",
     margin: "20px 0",
-  }}data-aos="fade-up"
+  }}
 >
   Categories
 </h4>
