@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { SearchContext } from "../Components/SearchContext/SearchContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -8,29 +7,23 @@ import { Search } from "@mui/icons-material";
 import profile from "../../homeImages/profileDD.jpeg";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { useSpring, animated } from "@react-spring/web";
+import { Dropdown } from "react-bootstrap";
+
 export default function Navbar() {
   const [visible, setVisible] = useState(true); // desktop navbar visibility
   const [mobileVisible, setMobileVisible] = useState(true); // mobile navbar visibility
   const [inputValue, setInputValue] = useState("");
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const { setSearchValue } = useContext(SearchContext);
+  const { setSearchValue, cartCount = 0, wishlistIds = [] } = useContext(SearchContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const { cartCount = 0, wishlistIds = [] } = useContext(SearchContext);
-  const [savedUser, setSavedUser] = useState(
-    JSON.parse(localStorage.getItem("existingUser"))
-  );
-
+  const [savedUser, setSavedUser] = useState(JSON.parse(localStorage.getItem("existingUser")));
   const lastScrollY = useRef(0);
 
   const active =
-    location.pathname === "/"
-      ? "/"
-      : location.pathname === "/products"
-      ? "products"
-      : location.pathname === "/about"
-      ? "about"
-      : "";
+    location.pathname === "/" ? "/" :
+    location.pathname === "/products" ? "products" :
+    location.pathname === "/about" ? "about" : "";
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -42,36 +35,30 @@ export default function Navbar() {
   };
 
   const handleScroll = () => {
-  if (window.scrollY === 0) {
-    // always show navbar at top
-    setVisible(true);
-    setMobileVisible(true);
-  } else if (window.scrollY > lastScrollY.current) {
-    // scrolling down
-    setVisible(false);
-    setMobileVisible(false);
-  } else {
-    // scrolling up
-    setVisible(true);
-    setMobileVisible(true);
-  }
-  lastScrollY.current = window.scrollY;
-};
-
+    if (window.scrollY === 0) {
+      setVisible(true);
+      setMobileVisible(true);
+    } else if (window.scrollY > lastScrollY.current) {
+      setVisible(false);
+      setMobileVisible(false);
+    } else {
+      setVisible(true);
+      setMobileVisible(true);
+    }
+    lastScrollY.current = window.scrollY;
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // React spring animation for desktop
   const desktopStyles = useSpring({
     transform: visible ? "translateY(0%)" : "translateY(-100%)",
     opacity: visible ? 1 : 0,
     config: { tension: 220, friction: 25 },
   });
 
-  // React spring animation for mobile
   const mobileStyles = useSpring({
     transform: mobileVisible ? "translateY(0%)" : "translateY(-100%)",
     opacity: mobileVisible ? 1 : 0,
@@ -88,58 +75,30 @@ export default function Navbar() {
             backgroundColor: "#fff8f0",
             maxWidth: "1200px",
             margin: "0 auto",
-            padding: "10px 15px",
+            padding: "15px 15px",
             borderRadius: "50px",
             boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
           }}
         >
           {/* Logo */}
-          <div className="fw-bold fs-4" style={{ fontFamily: "Montserrat, sans-serif", color: "black" }}>
-            Diary
-          </div>
+          <div className="fw-bold fs-4" style={{ fontFamily: "Montserrat, sans-serif", color: "black" }}>Diary</div>
 
           {/* Menu */}
           <div className="d-flex gap-2">
-            <span
-              onClick={() => navigate("/")}
-              className={`px-2 py-1 rounded ${active === "/" ? "bg-secondary text-white" : ""}`}
-              style={{ cursor: "pointer" }}
-            >
-              Home
-            </span>
-            <span
-              onClick={() => navigate("/products")}
-              className={`px-2 py-1 rounded ${active === "products" ? "bg-secondary text-white" : ""}`}
-              style={{ cursor: "pointer" }}
-            >
-              Products
-            </span>
-            <span
-              onClick={() => navigate("/about")}
-              className={`px-2 py-1 rounded ${active === "about" ? "bg-secondary text-white" : ""}`}
-              style={{ cursor: "pointer" }}
-            >
-              About
-            </span>
+            <span onClick={() => navigate("/")} className={`px-2 py-1 rounded ${active === "/" ? "bg-secondary text-white" : ""}`} style={{ cursor: "pointer" }}>Home</span>
+            <span onClick={() => navigate("/products")} className={`px-2 py-1 rounded ${active === "products" ? "bg-secondary text-white" : ""}`} style={{ cursor: "pointer" }}>Products</span>
+            <span onClick={() => navigate("/about")} className={`px-2 py-1 rounded ${active === "about" ? "bg-secondary text-white" : ""}`} style={{ cursor: "pointer" }}>About</span>
           </div>
 
           {/* Search */}
-          <form
-            onSubmit={handleSearchSubmit}
-            className="position-relative mx-2 flex-grow-1"
-            style={{ maxWidth: "250px" }}
-          >
+          <form onSubmit={handleSearchSubmit} className="position-relative mx-2 flex-grow-1" style={{ maxWidth: "250px" }}>
             <input
               placeholder="Search"
               onChange={(event) => setInputValue(event.target.value)}
-              className="form-control rounded-pill ps-3 pe-5 "
-              style={{ height: "35px", fontSize: "14px", color: "none", background: "none" }}
+              className="form-control rounded-pill ps-3 pe-5"
+              style={{ height: "35px", fontSize: "14px", background: "none" }}
             />
-            <button
-              type="submit"
-              className="btn position-absolute top-50 end-0 translate-middle-y p-2"
-              style={{ background: "transparent", border: "none" }}
-            >
+            <button type="submit" className="btn position-absolute top-50 end-0 translate-middle-y p-2" style={{ background: "transparent", border: "none" }}>
               <Search style={{ color: "#555", fontSize: "18px" }} />
             </button>
           </form>
@@ -149,46 +108,40 @@ export default function Navbar() {
             <button onClick={() => navigate("/wishlist")} className="btn rounded-pill px-4 position-relative" style={{ border: "none" }}>
               <FaHeart style={{ color: "gray", marginBottom: "3px" }} /> Wishlist
               {wishlistIds.length > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {wishlistIds.length}
-                </span>
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{wishlistIds.length}</span>
               )}
             </button>
 
             <button onClick={() => navigate("/cart")} className="btn rounded-pill px-3 position-relative" style={{ border: "none" }}>
               <FaShoppingCart style={{ color: "gray" }} /> Cart
               {cartCount > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {cartCount}
-                </span>
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{cartCount}</span>
               )}
             </button>
 
-            <div className="dropdown">
-              <button className="btn px-3" type="button" data-bs-toggle="dropdown" style={{ border: "none" }}>
+            {/* Profile Dropdown */}
+            <Dropdown align="end">
+              <Dropdown.Toggle style={{ border: "none", background: "transparent", padding: 0 }}>
                 <img src={savedUser?.image || profile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
-              </button>
-              <ul className="dropdown-menu dropdown-menu-end shadow" style={{ background: "#fff8f0" }}>
-                <li>
-                  <button className="dropdown-item" onClick={() => navigate("/account")}>Profile</button>
-                </li>
-                <li>
-                  <button className="dropdown-item" onClick={() => navigate("/myOrders")}>My Orders</button>
-                </li>
-                <li>
-                  <button className="dropdown-item" onClick={() => {
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu style={{ background: "#fff8f0" }}>
+                <Dropdown.Item onClick={() => navigate("/account")}>Profile</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate("/myOrders")}>My Orders</Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
                     if (!savedUser) navigate("/login");
                     else {
                       localStorage.removeItem("existingUser");
                       setSavedUser(null);
                       navigate("/login");
                     }
-                  }}>
-                    {savedUser ? "Logout" : "Login"}
-                  </button>
-                </li>
-              </ul>
-            </div>
+                  }}
+                >
+                  {savedUser ? "Logout" : "Login"}
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </div>
       </animated.div>
@@ -199,46 +152,40 @@ export default function Navbar() {
           {/* Top Row */}
           <div className="d-flex justify-content-between align-items-center p-2">
             <div className="fw-bold fs-4" style={{ fontFamily: "Montserrat, sans-serif", color: "black" }}>Diary</div>
-
             <div className="d-flex gap-2">
               <button className="btn p-2" onClick={() => setMobileSearchOpen(!mobileSearchOpen)} style={{ border: "none" }}>
                 <Search />
               </button>
-              <div className="dropdown">
-                <button className="btn p-2" type="button" data-bs-toggle="dropdown" style={{ border: "none" }}>
+
+              {/* Profile Dropdown */}
+              <Dropdown align="end">
+                <Dropdown.Toggle style={{ border: "none", background: "transparent", padding: 0 }}>
                   <img src={savedUser?.image || profile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
-                </button>
-                <ul className="dropdown-menu dropdown-menu-end shadow text-center" style={{ background: "#fff8f0" }}>
-                  <li>
-                    <button className="dropdown-item" onClick={() => navigate("/wishlist")}>
-                      Wishlist {wishlistIds.length > 0 && `(${wishlistIds.length})`}
-                    </button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={() => navigate("/cart")}>
-                      Cart {cartCount > 0 && `(${cartCount})`}
-                    </button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={() => navigate("/account")}>Profile</button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={() => navigate("/myOrders")}>My Orders</button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={() => {
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu style={{ background: "#fff8f0", textAlign: "center" }}>
+                  <Dropdown.Item onClick={() => navigate("/wishlist")}>
+                    Wishlist {wishlistIds.length > 0 && `(${wishlistIds.length})`}
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => navigate("/cart")}>
+                    Cart {cartCount > 0 && `(${cartCount})`}
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => navigate("/account")}>Profile</Dropdown.Item>
+                  <Dropdown.Item onClick={() => navigate("/myOrders")}>My Orders</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
                       if (!savedUser) navigate("/login");
                       else {
                         localStorage.removeItem("existingUser");
                         setSavedUser(null);
                         navigate("/login");
                       }
-                    }}>
-                      {savedUser ? "Logout" : "Login"}
-                    </button>
-                  </li>
-                </ul>
-              </div>
+                    }}
+                  >
+                    {savedUser ? "Logout" : "Login"}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
           </div>
 
@@ -257,32 +204,14 @@ export default function Navbar() {
 
           {/* Mobile Navigation */}
           <div className="d-flex justify-content-around pb-2">
-            <span
-              onClick={() => navigate("/")}
-              className={`px-2 py-1 rounded ${active === "/" ? "bg-secondary text-white" : ""}`}
-              style={{ cursor: "pointer", flex: 1, textAlign: "center" }}
-            >
-              Home
-            </span>
-            <span
-              onClick={() => navigate("/products")}
-              className={`px-2 py-1 rounded ${active === "products" ? "bg-secondary text-white" : ""}`}
-              style={{ cursor: "pointer", flex: 1, textAlign: "center" }}
-            >
-              Products
-            </span>
-            <span
-              onClick={() => navigate("/about")}
-              className={`px-2 py-1 rounded ${active === "about" ? "bg-secondary text-white" : ""}`}
-              style={{ cursor: "pointer", flex: 1, textAlign: "center" }}
-            >
-              About
-            </span>
+            <span onClick={() => navigate("/")} className={`px-2 py-1 rounded ${active === "/" ? "bg-secondary text-white" : ""}`} style={{ cursor: "pointer", flex: 1, textAlign: "center" }}>Home</span>
+            <span onClick={() => navigate("/products")} className={`px-2 py-1 rounded ${active === "products" ? "bg-secondary text-white" : ""}`} style={{ cursor: "pointer", flex: 1, textAlign: "center" }}>Products</span>
+            <span onClick={() => navigate("/about")} className={`px-2 py-1 rounded ${active === "about" ? "bg-secondary text-white" : ""}`} style={{ cursor: "pointer", flex: 1, textAlign: "center" }}>About</span>
           </div>
         </div>
       </animated.div>
 
-      {/* Spacer so page content not hidden under navbar */}
+      {/* Spacer */}
       <div style={{ height: "80px" }}></div>
     </>
   );
