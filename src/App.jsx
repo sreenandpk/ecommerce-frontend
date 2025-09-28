@@ -96,7 +96,7 @@ const toastRef = useRef();
   return (
     
     <SearchProvider>
-         <AppToast ref={toastRef} /> 
+         <AppToast ref={toastRef} />
       <Suspense fallback={<div  style={{
     height: "100vh",
     width: "100vw",
