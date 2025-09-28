@@ -41,19 +41,23 @@ export default function Navbar() {
     }
   };
 
-  // Scroll handler for both desktop and mobile navbars
   const handleScroll = () => {
-    if (window.scrollY > lastScrollY.current) {
-      // scrolling down
-      setVisible(false);
-      setMobileVisible(false);
-    } else {
-      // scrolling up
-      setVisible(true);
-      setMobileVisible(true);
-    }
-    lastScrollY.current = window.scrollY;
-  };
+  if (window.scrollY === 0) {
+    // always show navbar at top
+    setVisible(true);
+    setMobileVisible(true);
+  } else if (window.scrollY > lastScrollY.current) {
+    // scrolling down
+    setVisible(false);
+    setMobileVisible(false);
+  } else {
+    // scrolling up
+    setVisible(true);
+    setMobileVisible(true);
+  }
+  lastScrollY.current = window.scrollY;
+};
+
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
