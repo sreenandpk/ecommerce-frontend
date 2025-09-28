@@ -121,13 +121,13 @@ export default function Products() {
           fontSize: "1.2rem",
           color: "#ff4d6d",
           textShadow: "2px 2px 6px rgba(0,0,0,0.15)",
-          margin: "30px 0",
+          margin: "40px 0",
         }}
       >
         Discover Our Flavors
       </h2>
 
-      <div className="container my-4 text-center">
+      <div className="container  text-center">
         <div
           className="videoContainer"
           style={{
