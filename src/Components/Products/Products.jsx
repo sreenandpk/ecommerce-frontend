@@ -222,59 +222,71 @@ export default function Products() {
     style={{
       backgroundColor: "#fff",
       borderRadius: "15px",
-      padding: "30px 20px",
+      padding: "25px 20px",
       position: "fixed",
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
       width: "90%",
-      maxWidth: "400px",
+      maxWidth: "360px",
       textAlign: "center",
       zIndex: 1001,
-      boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+      boxShadow: "0 15px 30px rgba(0,0,0,0.2)",
+      transition: "all 0.3s ease",
     }}
   >
     <Dialog.Title
       style={{
-        fontSize: "1.5rem",
+        fontSize: "1.4rem",
         fontWeight: 700,
-        marginBottom: "15px",
-        color: "#1e3253",
+        marginBottom: "12px",
+        color: "#0a2141",
+        textShadow: "1px 1px 3px rgba(0,0,0,0.1)",
       }}
     >
       Are you sure?
     </Dialog.Title>
     <Dialog.Description
       style={{
-        fontSize: "1rem",
-        marginBottom: "25px",
+        fontSize: "0.95rem",
+        marginBottom: "22px",
         color: "#555",
       }}
     >
       Do you want to remove <strong>{confirmDialog.item?.name}</strong> from{" "}
       {confirmDialog.type === "cart" ? "cart" : "wishlist"}?
     </Dialog.Description>
-    <div className="d-flex flex-column flex-md-row justify-content-center gap-3">
+    <div className="d-flex flex-column flex-md-row justify-content-center gap-2">
       <button
-        className="btn btn-secondary"
+        className="btn"
         style={{
-          padding: "12px 0",
-          fontSize: "1.1rem",
+          backgroundColor: "#e0e0e0",
+          color: "#111",
+          padding: "10px 0",
+          fontSize: "0.95rem",
           borderRadius: "12px",
           flex: 1,
+          transition: "all 0.2s",
         }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#cfcfcf")}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#e0e0e0")}
         onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}
       >
         Cancel
       </button>
       <button
-        className="btn btn-danger"
+        className="btn"
         style={{
-          padding: "12px 0",
-          fontSize: "1.1rem",
+          backgroundColor: "#ff4d6d",
+          color: "#fff",
+          padding: "10px 0",
+          fontSize: "0.95rem",
           borderRadius: "12px",
           flex: 1,
+          transition: "all 0.2s",
         }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#e9435e")}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#ff4d6d")}
         onClick={confirmRemove}
       >
         Remove
@@ -282,6 +294,7 @@ export default function Products() {
     </div>
   </Dialog.Content>
 </Dialog.Root>
+
 
 
       {/* Responsive Tweaks */}
