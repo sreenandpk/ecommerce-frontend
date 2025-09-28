@@ -17,6 +17,7 @@ export default function Products() {
   const { wishlistIds = [], setWishlistIds, setCartCount } =
     useContext(SearchContext);
   const [active, setActive] = useState("");
+  const [itemToRemoveFromWishlist, setItemToRemoveFromWishlist] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -307,18 +308,26 @@ export default function Products() {
 
   {/* Wishlist Icon */}
   <Heart
-    onClick={() => wishListFn(item)}
-    color={wishlistIds.includes(item.id) ? "#111" : "gray"}
-    fill={wishlistIds.includes(item.id) ? "#111" : "none"}
-    size={wishlistIds.includes(item.id) ? 26 : 24}
-    style={{
-      cursor: "pointer",
-      position: "absolute",
-      top: "8px",
-      right: "10px",
-    }}
-    className="wishlist-icon"
-  />
+  onClick={() => {
+    if (wishlistIds.includes(item.id)) {
+      // Item is already in wishlist → show confirmation modal
+      setItemToRemoveFromWishlist(item);
+    } else {
+      // Item not in wishlist → add directly
+      wishListFn(item);
+    }
+  }}
+  color={wishlistIds.includes(item.id) ? "#111" : "gray"}
+  fill={wishlistIds.includes(item.id) ? "#111" : "none"}
+  size={wishlistIds.includes(item.id) ? 26 : 24}
+  style={{
+    cursor: "pointer",
+    position: "absolute",
+    top: "8px",
+    right: "10px",
+  }}
+  className="wishlist-icon"
+/>
 </div>
 
                 <div
@@ -410,6 +419,16 @@ export default function Products() {
         }
       `}</style>
       <ScrollToTop />
+      {itemToRemoveFromWishlist && (
+  <ConfirmRemove
+    itemName={itemToRemoveFromWishlist.name}
+    onConfirm={() => {
+      wishListFn(itemToRemoveFromWishlist);
+      setItemToRemoveFromWishlist(null); // close modal
+    }}
+  />
+)}
+
     </>
   );
 }
