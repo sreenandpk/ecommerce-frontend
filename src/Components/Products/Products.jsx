@@ -343,7 +343,7 @@ export default function Products({ toastRef }) {
                       fontWeight: 500,
                     }}
                   >
-                    {cartItems.some((p) => p.id === item.id) ? "Remove" : "Add to cart"}
+                    {cartItems.some((p) => p.id === item.id) ? "Remove from cart" : "Add to cart"}
                   </button>
                 </div>
               </div>
