@@ -149,44 +149,9 @@ export default function Products({ toastRef }) {
       <Navbar />
       <div style={{ height: "20px" }}></div>
 
-      {/* Banner */}
-      <h2
-        style={{
-          textAlign: "center",
-          fontFamily: "'Pacifico', cursive",
-          fontSize: "1.2rem",
-          color: "#ff4d6d",
-          textShadow: "2px 2px 6px rgba(0,0,0,0.15)",
-          margin: "40px 0",
-        }}
-      >
-        Discover Our Flavors
-      </h2>
+     
 
-      {/* Video */}
-      <div className="container text-center">
-        <div
-          className="videoContainer"
-          style={{
-            position: "relative",
-            maxWidth: "800px",
-            margin: "0 auto",
-            borderRadius: "20px",
-            overflow: "hidden",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-          }}
-        >
-          <video
-            src={icecreamGGG}
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{ width: "100%", height: "auto", display: "block", borderRadius: "20px" }}
-          />
-        </div>
-      </div>
+      
 
       {/* Best Sellers */}
       <h2
