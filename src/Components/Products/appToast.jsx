@@ -62,21 +62,30 @@ const AppToast = forwardRef((props, ref) => {
       <Toast.Viewport className="toast-viewport" />
 
       <style>{`
-        .toast-root {
-          background: linear-gradient(135deg, #ff4d6d, #ff6f91);
-          color: #F5F5F5;
-          border-radius: 18px;
-          padding: 16px 24px;
-          width: clamp(350px, 90%, 350px);
-          height: 55px;
-          box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          position: relative;
-          font-family: 'SF Pro', sans-serif;
-          animation: slideUp 0.4s ease-out;
-        }
+       .toast-root {
+  background: linear-gradient(135deg, #ff4d6d, #ff6f91);
+  color: #F5F5F5;
+  border-radius: 18px;
+  padding: 16px 24px;
+  width: clamp(350px, 90%, 350px);
+  height: 55px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  font-family: 'SF Pro', sans-serif;
+  
+  /* Fixed slide up */
+  transform: translateY(120px);
+  opacity: 0;
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(120px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
 
         .toast-close {
           background: transparent;
@@ -88,7 +97,7 @@ const AppToast = forwardRef((props, ref) => {
 
         .toast-viewport {
           position: fixed;
-          bottom: 20px;
+          bottom: 40px;
           left: 50%;
           transform: translateX(-50%);
           display: flex;
@@ -103,15 +112,7 @@ const AppToast = forwardRef((props, ref) => {
 
         
 
-        @keyframes slideUp {
-          from { transform: translateY(120px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes progress {
-          from { width: 100%; }
-          to { width: 0%; }
-        }
+       
       `}</style>
     </Toast.Provider>
   );
