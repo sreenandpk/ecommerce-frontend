@@ -24,6 +24,7 @@ const AppToast = forwardRef((props, ref) => {
         open={open}
         onOpenChange={setOpen}
         duration={5000}
+        swipeDirection="down"
         className="toast-root"
       >
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
