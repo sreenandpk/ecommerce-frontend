@@ -16,7 +16,7 @@ const AppToast = forwardRef((props, ref) => {
   }));
 
   return (
-    <Toast.Provider swipeDirection="right" duration={4000}>
+    <Toast.Provider swipeDirection="right" duration={2000}>
       <Toast.Root
         open={open}
         onOpenChange={setOpen}

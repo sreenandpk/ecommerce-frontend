@@ -3,7 +3,7 @@ import axios from "axios";
 import registerAnimation from "../../../jsonAnimation/Register.json"
 import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
-
+import { BASE_URL } from "../../Components/Fetch/FetchUser";
 
  function Register(){
      const savedUser=JSON.parse(localStorage.getItem("existingUser"));
@@ -55,7 +55,7 @@ const navigate=useNavigate()
             }
             
 
-         const existing=await axios.get(`https://fake-backend-2.onrender.com/users?email=${email}`);
+         const existing=await axios.get(`${BASE_URL}/users?email=${email}`);
 
            if(existing.data.length>0){
             setError("user with this email olready exist");
@@ -65,7 +65,7 @@ const navigate=useNavigate()
          
            
 
-        await axios.post("https://fake-backend-2.onrender.com/users",{name,email,password,cart,wishlist,recentlyViewed,myOrders,booking,payment,block,image});
+        await axios.post(`${BASE_URL}/users`,{name,email,password,cart,wishlist,recentlyViewed,myOrders,booking,payment,block,image});
        
        
         setEmail("");
