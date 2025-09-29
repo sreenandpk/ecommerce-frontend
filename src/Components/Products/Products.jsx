@@ -236,7 +236,7 @@ export default function Products({ toastRef }) {
 
       {/* Flavor Filters */}
       <div
-        className="container d-flex flex-nowrap gap-5 mt-4"
+        className="container d-flex flex-nowrap gap-3 mt-4"
         style={{ overflowX: "auto", paddingBottom: "5px", WebkitOverflowScrolling: "touch" }}
       >
         {[
