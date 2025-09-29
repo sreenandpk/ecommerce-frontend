@@ -76,8 +76,7 @@ export default function Products({ toastRef }) {
     try {
       const savedUser = JSON.parse(localStorage.getItem("existingUser"));
       if (!savedUser) {
-        toastRef.current.showToast("Login first");
-        navigate("/login");
+        toastRef.current.showToast("Login first", { label: "Login", onClick: () => navigate("/login") });
         return;
       }
       const user = await fetchUser(savedUser.id);
@@ -91,7 +90,11 @@ export default function Products({ toastRef }) {
 
       setCartCount(updatedUser.cart.length);
       setCartItems(updatedCart);
-      toastRef.current.showToast(`${item.name} ${exists ? "removed from" : "added to"} cart`);
+
+      toastRef.current.showToast(
+        `${item.name} ${exists ? "removed" : "added "}`,
+        { label: exists ? "Go to Cart" : "View Cart", onClick: () => navigate("/cart") }
+      );
     } catch (err) {
       console.log("error in cart update", err);
     }
@@ -110,8 +113,7 @@ export default function Products({ toastRef }) {
     try {
       const savedUser = JSON.parse(localStorage.getItem("existingUser"));
       if (!savedUser) {
-        toastRef.current.showToast("Login first");
-        navigate("/login");
+        toastRef.current.showToast("Login first", { label: "Login", onClick: () => navigate("/login") });
         return;
       }
       const user = await fetchUser(savedUser.id);
@@ -199,15 +201,15 @@ export default function Products({ toastRef }) {
           {bestSellerProducts.map((item, index) => (
             <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
               <div
-                 onClick={() => navigate(`/productDetails/${item.id}`)}
-  className="card shadow-sm h-100 border-0 best-seller-card"
-  style={{
-    borderRadius: "20px",
-    cursor: "pointer",
-    overflow: "hidden",
-    backgroundColor: "#fff8f0",
-    transition: "all 0.3s ease",
-  }}
+                onClick={() => navigate(`/productDetails/${item.id}`)}
+                className="card shadow-sm h-100 border-0 best-seller-card"
+                style={{
+                  borderRadius: "20px",
+                  cursor: "pointer",
+                  overflow: "hidden",
+                  backgroundColor: "#fff8f0",
+                  transition: "all 0.3s ease",
+                }}
               >
                 <img
                   src={item.image}
@@ -323,34 +325,32 @@ export default function Products({ toastRef }) {
                   <p style={{ fontWeight: "600", fontSize: "1.3rem", color: "#1e3253", margin: "8px 0" }}>
                     ₹{item.price}
                   </p>
-<button
-  onClick={() => handleCartClick(item)}
-  className="btn mt-2 product-btn"
-  style={{
-    backgroundColor: "black",
-    color: "#fff",
-    borderRadius: "20px",
-    padding: "8px 0",
-    width: "clamp(120px, 50%, 180px)", // give a bit more width
-    fontSize: "0.7rem",                // small but fixed font
-    fontWeight: 500,
-    whiteSpace: "nowrap",              // prevent text wrapping
-    overflow: "hidden",
-    textOverflow: "ellipsis",          // truncate if needed
-  }}
->
-  {cartItems.some((p) => p.id === item.id) ? "Remove" : "Add to cart"}
-</button>
-
-
-
+                  <button
+                    onClick={() => handleCartClick(item)}
+                    className="btn mt-2 product-btn"
+                    style={{
+                      backgroundColor: "black",
+                      color: "#fff",
+                      borderRadius: "20px",
+                      padding: "8px 0",
+                      width: "clamp(120px, 50%, 180px)",
+                      fontSize: "0.7rem",
+                      fontWeight: 500,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {cartItems.some((p) => p.id === item.id) ? "Remove" : "Add to cart"}
+                  </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
-<div style={{height:'20px'}}></div>
+
+      <div style={{ height: "20px" }}></div>
       <Footer />
 
       {/* Radix Dialog for confirmation */}
@@ -441,11 +441,12 @@ export default function Products({ toastRef }) {
           .wishlist-icon { width: 24px !important; height: 24px !important; }
           .product-btn { font-size: 0.9rem !important; padding: 10px 0 !important; }
         }
-          .best-seller-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-}
+        .best-seller-card:hover {
+          transform: scale(1.05);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
       `}</style>
+
       <ScrollToTop />
     </>
   );

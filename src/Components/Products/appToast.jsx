@@ -5,9 +5,12 @@ import { CheckCircle2 } from "lucide-react"; // optional icon
 const AppToast = forwardRef((props, ref) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [buttonConfig, setButtonConfig] = useState(null);
 
-  const showToast = (msg) => {
+  // Function to show toast with optional button
+  const showToast = (msg, btnConfig = null) => {
     setMessage(msg);
+    setButtonConfig(btnConfig);
     setOpen(true);
   };
 
@@ -16,21 +19,38 @@ const AppToast = forwardRef((props, ref) => {
   }));
 
   return (
-    <Toast.Provider swipeDirection="right" duration={2000}>
+    <Toast.Provider swipeDirection="down" duration={5000}>
       <Toast.Root
         open={open}
         onOpenChange={setOpen}
-        duration={4000}
+        duration={5000}
         className="toast-root"
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <CheckCircle2 size={22} />
           <Toast.Title style={{ fontWeight: 600, fontSize: "0.7rem" }}>
             {message}
           </Toast.Title>
         </div>
 
-        <Toast.Close className="toast-close">×</Toast.Close>
+        {/* Dynamic button */}
+        {buttonConfig && (
+          <button
+            onClick={() => buttonConfig.onClick && buttonConfig.onClick()}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "#303030ff",
+              cursor: "pointer",
+              fontWeight: 600,
+              fontSize:'0.8rem'
+            }}
+          >
+            {buttonConfig.label}
+          </button>
+        )}
+
+       
 
         {/* Progress Bar */}
         <div className="toast-progress"></div>
@@ -44,16 +64,15 @@ const AppToast = forwardRef((props, ref) => {
           color: #fff;
           border-radius: 18px;
           padding: 16px 24px;
-          width: 350px;
-          max-width: 90vw; /* responsive for mobile */
-          height: 70px;
+          width: clamp(350px, 90%, 350px);
+          height: 55px;
           box-shadow: 0 15px 40px rgba(0,0,0,0.3);
           display: flex;
           align-items: center;
           justify-content: space-between;
           position: relative;
           font-family: 'SF Pro', sans-serif;
-          animation: slideIn 0.4s ease-out;
+          animation: slideUp 0.4s ease-out;
         }
 
         .toast-close {
@@ -66,12 +85,17 @@ const AppToast = forwardRef((props, ref) => {
 
         .toast-viewport {
           position: fixed;
-          top: 20px;
-          right: 20px;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
           display: flex;
           flex-direction: column;
+          align-items: center;
           gap: 12px;
           z-index: 9999;
+          width: auto;
+          max-width: 90vw;
+          padding: 0 12px;
         }
 
         .toast-progress {
@@ -81,14 +105,14 @@ const AppToast = forwardRef((props, ref) => {
           height: 4px;
           background: rgba(255,255,255,0.8);
           width: 100%;
-          animation: progress 4s linear forwards;
+          animation: progress 5s linear forwards;
           border-bottom-left-radius: 18px;
           border-bottom-right-radius: 18px;
         }
 
-        @keyframes slideIn {
-          from { transform: translateX(120%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
+        @keyframes slideUp {
+          from { transform: translateY(120px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes progress {
