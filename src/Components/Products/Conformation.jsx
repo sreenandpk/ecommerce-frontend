@@ -21,13 +21,14 @@ export default function ConfirmRemove({ onConfirm, itemName }) {
 
           <div className="mt-4 flex justify-end gap-2">
             <Dialog.Close asChild>
-              <button className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+              <button className="px-3 py-1 bg-gray-300 rounded">Cancel</button>
             </Dialog.Close>
             <button
               onClick={() => {
                 onConfirm();
               }}
-              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              className="px-3 py-1  text-white rounded"
+              style={{ background:' linear-gradient(135deg, #ff4d6d, #ff6f91)'}}
             >
               Remove
             </button>
