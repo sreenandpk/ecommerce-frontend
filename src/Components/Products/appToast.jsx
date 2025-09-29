@@ -63,7 +63,7 @@ const AppToast = forwardRef((props, ref) => {
       <Toast.Viewport className="toast-viewport" />
 
       <style>{`
-       .toast-root {
+ .toast-root {
   background: linear-gradient(135deg, #ff4d6d, #ff6f91);
   color: #F5F5F5;
   border-radius: 18px;
@@ -77,39 +77,32 @@ const AppToast = forwardRef((props, ref) => {
   position: relative;
   font-family: 'SF Pro', sans-serif;
   
-  /* Fixed slide up */
-  transform: translateY(120px);
+  /* Slide-up animation */
+  transform: translateY(40px); /* smaller initial offset */
   opacity: 0;
-  animation: slideUp 0.4s ease-out forwards;
+  animation: slideUp 0.5s ease-out forwards; /* slightly slower for smoothness */
 }
 
 @keyframes slideUp {
-  from { transform: translateY(120px); opacity: 0; }
+  from { transform: translateY(40px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
-        .toast-close {
-          background: transparent;
-          border: none;
-          color: #fff;
-          cursor: pointer;
-          font-size: 20px;
-        }
+.toast-viewport {
+  position: fixed;
+  bottom: 80px; /* moved higher */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 9999;
+  width: auto;
+  max-width: 90vw;
+  padding: 0 12px;
+}
 
-        .toast-viewport {
-          position: fixed;
-          bottom: 40px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 12px;
-          z-index: 9999;
-          width: auto;
-          max-width: 90vw;
-          padding: 0 12px;
-        }
 
         
 
