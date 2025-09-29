@@ -269,7 +269,7 @@ export default function Products({ toastRef }) {
 
       {/* Products Grid */}
       <div className="container mt-4">
-        <div className="row justify-content-center g-3">
+        <div className="row justify-content-center g-5">
           {(filtered.length > 0 ? filtered : products).map((item, index) => (
             <div key={index} className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
               <div
@@ -331,20 +331,24 @@ export default function Products({ toastRef }) {
                   <p style={{ fontWeight: "600", fontSize: "1.3rem", color: "#1e3253", margin: "8px 0" }}>
                     ₹{item.price}
                   </p>
-                  <button
-                    onClick={() => handleCartClick(item)}
-                    className="btn w-100 mt-2 product-btn"
-                    style={{
-                      backgroundColor: "black",
-                      color: "#fff",
-                      borderRadius: "20px",
-                      padding: "7px 0",
-                      fontSize: "0.70rem",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {cartItems.some((p) => p.id === item.id) ? "Remove from cart" : "Add to cart"}
-                  </button>
+<button
+  onClick={() => handleCartClick(item)}
+  className="btn mt-2 product-btn"
+  style={{
+    backgroundColor: "black",
+    color: "#fff",
+    borderRadius: "20px",
+    padding: "7px 0",
+    width: "clamp(100px, 50%, 160px)",   // responsive width
+    fontSize: "clamp(0.75rem, 2vw, 0.9rem)", // responsive font
+    fontWeight: 500,
+  }}
+>
+  {cartItems.some((p) => p.id === item.id) ? "Remove from cart" : "Add to cart"}
+</button>
+
+
+
                 </div>
               </div>
             </div>
