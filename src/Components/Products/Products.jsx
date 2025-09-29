@@ -269,7 +269,7 @@ export default function Products({ toastRef }) {
 
       {/* Products Grid */}
       <div className="container mt-4">
-        <div className="row justify-content-center g-3">
+        <div className="row justify-content-center g-2">
           {(filtered.length > 0 ? filtered : products).map((item, index) => (
             <div key={index} className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
               <div
