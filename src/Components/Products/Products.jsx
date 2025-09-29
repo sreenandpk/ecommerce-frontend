@@ -177,7 +177,7 @@ export default function Products({ toastRef }) {
               fontFamily: "SF Pro, -apple-system, sans-serif",
               flex: "0 0 auto",
               minWidth: "120px",
-              padding: "10px 0",
+              padding: "8px 0",
               fontSize: "1rem",
               textAlign: "center",
             }}
