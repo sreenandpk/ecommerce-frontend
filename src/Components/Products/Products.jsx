@@ -282,14 +282,6 @@ export default function Products({ toastRef }) {
                   transition: "transform 0.2s, box-shadow 0.2s",
                   cursor: "pointer",
                 }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = "scale(1.05)";
-                  e.currentTarget.style.boxShadow = "0 10px 10px rgba(0,0,0,0.15)";
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
-                }}
               >
                 <div className="d-flex justify-content-center align-items-center p-3 position-relative" style={{ background: "#fff8f0" }}>
                   <img
