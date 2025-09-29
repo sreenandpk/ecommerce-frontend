@@ -269,13 +269,13 @@ export default function Products({ toastRef }) {
 
       {/* Products Grid */}
       <div className="container mt-4">
-        <div className="row justify-content-center g-4">
+        <div className="row justify-content-center g-3">
           {(filtered.length > 0 ? filtered : products).map((item, index) => (
             <div key={index} className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
               <div
                 className="card shadow-sm border-0 w-100"
                 style={{
-                  maxWidth: "270px",
+                  maxWidth: "260px",
                   borderRadius: "20px",
                   overflow: "hidden",
                   backgroundColor: "#fff",
@@ -284,7 +284,7 @@ export default function Products({ toastRef }) {
                 }}
                 onMouseOver={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
-                  e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.15)";
+                  e.currentTarget.style.boxShadow = "0 10px 10px rgba(0,0,0,0.15)";
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.transform = "scale(1)";
