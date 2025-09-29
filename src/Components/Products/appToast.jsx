@@ -26,7 +26,7 @@ const AppToast = forwardRef((props, ref) => {
         duration={5000}
         className="toast-root"
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <CheckCircle2 size={22} />
           <Toast.Title style={{ fontWeight: 600, fontSize: "0.7rem" }}>
             {message}
