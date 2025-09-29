@@ -338,13 +338,16 @@ export default function Products({ toastRef }) {
     backgroundColor: "black",
     color: "#fff",
     borderRadius: "20px",
-    padding: "7px 0",
-    width: "clamp(100px, 50%, 160px)",   // responsive width
-    fontSize: "clamp(0.75rem, 2vw, 0.9rem)", // responsive font
+    padding: "8px 0",
+    width: "clamp(120px, 50%, 180px)", // give a bit more width
+    fontSize: "0.7rem",                // small but fixed font
     fontWeight: 500,
+    whiteSpace: "nowrap",              // prevent text wrapping
+    overflow: "hidden",
+    textOverflow: "ellipsis",          // truncate if needed
   }}
 >
-  {cartItems.some((p) => p.id === item.id) ? "Remove from cart" : "Add to cart"}
+  {cartItems.some((p) => p.id === item.id) ? "Remove" : "Add to cart"}
 </button>
 
 
