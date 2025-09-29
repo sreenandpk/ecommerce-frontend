@@ -153,54 +153,7 @@ export default function Products({ toastRef }) {
 
       
 
-      {/* Best Sellers */}
-      <h2
-        className="text-center mb-4 mt-3 fw-bold text-dark"
-        style={{ fontFamily: "Poppins, sans-serif", color: "#1e3253" }}
-      >
-        Best Sellers
-      </h2>
-
-      <div className="container">
-        <div className="row g-4 justify-content-center">
-          {bestSellerProducts.map((item, index) => (
-            <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
-              <div
-                onClick={() => navigate(`/productDetails/${item.id}`)}
-                className="card shadow-sm h-100 border-0 best-seller-card"
-                style={{
-                  borderRadius: "20px",
-                  cursor: "pointer",
-                  overflow: "hidden",
-                  backgroundColor: "#fff8f0",
-                  transition: "all 0.3s ease",
-                }}
-              >
-                <img
-                  src={item.image}
-                  className="card-img-top"
-                  alt={item.name}
-                  style={{ height: "130px", objectFit: "contain", padding: "10px" }}
-                />
-                <div className="card-body text-center p-2">
-                  <h6
-                    className="card-title mb-4"
-                    style={{
-                      textAlign: "center",
-                      fontFamily: "revert-layer",
-                      fontSize: "13px",
-                      color: "#0a2141",
-                    }}
-                  >
-                    {item.name}
-                  </h6>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
+    
       {/* Flavor Filters */}
       <div
         className="container d-flex flex-nowrap gap-2 mt-4"
