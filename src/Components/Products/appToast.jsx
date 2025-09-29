@@ -83,7 +83,7 @@ const AppToast = forwardRef((props, ref) => {
 
 .toast-viewport {
   position: fixed;
-  bottom: 60px;
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
