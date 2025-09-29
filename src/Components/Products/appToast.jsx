@@ -34,21 +34,24 @@ const AppToast = forwardRef((props, ref) => {
         </div>
 
         {/* Dynamic button */}
-        {buttonConfig && (
-          <button
-            onClick={() => buttonConfig.onClick && buttonConfig.onClick()}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#303030ff",
-              cursor: "pointer",
-              fontWeight: 600,
-              fontSize:'0.8rem'
-            }}
-          >
-            {buttonConfig.label}
-          </button>
-        )}
+      {buttonConfig && (
+  <button 
+    onClick={() => {
+      if (buttonConfig.onClick) buttonConfig.onClick(); // navigate or custom action
+      setOpen(false); // close the toast
+    }}
+    style={{
+      background: "transparent",
+      border: "none",
+      color: "#303030ff",
+      cursor: "pointer",
+      fontWeight: 600,
+      fontSize:'0.8rem'
+    }}
+  >
+    {buttonConfig.label}
+  </button>
+)}
 
        
 
@@ -61,7 +64,7 @@ const AppToast = forwardRef((props, ref) => {
       <style>{`
         .toast-root {
           background: linear-gradient(135deg, #ff4d6d, #ff6f91);
-          color: #fff;
+          color: #303030ff;
           border-radius: 18px;
           padding: 16px 24px;
           width: clamp(350px, 90%, 350px);
@@ -103,7 +106,7 @@ const AppToast = forwardRef((props, ref) => {
           bottom: 0;
           left: 0;
           height: 4px;
-          background: rgba(255,255,255,0.8);
+          background: #303030ff;
           width: 100%;
           animation: progress 5s linear forwards;
           border-bottom-left-radius: 18px;
