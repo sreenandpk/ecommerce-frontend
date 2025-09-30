@@ -4,10 +4,11 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { SearchContext } from "../Components/SearchContext/SearchContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search } from "@mui/icons-material";
-import profile from "../../homeImages/profileDD.jpeg";
+import Dprofile from "../../homeImages/profileDD.jpeg";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import { useSpring, animated } from "@react-spring/web";
 import { Dropdown } from "react-bootstrap";
+import { fetchUser } from "../Components/Fetch/FetchUser";
 
 export default function Navbar() {
   const [visible, setVisible] = useState(true); // desktop navbar visibility
@@ -17,6 +18,7 @@ export default function Navbar() {
   const { setSearchValue, cartCount = 0, wishlistIds = [] } = useContext(SearchContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [profileImage,setProfileImage]=useState("")
 
   // ✅ store only userId instead of full user object
   const [savedUserId, setSavedUserId] = useState(JSON.parse(localStorage.getItem("userId")));
@@ -67,6 +69,26 @@ export default function Navbar() {
     opacity: mobileVisible ? 1 : 0,
     config: { tension: 220, friction: 25 },
   });
+
+ useEffect(() => {
+  async function userImage() {
+    if (!savedUserId) return;
+    try {
+      const res = await fetchUser(savedUserId);
+      setProfileImage(res.image);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  userImage(); // initial fetch
+
+  // ✅ listen for profile updates
+  const handleProfileUpdate = () => userImage();
+  window.addEventListener("profileUpdated", handleProfileUpdate);
+
+  return () => window.removeEventListener("profileUpdated", handleProfileUpdate);
+}, [savedUserId]);
 
   return (
     <>
@@ -125,7 +147,7 @@ export default function Navbar() {
             {/* Profile Dropdown */}
             <Dropdown align="end">
               <Dropdown.Toggle style={{ border: "none", background: "transparent", padding: 0 }}>
-                <img src={profile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
+                <img src={profileImage||Dprofile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ background: "#fff8f0" }}>
@@ -163,7 +185,7 @@ export default function Navbar() {
               {/* Profile Dropdown */}
               <Dropdown align="end">
                 <Dropdown.Toggle style={{ border: "none", background: "transparent", padding: 0 }}>
-                  <img src={profile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
+                  <img src={profileImage||Dprofile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu style={{ background: "#fff8f0", textAlign: "center" }}>

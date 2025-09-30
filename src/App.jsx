@@ -119,7 +119,7 @@ const toastRef = useRef();
           <Route path="/search" element={<FilteredSearchProducts />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/productDetails/:id" element={<ProductDetails />} />
+          <Route path="/productDetails/:id" element={<ProductDetails toastRef={toastRef} />} />
           <Route path="/" element={<Home />} />
           <Route path="/category" element={<Category />} />
           <Route path="/recentlyViewed" element={<Recent />} />
