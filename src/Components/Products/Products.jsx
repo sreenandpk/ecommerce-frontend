@@ -16,7 +16,7 @@ export default function Products({ toastRef }) {
   const { wishlistIds = [], setWishlistIds, setCartCount } = useContext(SearchContext);
   const [active, setActive] = useState("");
   const [cartItems, setCartItems] = useState(
-    JSON.parse(localStorage.getItem("existingUser"))?.cart || []
+    JSON.parse(localStorage.getItem("userId"))?.cart || []
   );
   const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
   const navigate = useNavigate();
@@ -65,27 +65,32 @@ export default function Products({ toastRef }) {
   // Add / Remove Cart
   const handleCartClick = (item) => {
     const exists = cartItems.some((p) => p.id === item.id);
+
     if (exists) {
+      // ✅ confirmation only for remove
       setConfirmDialog({ open: true, item, type: "cart" });
     } else {
+      // ✅ add immediately
       addtoCart(item);
     }
   };
 
   const addtoCart = async (item) => {
     try {
-      const savedUser = JSON.parse(localStorage.getItem("existingUser"));
-      if (!savedUser) {
+      const savedUserId = JSON.parse(localStorage.getItem("userId"));
+      if (!savedUserId) {
         toastRef.current.showToast("Login first", { label: "Login", onClick: () => navigate("/login") });
         return;
       }
-      const user = await fetchUser(savedUser.id);
+      const user = await fetchUser(savedUserId);
       const exists = user.cart.some((p) => p.id === item.id);
       const updatedCart = exists ? user.cart.filter((p) => p.id !== item.id) : [...user.cart, item];
 
-      await updateUser(savedUser.id, { cart: updatedCart });
+      await updateUser(savedUserId, { cart: updatedCart });
       const updatedUser = { ...user, cart: updatedCart };
-      localStorage.setItem("existingUser", JSON.stringify(updatedUser));
+
+      // ✅ only save id in localStorage
+      localStorage.setItem("userId", JSON.stringify(updatedUser.id));
       localStorage.setItem("cartTotalLength", updatedUser.cart.length);
 
       setCartCount(updatedUser.cart.length);
@@ -95,6 +100,10 @@ export default function Products({ toastRef }) {
         `${item.name} ${exists ? "removed" : "added "}`,
         { label: exists ? "Go to Cart" : "View Cart", onClick: () => navigate("/cart") }
       );
+          // ✅ Vibration on click (200ms)
+    if (navigator.vibrate) {
+      navigator.vibrate([100, 50, 100])
+    }
     } catch (err) {
       console.log("error in cart update", err);
     }
@@ -111,28 +120,29 @@ export default function Products({ toastRef }) {
 
   const wishListFn = async (item) => {
     try {
-      const savedUser = JSON.parse(localStorage.getItem("existingUser"));
-      if (!savedUser) {
+      const savedUserId = JSON.parse(localStorage.getItem("userId"));
+      if (!savedUserId) {
         toastRef.current.showToast("Login first", { label: "Login", onClick: () => navigate("/login") });
         return;
       }
-      const user = await fetchUser(savedUser.id);
+      const user = await fetchUser(savedUserId);
       const newUserWishlist = [...user.wishlist];
       const alreadyAdded = newUserWishlist.some((element) => element.id === item.id);
 
       if (alreadyAdded) {
         const newWishlist = newUserWishlist.filter((i) => i.id !== item.id);
-        await updateUser(savedUser.id, { wishlist: newWishlist });
+        await updateUser(savedUserId, { wishlist: newWishlist });
         setWishlistIds((prev) => prev.filter((id) => id !== item.id));
-        localStorage.setItem("existingUser", JSON.stringify({ ...user, wishlist: newWishlist }));
         toastRef.current.showToast(`${item.name} removed from wishlist`);
       } else {
         newUserWishlist.push(item);
-        await updateUser(savedUser.id, { wishlist: newUserWishlist });
+        await updateUser(savedUserId, { wishlist: newUserWishlist });
         setWishlistIds((prev) => [...prev, item.id]);
-        localStorage.setItem("existingUser", JSON.stringify({ ...user, wishlist: newUserWishlist }));
         toastRef.current.showToast(`${item.name} added to wishlist`);
       }
+          if (navigator.vibrate) {
+      navigator.vibrate([100, 50, 100])
+    }
     } catch {
       console.log("error in wishlist toggle");
     }
@@ -149,11 +159,6 @@ export default function Products({ toastRef }) {
       <Navbar />
       <div style={{ height: "20px" }}></div>
 
-     
-
-      
-
-    
       {/* Flavor Filters */}
       <div
         className="container d-flex flex-nowrap gap-2 mt-4"
@@ -352,7 +357,6 @@ export default function Products({ toastRef }) {
         </Dialog.Content>
       </Dialog.Root>
 
-      {/* Responsive Tweaks */}
       <style>{`
         @media (max-width: 576px) {
           .card { max-width: 100% !important; }

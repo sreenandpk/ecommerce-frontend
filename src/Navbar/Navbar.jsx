@@ -17,7 +17,10 @@ export default function Navbar() {
   const { setSearchValue, cartCount = 0, wishlistIds = [] } = useContext(SearchContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const [savedUser, setSavedUser] = useState(JSON.parse(localStorage.getItem("existingUser")));
+
+  // ✅ store only userId instead of full user object
+  const [savedUserId, setSavedUserId] = useState(JSON.parse(localStorage.getItem("userId")));
+
   const lastScrollY = useRef(0);
 
   const active =
@@ -122,7 +125,7 @@ export default function Navbar() {
             {/* Profile Dropdown */}
             <Dropdown align="end">
               <Dropdown.Toggle style={{ border: "none", background: "transparent", padding: 0 }}>
-                <img src={savedUser?.image || profile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
+                <img src={profile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ background: "#fff8f0" }}>
@@ -130,15 +133,15 @@ export default function Navbar() {
                 <Dropdown.Item onClick={() => navigate("/myOrders")}>My Orders</Dropdown.Item>
                 <Dropdown.Item
                   onClick={() => {
-                    if (!savedUser) navigate("/login");
+                    if (!savedUserId) navigate("/login");
                     else {
-                      localStorage.removeItem("existingUser");
-                      setSavedUser(null);
+                      localStorage.removeItem("userId");
+                      setSavedUserId(null);
                       navigate("/login");
                     }
                   }}
                 >
-                  {savedUser ? "Logout" : "Login"}
+                  {savedUserId ? "Logout" : "Login"}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -160,7 +163,7 @@ export default function Navbar() {
               {/* Profile Dropdown */}
               <Dropdown align="end">
                 <Dropdown.Toggle style={{ border: "none", background: "transparent", padding: 0 }}>
-                  <img src={savedUser?.image || profile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
+                  <img src={profile} style={{ height: "45px", width: "45px", borderRadius: "50%", border: "1px solid gray" }} />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu style={{ background: "#fff8f0", textAlign: "center" }}>
@@ -174,15 +177,15 @@ export default function Navbar() {
                   <Dropdown.Item onClick={() => navigate("/myOrders")}>My Orders</Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
-                      if (!savedUser) navigate("/login");
+                      if (!savedUserId) navigate("/login");
                       else {
-                        localStorage.removeItem("existingUser");
-                        setSavedUser(null);
+                        localStorage.removeItem("userId");
+                        setSavedUserId(null);
                         navigate("/login");
                       }
                     }}
                   >
-                    {savedUser ? "Logout" : "Login"}
+                    {savedUserId ? "Logout" : "Login"}
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

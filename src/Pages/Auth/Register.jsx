@@ -5,8 +5,8 @@ import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../Components/Fetch/FetchUser";
 
- function Register(){
-     const savedUser=JSON.parse(localStorage.getItem("existingUser"));
+function Register(){
+    const savedUserId = JSON.parse(localStorage.getItem("userId")); // ✅ only store id
     const [name,setName]=useState("")
     const [email,setEmail]=useState("")
     const [password,setPassword]=useState("")
@@ -14,7 +14,7 @@ import { BASE_URL } from "../../Components/Fetch/FetchUser";
     const [error,setError]=useState("");
     const [showPassword,setShowPassword]=useState(false);
 
-const navigate=useNavigate()
+    const navigate=useNavigate()
     const cart=[];
     const wishlist=[];
     const recentlyViewed=[];
@@ -25,24 +25,17 @@ const navigate=useNavigate()
     const image="";
         
     useEffect(function(){
-   
-
-    if(savedUser){
-      navigate("/")
-    }
-
-  },[])
-
-
+      if(savedUserId){
+        navigate("/")
+      }
+    },[])
 
     const submit= async function(event){
-
         event.preventDefault();
         setError("")
 
         try{
-
-            const regEx=/^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!%&])(?=.*\d).{8,}$/
+            const regEx=/^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!%&])(?=.*\d).{8,}$/;
 
             if(!regEx.test(password)){
                 setError("Password must include small letter, capital letter, digit, and special character");
@@ -50,42 +43,37 @@ const navigate=useNavigate()
             }
 
             if(confirmPassword!==password) {
-                setError("password and cofirm password must be same");
+                setError("password and confirm password must be same");
                 return;
             }
             
+            const existing=await axios.get(`${BASE_URL}/users?email=${email}`);
+            if(existing.data.length>0){
+                setError("user with this email already exist");
+                return;
+            }
 
-         const existing=await axios.get(`${BASE_URL}/users?email=${email}`);
+            // ✅ Save user, then only put id in localStorage
+            const res = await axios.post(`${BASE_URL}/users`,{
+              name,email,password,cart,wishlist,recentlyViewed,myOrders,booking,payment,block,image
+            });
 
-           if(existing.data.length>0){
-            setError("user with this email olready exist");
-            return;
-           }
-
-         
-           
-
-        await axios.post(`${BASE_URL}/users`,{name,email,password,cart,wishlist,recentlyViewed,myOrders,booking,payment,block,image});
+            localStorage.setItem("userId", JSON.stringify(res.data.id)); // ✅ only id stored
        
-       
-        setEmail("");
-        setName("")
-        setPassword("")
-        setConfirmPassword("");
-       console.log("registraion success");
-       setError("");
-       navigate("/login")
+            setEmail("");
+            setName("")
+            setPassword("")
+            setConfirmPassword("");
+            console.log("registration success");
+            setError("");
+            navigate("/login")
         }catch(err){
-    const errorMessage = err.response?.data?.message || err.message || "Error registering user";
-    setError(errorMessage);
-    console.log(err);
-}
-
-
+            const errorMessage = err.response?.data?.message || err.message || "Error registering user";
+            setError(errorMessage);
+            console.log(err);
+        }
     }
     
-    
-
     return(
    <>
   <div
@@ -96,7 +84,6 @@ const navigate=useNavigate()
       justifyContent: "center",
       minHeight: "100vh",
       padding: "20px",
-    
     }}
   >
     {/* Animation */}
@@ -227,12 +214,7 @@ const navigate=useNavigate()
     </form>
   </div>
 </>
-
-        
     )
+}
 
-
-
- }
-
- export default Register;
+export default Register;

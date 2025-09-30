@@ -42,12 +42,13 @@ export default function Home() {
   // Check if user is blocked
   useEffect(() => {
     async function fetchUserBlocked() {
-      const savedUser = JSON.parse(localStorage.getItem("existingUser"));
-      if (!savedUser) return;
-      const response = await fetchUser(savedUser.id);
+      const savedUserId = JSON.parse(localStorage.getItem("userId")); // <-- only store userId
+      if (!savedUserId) return;
+
+      const response = await fetchUser(savedUserId);
       if (response.block === true) {
         toast.info("Admin blocked");
-        localStorage.removeItem("existingUser");
+        localStorage.removeItem("userId"); // <-- remove only userId
         navigate("/login");
       }
     }
@@ -59,7 +60,7 @@ export default function Home() {
     const carouselElement = document.getElementById("icecreamCarousel");
     if (carouselElement) {
       new BootstrapCarousel(carouselElement, {
-        interval: 4000, // auto scroll every 2 seconds
+        interval: 4000, // auto scroll every 4 seconds
         ride: "carousel",
       });
     }

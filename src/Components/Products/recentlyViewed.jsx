@@ -1,32 +1,45 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SearchContext } from "../SearchContext/SearchContext";
 import Navbar from "../../Navbar/Navbar";
-import { updateUser } from "../Fetch/FetchUser";
+import { updateUser, fetchUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
 import ScrollToTop from "../ScrollTop";
 import Footer from "../Home/Footer";
+
 export default function RecentlyViewed() {
   const { recentlyViewedProduct, setRecentlyViewedProducts } = useContext(SearchContext);
-const navigate=useNavigate()
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // get userId from localStorage
+    const id = localStorage.getItem("userId");
+    setUserId(id);
+  }, []);
+
   const handleClearAll = async () => {
-    const savedUser = JSON.parse(localStorage.getItem("existingUser"));
-    await updateUser(savedUser.id, { recentlyViewed: [] });
-    localStorage.setItem(
-      "existingUser",
-      JSON.stringify({ ...savedUser, recentlyViewed: [] })
-    );
-    setRecentlyViewedProducts([]);
+    if (!userId) return;
+
+    try {
+      const user = await fetchUser(userId);
+      await updateUser(userId, { recentlyViewed: [] });
+      localStorage.setItem(
+        "existingUser",
+        JSON.stringify({ ...user, recentlyViewed: [] })
+      );
+      setRecentlyViewedProducts([]);
+    } catch (err) {
+      console.log("Error clearing recently viewed", err);
+    }
   };
 
   if (!recentlyViewedProduct || recentlyViewedProduct.length === 0) {
     return (
       <>
         <Navbar />
-        <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh'}}>
- <p className="text-center mt-3">No recently viewed products</p>
-
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh" }}>
+          <p className="text-center mt-3">No recently viewed products</p>
         </div>
-       
       </>
     );
   }
@@ -37,16 +50,12 @@ const navigate=useNavigate()
       <div style={{ height: "80px" }}></div>
       
       <div className="container my-4">
-        <h4 className="mb-4 fw-bold text-center">Recently Viewed </h4>
+        <h4 className="mb-4 fw-bold text-center">Recently Viewed</h4>
         <div className="d-flex justify-content-end mb-3">
           <button
             onClick={handleClearAll}
             className="btn btn-outline-danger btn-sm px-3 py-2 shadow-sm"
-            style={{
-              borderRadius: "50px",
-              transition: "all 0.3s ease",
-              fontWeight: "500",
-            }}
+            style={{ borderRadius: "50px", transition: "all 0.3s ease", fontWeight: "500" }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "#dc3545";
               e.currentTarget.style.color = "#fff";
@@ -62,18 +71,13 @@ const navigate=useNavigate()
           </button>
         </div>
 
-        {/* Horizontal scroll for small devices */}
+        {/* Grid for larger screens */}
         <div className="row g-3 d-none d-md-flex">
           {recentlyViewedProduct.map((item, index) => (
             <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
               <div
                 className="card h-100 shadow-sm border-0 text-center"
-                style={{
-                  borderRadius: "15px",
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  cursor: "pointer",
-                  background:'#fff8f0'
-                }}
+                style={{ borderRadius: "15px", transition: "transform 0.3s, box-shadow 0.3s", cursor: "pointer", background: '#fff8f0' }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
                   e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.2)";
@@ -82,12 +86,13 @@ const navigate=useNavigate()
                   e.currentTarget.style.transform = "scale(1)";
                   e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
                 }}
+                onClick={() => navigate(`/productDetails/${item.id}`)}
               >
                 <img
                   src={item.image}
                   className="card-img-top p-3"
                   alt={item.name}
-                  style={{ objectFit: "contain", height: "150px" }}onClick={()=>navigate(`/productDetails/${item.id}`)}
+                  style={{ objectFit: "contain", height: "150px" }}
                 />
                 <div className="card-body p-2">
                   <h6 className="card-title text-truncate">{item.name}</h6>
@@ -104,18 +109,13 @@ const navigate=useNavigate()
           style={{ display: "flex", gap: "10px", padding: "10px 0" }}
         >
           {recentlyViewedProduct
-            .slice() // clone so we don't mutate original array
+            .slice()
             .reverse()
             .map((item, index) => (
               <div
                 key={index}
                 className="card shadow-sm border-0 text-center"
-                style={{
-                  minWidth: "140px",
-                  borderRadius: "15px",
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  cursor: "pointer",
-                }}
+                style={{ minWidth: "140px", borderRadius: "15px", transition: "transform 0.3s, box-shadow 0.3s", cursor: "pointer" }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
                   e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.2)";
@@ -124,6 +124,7 @@ const navigate=useNavigate()
                   e.currentTarget.style.transform = "scale(1)";
                   e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
                 }}
+                onClick={() => navigate(`/productDetails/${item.id}`)}
               >
                 <img
                   src={item.image}
@@ -140,8 +141,8 @@ const navigate=useNavigate()
         </div>
       </div>
         
-        <Footer />
-        <ScrollToTop />
+      <Footer />
+      <ScrollToTop />
     </>
   );
 }
