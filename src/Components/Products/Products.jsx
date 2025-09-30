@@ -102,7 +102,7 @@ export default function Products({ toastRef }) {
       );
           // ✅ Vibration on click (200ms)
     if (navigator.vibrate) {
-      navigator.vibrate([100, 50, 100])
+      navigator.vibrate(50)
     }
     } catch (err) {
       console.log("error in cart update", err);
@@ -141,7 +141,7 @@ export default function Products({ toastRef }) {
         toastRef.current.showToast(`${item.name} added to wishlist`);
       }
           if (navigator.vibrate) {
-      navigator.vibrate([100, 50, 100])
+      navigator.vibrate(50)
     }
     } catch {
       console.log("error in wishlist toggle");
