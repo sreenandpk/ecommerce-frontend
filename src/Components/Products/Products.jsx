@@ -207,15 +207,15 @@ export default function Products({ toastRef }) {
           {(filtered.length > 0 ? filtered : products).map((item, index) => (
             <div key={index} className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center mt-5">
               <div
-                className="card shadow-sm border-0 w-100"
-                style={{
-                  maxWidth: "260px",
-                  borderRadius: "20px",
-                  overflow: "hidden",
-                  backgroundColor: "#fff",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                  cursor: "pointer",
-                }}
+               className="card shadow-sm border-0 w-100"
+  style={{
+    maxWidth: "260px",
+    borderRadius: "20px",
+    overflow: "hidden",
+    backgroundColor: "#fff",
+    transition: "transform 0.2s, box-shadow 0.2s",
+    cursor: "pointer",
+  }}
               >
                 <div className="d-flex justify-content-center align-items-center p-3 position-relative" style={{ background: "#fff8f0" }}>
                   <img
@@ -375,15 +375,22 @@ export default function Products({ toastRef }) {
       </Dialog.Root>
 
       <style>{`
-        @media (max-width: 576px) {
-          .card { max-width: 100% !important; }
-          .wishlist-icon { width: 24px !important; height: 24px !important; }
-          .product-btn { font-size: 0.9rem !important; padding: 10px 0 !important; }
-        }
-        .best-seller-card:hover {
-          transform: scale(1.05);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
+       @media (max-width: 576px) {
+    .card { max-width: 100% !important; }
+    .wishlist-icon { width: 24px !important; height: 24px !important; }
+    .product-btn { font-size: 0.9rem !important; padding: 10px 0 !important; }
+  }
+
+  /* Product card hover effect */
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  }
+
+  /* Optional: smooth transition */
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
       `}</style>
 
       <ScrollToTop />

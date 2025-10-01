@@ -9,7 +9,6 @@ import {
 } from "../Fetch/FetchUser";
 import Navbar from "../../Navbar/Navbar";
 import Footer from "../Home/Footer";
-import ScrollToTop from "../ScrollTop";
 import { FaStar } from "react-icons/fa";
 import profile from "../../../homeImages/profileDD.jpeg";
 import axios from "axios";
@@ -747,7 +746,7 @@ const confirmRemove = async () => {
       `}</style>
 
       <Footer />
-      <ScrollToTop />
+      
     </>
   );
 }
