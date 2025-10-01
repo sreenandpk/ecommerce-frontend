@@ -38,7 +38,12 @@ const [showImageModal, setShowImageModal] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
   const [currentUser, setCurrentUser] = useState(null);
-
+ 
+  
+  useEffect(() => {
+    // Scroll to top whenever the product ID changes
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id]);
   // Fetch current user
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -305,16 +310,6 @@ const confirmRemove = async () => {
         alt={product.name}
         className="image-modal-img"
       />
-
-      {/* Badges */}
-      <div className="d-flex flex-wrap justify-content-center mt-3 gap-2 w-100 px-3">
-         
-        <span className="badge bg-secondary">{product.category}</span>
-        {product.bestseller && (
-          <span className="badge bg-warning text-dark">Bestseller</span>
-        )}
-        
-      </div>
     </div>
   </div>
 )}
@@ -480,7 +475,7 @@ const confirmRemove = async () => {
                     className="card p-2 shadow-sm rounded-4"
                     style={{ minWidth: "180px", flexShrink: 0, background: '#fff8f0' }}
                   >
-                    <img
+                    <img onClick={() => navigate(`/productDetails/${item.id}`)}
                       src={item.image}
                       alt={item.name}
                       className="img-fluid rounded-4 mb-2"
@@ -534,7 +529,7 @@ const confirmRemove = async () => {
           className="card p-2 shadow-sm rounded-4"
           style={{ minWidth: "180px", flexShrink: 0, background: '#fff8f0' }}
         >
-          <img
+          <img onClick={() => navigate(`/productDetails/${item.id}`)}
             src={item.image}
             alt={item.name}
             className="img-fluid rounded-4 mb-2"
