@@ -320,17 +320,29 @@ export default function ProductDetails({ toastRef }) {
             </div>
           </div>
 
-          {/* Recommended */}
+ {/* Recommended */}
 {recommended.length > 0 && (
   <div className="mt-5">
     <h4>Recommended Flavors</h4>
     <div className="d-flex overflow-auto flex-nowrap gap-3 py-2 recommended-scroll">
       {recommended.map((item) => (
-        <div key={item.id} className="card p-2 shadow-sm rounded-4 recommended-card" style={{ minWidth: "180px", flex: "0 0 auto",background:'#fff8f0' }}>
-          <img src={item.image} alt={item.name} className="img-fluid recommended-image mb-2" />
+        <div
+          key={item.id}
+          className="card p-2 shadow-sm rounded-4 recommended-card"
+          style={{ minWidth: "180px", flex: "0 0 auto", background: '#fff8f0' }}
+        >
+          <img
+            src={item.image}
+            alt={item.name}
+            className="img-fluid recommended-image mb-2"
+          />
           <h6 className="fw-bold mb-1">{item.name}</h6>
           <p className="mb-2 text-dark">₹{item.price}</p>
-          <button className="btn btn-dark rounded-pill px-6 py-2" onClick={() => addToCart(item)}>
+          <button
+            className="btn btn-dark rounded-pill px-3 py-1 mx-auto d-block"
+            style={{ minWidth: "90px" }}
+            onClick={() => addToCart(item)}
+          >
             {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to Cart"}
           </button>
         </div>
@@ -345,18 +357,31 @@ export default function ProductDetails({ toastRef }) {
     <h4>Recently Viewed</h4>
     <div className="d-flex overflow-auto flex-nowrap gap-3 py-2 recommended-scroll">
       {recentlyViewedProduct.map((item) => (
-        <div key={item.id} className="card p-2 shadow-sm rounded-4 recommended-card" style={{ minWidth: "180px", flex: "0 0 auto" ,background:'#fff8f0'}}>
-          <img src={item.image} alt={item.name} className="img-fluid recommended-image mb-2" />
+        <div
+          key={item.id}
+          className="card p-2 shadow-sm rounded-4 recommended-card"
+          style={{ minWidth: "180px", flex: "0 0 auto", background: '#fff8f0' }}
+        >
+          <img
+            src={item.image}
+            alt={item.name}
+            className="img-fluid recommended-image mb-2"
+          />
           <h6 className="fw-bold mb-1">{item.name}</h6>
           <p className="mb-2 text-dark">₹{item.price}</p>
-          <button className="btn btn-dark rounded-pill px-6 py-2" onClick={() => addToCart(item)}>
-            {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove " : "Add to Cart"}
+          <button
+            className="btn btn-dark rounded-pill px-3 py-1 mx-auto d-block"
+            style={{ minWidth: "90px" }}
+            onClick={() => addToCart(item)}
+          >
+            {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to Cart"}
           </button>
         </div>
       ))}
     </div>
   </div>
 )}
+
 
 
           {/* Reviews */}
