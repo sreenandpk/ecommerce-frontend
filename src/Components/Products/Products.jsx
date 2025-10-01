@@ -193,10 +193,10 @@ export default function Products({ toastRef }) {
       </div>
 
       {/* Products Grid */}
-      <div className="container mt-4">
-        <div className="row justify-content-center g-2">
+      <div className="container">
+        <div className="row justify-content-center g-2 ">
           {(filtered.length > 0 ? filtered : products).map((item, index) => (
-            <div key={index} className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center">
+            <div key={index} className="col-6 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center mt-5">
               <div
                 className="card shadow-sm border-0 w-100"
                 style={{
@@ -252,12 +252,12 @@ export default function Products({ toastRef }) {
                     onClick={() => handleCartClick(item)}
                     className="btn mt-2 product-btn"
                     style={{
-                      backgroundColor: "black",
-                      color: "#fff",
+                         background: "rgba(50, 30, 20, 0.85)", // deep muted brown with transparency
+        color: "#fff",
                       borderRadius: "20px",
-                      padding: "8px 0",
+                      padding: "9px 0",
                       width: "clamp(120px, 50%, 180px)",
-                      fontSize: "0.7rem",
+                      fontSize: "0.8rem",
                       fontWeight: 500,
                       whiteSpace: "nowrap",
                       overflow: "hidden",
