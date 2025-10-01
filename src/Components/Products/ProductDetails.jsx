@@ -146,10 +146,14 @@ const confirmRemove = async () => {
     await updateUser(currentUser.id, { cart: updatedCart });
     setCurrentUser({ ...currentUser, cart: updatedCart });
     setCartCount(updatedCart.length);
-
-    toastRef?.current?.showToast(
-      `${item.name} ${exists ? "removed from" : "added to"} cart `
-    );
+ toastRef.current.showToast(
+        `${item.name} ${exists ? "removed" : "added "}`,
+        { label: exists ? "Go to Cart" : "View Cart", onClick: () => navigate("/cart") }
+      );
+          // ✅ Vibration on click (200ms)
+    if (navigator.vibrate) {
+      navigator.vibrate(50)
+    }
   };
 
   const toggleWishlist = async (item) => {
