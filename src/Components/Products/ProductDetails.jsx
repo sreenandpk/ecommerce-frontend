@@ -229,22 +229,25 @@ const [showImageModal, setShowImageModal] = useState(false);
     top: 15px;
     left: 15px;
     
-    color: #000000ff;
+    color: gray; /* gray color */
+    background: transparent; /* no background */
     border: none;
     font-size: 25px;
     font-weight: bold;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     z-index: 1060;
-    transition: background 0.3s;
+    transition: color 0.3s;
   }
-  
+  .image-modal-close:hover {
+    color: #555; /* slightly darker on hover */
+  }
 `}</style>
+
 
 </div>
 
