@@ -166,16 +166,69 @@ const [showImageModal, setShowImageModal] = useState(false);
           <div className="row g-4">
             {/* Left: Product Image */}
            <div className="col-md-6 text-center">
-  <div className="card shadow-sm p-3 rounded-4" style={{ background: "#fff8f0" }}>
-    {/* Clickable Image */}
-    <img
-      src={product.image}
-      alt={product.name}
-      className="img-fluid rounded-4"
-      style={{ maxHeight: "300px", objectFit: "contain", cursor: "pointer" }}
-      onClick={() => setShowImageModal(true)}
-    />
+<div className="card shadow-sm rounded-4" style={{ background: "#fff8f0", position: "relative" }}>
+  {/* Wishlist Icon Top Right */}
+  <Heart
+    onClick={() => toggleWishlist(product)}
+    color={wishlistIds.includes(product.id) ? "#111" : "gray"}
+    fill={wishlistIds.includes(product.id) ? "#111" : "none"}
+    size={wishlistIds.includes(product.id) ? 28 : 30}
+    style={{
+      position: "absolute",
+      top: "10px",
+      right: "10px",
+      cursor: "pointer",
+      zIndex: 10,
+    }}
+  />
+
+  {/* Clickable Image */}
+  <img
+    src={product.image}
+    alt={product.name}
+    className="img-fluid rounded-4"
+    style={{ maxHeight: "400px", objectFit: "contain", cursor: "pointer", minHeight: "200px" }}
+    onClick={() => setShowImageModal(true)}
+  />
+
+  {/* Bottom Overlay */}
+  <div 
+    style={{
+      position: "absolute",
+      bottom: "0",
+      left: "0",
+      width: "100%",
+      padding: "8px 15px",
+      background: "rgba(0,0,0,0.15)", // soft transparent dark overlay
+      borderBottomLeftRadius: "15px",
+      borderBottomRightRadius: "15px",
+      display: "flex",
+      justifyContent: "flex-start",
+      alignItems: "center",
+    }}
+  >
+    <button
+      className="btn rounded-pill px-3 py-1"
+      onClick={() => addToCart(product)}
+      style={{
+        fontSize: "0.9rem",
+        background: "rgba(50, 30, 20, 0.85)", // deep muted brown with transparency
+        color: "#fff",
+        fontWeight: 600,
+        border: "none",
+      }}
+    >
+      {currentUser?.cart?.some(p => p.id === product.id) ? "Remove" : "Add to Cart"}
+    </button>
+      <div className="d-flex gap-3 mx-3 flex-wrap">
+                <span className="badge bg-secondary">{product.category}</span>
+                {product.bestseller && <span className="badge bg-warning text-dark">Bestseller</span>}
+                {product.hot && <span className="badge bg-danger">Hot</span>}
+              </div>
   </div>
+</div>
+
+
 
 {/* Image Modal */}
 {showImageModal && (
@@ -197,6 +250,7 @@ const [showImageModal, setShowImageModal] = useState(false);
       className="image-modal-img"
       onClick={(e) => e.stopPropagation()} // Prevent closing when clicking image
     />
+    
   </div>
 )}
 
@@ -257,29 +311,9 @@ const [showImageModal, setShowImageModal] = useState(false);
               <h2 className="fw-bold">{product.name}</h2>
               <p className="fs-4 text-dark">₹{product.price}</p>
 
-              <div className="d-flex gap-2 mb-3 flex-wrap">
-                <span className="badge bg-primary">{product.category}</span>
-                <span className="badge bg-success">{product.rating || "⭐ 0"}</span>
-                {product.bestseller && <span className="badge bg-warning text-dark">Bestseller</span>}
-                {product.hot && <span className="badge bg-danger">Hot</span>}
-              </div>
+            
 
-              <div className="mb-4 d-flex gap-3 flex-wrap">
-                <button
-                  className="btn btn-dark rounded-pill px-4 py-2"
-                  onClick={() => addToCart(product)}
-                >
-                  {currentUser?.cart?.some(p => p.id === product.id) ? "Remove" : "Add to Cart"}
-                </button>
-
-                <Heart
-                  onClick={() => toggleWishlist(product)}
-                  color={wishlistIds.includes(product.id) ? "#111" : "gray"}
-                  fill={wishlistIds.includes(product.id) ? "#111" : "none"}
-                  size={wishlistIds.includes(product.id) ? 28 : 30}
-                  className="wishlist-icon mt-1"
-                />
-              </div>
+       
 
               {product.story && (
                 <div className="mb-3">
@@ -349,8 +383,8 @@ const [showImageModal, setShowImageModal] = useState(false);
                     />
                     <h6 className="fw-bold mb-1">{item.name}</h6>
                     <p className="mb-2 text-dark">₹{item.price}</p>
-                    <button
-                      className="btn btn-dark rounded-pill px-4 py-2"
+                    <button style={{ background: "rgba(50, 30, 20, 0.85)",color:'white'}}
+                      className="btn  rounded-pill px-4 py-1"
                       onClick={() => addToCart(item)}
                     >
                       {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
@@ -380,8 +414,9 @@ const [showImageModal, setShowImageModal] = useState(false);
           <h6 className="fw-bold mb-1">{item.name}</h6>
           <p className="mb-2 text-dark">₹{item.price}</p>
           <button
-            className="btn btn-dark rounded-pill px-4 py-2"
+            className="btn  rounded-pill px-4 py-1"
             onClick={() => addToCart(item)}
+            style={{ background: "rgba(50, 30, 20, 0.85)",color:'white'}}
           >
             {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
           </button>
@@ -394,13 +429,13 @@ const [showImageModal, setShowImageModal] = useState(false);
           {/* Reviews Section */}
           <div className="mt-4">
             <button
-              className="btn btn-outline-dark me-2"
+              className="btn btn-secondary me-2"
               onClick={() => setShowReviewModal("view")}
             >
               View Reviews ({product.reviews?.length || 0})
             </button>
             <button
-              className="btn btn-dark"
+              className="btn btn-secondary"
               onClick={() => setShowReviewModal("write")}
             >
               Write a Review
