@@ -198,7 +198,7 @@ const [showImageModal, setShowImageModal] = useState(false);
       bottom: "0",
       left: "0",
       width: "100%",
-      padding: "8px 15px",
+      padding: "25px 15px",
       background: "rgba(0,0,0,0.15)", // soft transparent dark overlay
       borderBottomLeftRadius: "15px",
       borderBottomRightRadius: "15px",
@@ -208,7 +208,7 @@ const [showImageModal, setShowImageModal] = useState(false);
     }}
   >
     <button
-      className="btn rounded-pill px-3 py-1"
+      className="btn rounded-pill px-3 py-2"
       onClick={() => addToCart(product)}
       style={{
         fontSize: "0.9rem",
@@ -220,11 +220,7 @@ const [showImageModal, setShowImageModal] = useState(false);
     >
       {currentUser?.cart?.some(p => p.id === product.id) ? "Remove" : "Add to Cart"}
     </button>
-      <div className="d-flex gap-3 mx-3 flex-wrap">
-                <span className="badge bg-secondary">{product.category}</span>
-                {product.bestseller && <span className="badge bg-warning text-dark">Bestseller</span>}
-                {product.hot && <span className="badge bg-danger">Hot</span>}
-              </div>
+    
   </div>
 </div>
 
@@ -244,15 +240,30 @@ const [showImageModal, setShowImageModal] = useState(false);
       &times;
     </button>
 
-    <img
-      src={product.image}
-      alt={product.name}
-      className="image-modal-img"
-      onClick={(e) => e.stopPropagation()} // Prevent closing when clicking image
-    />
-    
+    <div
+      className="d-flex flex-column align-items-center"
+      onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+      style={{ width: "100%" }}
+    >
+      <img
+        src={product.image}
+        alt={product.name}
+        className="image-modal-img"
+      />
+
+      {/* Badges */}
+      <div className="d-flex flex-wrap justify-content-center mt-3 gap-2 w-100 px-3">
+         
+        <span className="badge bg-secondary">{product.category}</span>
+        {product.bestseller && (
+          <span className="badge bg-warning text-dark">Bestseller</span>
+        )}
+        
+      </div>
+    </div>
   </div>
 )}
+
 
 <style>{`
   .image-modal-backdrop {
@@ -309,7 +320,16 @@ const [showImageModal, setShowImageModal] = useState(false);
             {/* Right: Product Details */}
             <div className="col-md-6">
               <h2 className="fw-bold">{product.name}</h2>
-              <p className="fs-4 text-dark">₹{product.price}</p>
+              <p
+  className="fw-bold mb-2"
+  style={{
+    fontSize: "clamp(1.5rem, 4vw, 2.5rem)", // responsive size
+    color: "#2c2c2c", // dark premium shade
+  }}
+>
+  ₹{product.price}
+</p>
+
 
             
 
