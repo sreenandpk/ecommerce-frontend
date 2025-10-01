@@ -7,7 +7,6 @@ import Navbar from "../../Navbar/Navbar";
 import { fetchUser, updateUser, fetchProducts } from "../Fetch/FetchUser";
 import Footer from "../Home/Footer";
 import ScrollToTop from "../ScrollTop";
-import icecreamGGG from "../../../homeImages/iceCreamVideo.mp4";
 
 export default function Products({ toastRef }) {
   const [products, setProducts] = useState([]);

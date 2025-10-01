@@ -183,6 +183,10 @@ const confirmRemove = async () => {
     toastRef?.current?.showToast(
       `${item.name} ${exists ? "removed from" : "added to"} wishlist`
     );
+           // ✅ Vibration on click (200ms)
+    if (navigator.vibrate) {
+      navigator.vibrate(50)
+    }
   };
 
   const handleSubmitReview = async () => {
