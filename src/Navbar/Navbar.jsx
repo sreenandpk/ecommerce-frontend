@@ -121,7 +121,7 @@ export default function Navbar() {
               placeholder="Search"
               onChange={(event) => setInputValue(event.target.value)}
               className="form-control rounded-pill ps-3 pe-5"
-              style={{ height: "35px", fontSize: "14px", background: "none" }}
+              style={{ height: "35px", fontSize: "16px", background: "none" }}
             />
             <button type="submit" className="btn position-absolute top-50 end-0 translate-middle-y p-2" style={{ background: "transparent", border: "none" }}>
               <Search style={{ color: "#555", fontSize: "18px" }} />
@@ -214,18 +214,24 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Search */}
-          {mobileSearchOpen && (
-            <form onSubmit={handleSearchSubmit} className="px-2 pb-2">
-              <input
-                placeholder="Search"
-                onChange={(e) => setInputValue(e.target.value)}
-                className="form-control ps-3 pe-4"
-                style={{ height: "40px", fontSize: "14px", borderRadius: "20px", background: "#fff8f0" }}
-                autoFocus
-              />
-            </form>
-          )}
+         {mobileSearchOpen && (
+  <form onSubmit={handleSearchSubmit} className="px-2 pb-2">
+    <input
+      placeholder="Search"
+      onChange={(e) => setInputValue(e.target.value)}
+      className="form-control ps-3 pe-4"
+      style={{
+        height: "40px",
+        fontSize: "16px",         // ✅ prevents iOS zoom
+        borderRadius: "20px",
+        background: "#fff8f0",
+        lineHeight: "1.5",        // better vertical alignment
+      }}
+      autoFocus
+    />
+  </form>
+)}
+
 
           {/* Mobile Navigation */}
           <div className="d-flex justify-content-around pb-2">
