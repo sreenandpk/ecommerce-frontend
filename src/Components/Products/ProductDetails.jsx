@@ -15,7 +15,10 @@ import profile from "../../../homeImages/profileDD.jpeg";
 import axios from "axios";
 import { Heart } from "lucide-react";
 import { SearchContext } from "../SearchContext/SearchContext";
+
 export default function ProductDetails({ toastRef }) {
+  const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
+
   const {
       recentlyViewedProduct,
     setCartCount,
@@ -80,6 +83,57 @@ const [showImageModal, setShowImageModal] = useState(false);
     }
     fetchData();
   }, [id, setRecentlyViewedProducts]);
+  // Trigger cart add/remove
+const handleAddToCart = (item) => {
+  if (!currentUser) return navigate("/login");
+
+  const exists = currentUser.cart?.some(p => p.id === item.id);
+  
+  if (exists) {
+    // Ask confirmation before removing
+    setConfirmDialog({ open: true, item, type: "cart" });
+  } else {
+    addToCart(item); // directly add
+  }
+};
+
+// Trigger wishlist toggle
+const handleToggleWishlist = (item) => {
+  const exists = wishlistIds.includes(item.id);
+
+  if (exists) {
+    // Ask confirmation before removing
+    setConfirmDialog({ open: true, item, type: "wishlist" });
+  } else {
+    toggleWishlist(item); // directly add
+  }
+};
+const confirmRemove = async () => {
+  if (!confirmDialog.item) return;
+
+  if (confirmDialog.type === "cart") {
+    const updatedCart = currentUser.cart.filter(p => p.id !== confirmDialog.item.id);
+    await updateUser(currentUser.id, { cart: updatedCart });
+    setCurrentUser({ ...currentUser, cart: updatedCart });
+    setCartCount(updatedCart.length);
+    toastRef?.current?.showToast(`${confirmDialog.item.name} removed from cart `);
+  }
+
+  if (confirmDialog.type === "wishlist") {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+    const user = await fetchUser(userId);
+    const wishlist = (user.wishlist || []).filter(p => p.id !== confirmDialog.item.id);
+    await updateUser(userId, { wishlist });
+    setWishlistIds(wishlist.map(p => p.id));
+    setWishlistCount(wishlist.length);
+    setInWishlist(false);
+    toastRef?.current?.showToast(`${confirmDialog.item.name} removed from wishlist `);
+  }
+
+  setConfirmDialog({ open: false, item: null, type: "" });
+};
+
 
   const addToCart = async (item) => {
     if (!currentUser) return navigate("/login");
@@ -94,7 +148,7 @@ const [showImageModal, setShowImageModal] = useState(false);
     setCartCount(updatedCart.length);
 
     toastRef?.current?.showToast(
-      `${item.name} ${exists ? "removed from" : "added to"} cart ✅`
+      `${item.name} ${exists ? "removed from" : "added to"} cart `
     );
   };
 
@@ -169,7 +223,7 @@ const [showImageModal, setShowImageModal] = useState(false);
 <div className="card shadow-sm rounded-4" style={{ background: "#fff8f0", position: "relative" }}>
   {/* Wishlist Icon Top Right */}
   <Heart
-    onClick={() => toggleWishlist(product)}
+    onClick={() => handleToggleWishlist(product)}
     color={wishlistIds.includes(product.id) ? "#111" : "gray"}
     fill={wishlistIds.includes(product.id) ? "#111" : "none"}
     size={wishlistIds.includes(product.id) ? 28 : 30}
@@ -209,7 +263,7 @@ const [showImageModal, setShowImageModal] = useState(false);
   >
     <button
       className="btn rounded-pill px-3 py-2"
-      onClick={() => addToCart(product)}
+      onClick={() => handleAddToCart(product)}
       style={{
         fontSize: "0.9rem",
         background: "rgba(50, 30, 20, 0.85)", // deep muted brown with transparency
@@ -223,8 +277,6 @@ const [showImageModal, setShowImageModal] = useState(false);
     
   </div>
 </div>
-
-
 
 {/* Image Modal */}
 {showImageModal && (
@@ -311,12 +363,47 @@ const [showImageModal, setShowImageModal] = useState(false);
   .image-modal-close:hover {
     color: #555; /* slightly darker on hover */
   }
+    .confirm-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-dark backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100; /* higher than review modal */
+}
+
+.confirm-modal-content {
+  background: #fff8f0;
+  border-radius: 20px;
+  padding: 25px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  animation: slideDown 0.3s ease-out;
+  text-align: center;
+}
+
+.confirm-modal-content h5 {
+  font-weight: 700;
+  color: #333;
+}
+
+.confirm-modal-content p {
+  color: #555;
+  margin: 15px 0;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 `}</style>
 
 
 </div>
-
-
             {/* Right: Product Details */}
             <div className="col-md-6">
               <h2 className="fw-bold">{product.name}</h2>
@@ -329,11 +416,6 @@ const [showImageModal, setShowImageModal] = useState(false);
 >
   ₹{product.price}
 </p>
-
-
-            
-
-       
 
               {product.story && (
                 <div className="mb-3">
@@ -405,7 +487,7 @@ const [showImageModal, setShowImageModal] = useState(false);
                     <p className="mb-2 text-dark">₹{item.price}</p>
                     <button style={{ background: "rgba(50, 30, 20, 0.85)",color:'white'}}
                       className="btn  rounded-pill px-4 py-1"
-                      onClick={() => addToCart(item)}
+                      onClick={() => handleAddToCart(item)}
                     >
                       {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
                     </button>
@@ -435,7 +517,7 @@ const [showImageModal, setShowImageModal] = useState(false);
           <p className="mb-2 text-dark">₹{item.price}</p>
           <button
             className="btn  rounded-pill px-4 py-1"
-            onClick={() => addToCart(item)}
+            onClick={() => handleAddToCart(item)}
             style={{ background: "rgba(50, 30, 20, 0.85)",color:'white'}}
           >
             {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
@@ -543,7 +625,36 @@ const [showImageModal, setShowImageModal] = useState(false);
               </div>
             )}
           </div>
+          {confirmDialog.open && (
+  <div
+    className="confirm-modal-backdrop"
+    onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}
+  >
+    <div
+      className="confirm-modal-content"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h5>Are you sure?</h5>
+      <p>
+        Do you want to remove <strong>{confirmDialog.item.name}</strong> from {confirmDialog.type}?
+      </p>
+      <div className="d-flex justify-content-end gap-2 mt-3">
+        <button
+          className="btn btn-secondary"
+          onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}
+        >
+          Cancel
+        </button>
+        <button className="btn btn-danger" onClick={confirmRemove}>
+          Remove
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
         </div>
+        
       )}
 
       <style>{`
