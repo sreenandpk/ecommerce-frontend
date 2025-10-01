@@ -89,7 +89,11 @@ const [showImageModal, setShowImageModal] = useState(false);
   }, [id, setRecentlyViewedProducts]);
   // Trigger cart add/remove
 const handleAddToCart = (item) => {
-  if (!currentUser) return navigate("/login");
+  const userId = localStorage.getItem("userId");
+     if (!userId) {
+        toastRef.current.showToast("Login first", { label: "Login", onClick: () => navigate("/login") });
+        return;
+      }
 
   const exists = currentUser.cart?.some(p => p.id === item.id);
   
@@ -140,11 +144,7 @@ const confirmRemove = async () => {
 
 
   const addToCart = async (item) => {
-     const userId = localStorage.getItem("userId");
-     if (!userId) {
-        toastRef.current.showToast("Login first", { label: "Login", onClick: () => navigate("/login") });
-        return;
-      }
+     
 
     const exists = currentUser.cart?.some(p => p.id === item.id);
     const updatedCart = exists
