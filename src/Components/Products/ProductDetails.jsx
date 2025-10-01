@@ -172,7 +172,7 @@ const [showImageModal, setShowImageModal] = useState(false);
       src={product.image}
       alt={product.name}
       className="img-fluid rounded-4"
-      style={{ maxHeight: "400px", objectFit: "contain", cursor: "pointer" }}
+      style={{ maxHeight: "300px", objectFit: "contain", cursor: "pointer" }}
       onClick={() => setShowImageModal(true)}
     />
   </div>
