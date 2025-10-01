@@ -174,7 +174,7 @@ export default function ProductDetails({ toastRef }) {
     padding: '20px',
     position: 'relative',
     overflow: 'hidden',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
   }}
 >
   <div
@@ -184,7 +184,7 @@ export default function ProductDetails({ toastRef }) {
       left: '-50%',
       width: '200%',
       height: '200%',
-      background: 'rgba(255,214,153,0.1)', // soft color overlay
+      
       transform: 'rotate(45deg)',
       pointerEvents: 'none',
     }}
@@ -432,20 +432,18 @@ export default function ProductDetails({ toastRef }) {
           .product-image { max-height:250px; }
           .recommended-image { height:100px; }
         }
-          .recommended-scroll {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-}
-
-.recommended-scroll::-webkit-scrollbar {
-  height: 6px;
-}
-
-.recommended-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
-  border-radius: 3px;
-}
+           .recommended-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .recommended-scroll::-webkit-scrollbar {
+    height: 5px;
+  }
+  .recommended-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 3px;
+  }
 
       `}</style>
     </>
