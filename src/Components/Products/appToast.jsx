@@ -26,31 +26,41 @@ const AppToast = forwardRef((props, ref) => {
         duration={5000}
         className="toast-root"
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <CheckCircle2 size={22} />
-          <Toast.Title style={{ fontWeight: 600, fontSize: "0.7rem" }}>
-            {message}
-          </Toast.Title>
-        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            gap: "10px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <CheckCircle2 size={22} />
+            <Toast.Title style={{ fontWeight: 600, fontSize: "0.8rem" }}>
+              {message}
+            </Toast.Title>
+          </div>
 
-        {buttonConfig && (
-          <button
-            onClick={() => {
-              buttonConfig.onClick?.();
-              setOpen(false);
-            }}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#FFF8E7",
-              cursor: "pointer",
-              fontWeight: 600,
-              fontSize: "0.8rem",
-            }}
-          >
-            {buttonConfig.label}
-          </button>
-        )}
+          {buttonConfig && (
+            <button
+              onClick={() => {
+                buttonConfig.onClick?.();
+                setOpen(false);
+              }}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#FFF8E7",
+                cursor: "pointer",
+                fontWeight: 600,
+                fontSize: "0.8rem",
+              }}
+            >
+              {buttonConfig.label}
+            </button>
+          )}
+        </div>
 
         <div className="toast-progress"></div>
       </Toast.Root>
@@ -68,7 +78,6 @@ const AppToast = forwardRef((props, ref) => {
   box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
-  justify-content: space-between;
   position: relative;
   font-family: 'SF Pro', sans-serif;
   transform: translateY(40px);

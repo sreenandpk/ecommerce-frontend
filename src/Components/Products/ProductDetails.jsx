@@ -162,7 +162,10 @@ const confirmRemove = async () => {
 
   const toggleWishlist = async (item) => {
     const userId = localStorage.getItem("userId");
-    if (!userId) return navigate("/login");
+    if (!userId) {
+        toastRef.current.showToast("Login first", { label: "Login", onClick: () => navigate("/login") });
+        return;
+      }
     const user = await fetchUser(userId);
     let wishlist = user.wishlist || [];
     const exists = wishlist.some((p) => p.id === item.id);
