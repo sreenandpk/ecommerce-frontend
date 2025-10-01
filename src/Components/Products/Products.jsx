@@ -15,11 +15,20 @@ export default function Products({ toastRef }) {
   const [filtered, setFilterd] = useState([]);
   const { wishlistIds = [], setWishlistIds, setCartCount } = useContext(SearchContext);
   const [active, setActive] = useState("");
-  const [cartItems, setCartItems] = useState(
-    JSON.parse(localStorage.getItem("userId"))?.cart || []
-  );
+  const [cartItems, setCartItems] = useState([]);
   const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
   const navigate = useNavigate();
+
+
+  useEffect(()=>{
+    async function fetchCart() {
+      const id=JSON.parse(localStorage.getItem("userId"))
+      const res=await fetchUser(id)
+      setCartItems(res.cart)
+    }
+    fetchCart()
+  },[])
+
 
   // Fetch Best Sellers
   useEffect(() => {
@@ -245,12 +254,20 @@ export default function Products({ toastRef }) {
                   >
                     Product Details →
                   </p>
-                  <p style={{ fontWeight: "600", fontSize: "1.3rem", color: "#1e3253", margin: "8px 0" }}>
-                    ₹{item.price}
-                  </p>
+                              <p
+  className="mb-2"
+  style={{
+    fontSize: "1.2rem",              // bigger than normal
+    fontWeight: "600",               // bold but not too heavy
+    color: "#2c2c2c",                // deep royal purple (premium feel)
+    letterSpacing: "0.5px",          // slight spacing for elegance
+  }}
+>
+  ₹{item.price}
+</p>
                   <button
                     onClick={() => handleCartClick(item)}
-                    className="btn mt-2 product-btn"
+                    className="btn mt-2 product-btn "
                     style={{
                          background: "rgba(50, 30, 20, 0.85)", // deep muted brown with transparency
         color: "#fff",
@@ -258,7 +275,7 @@ export default function Products({ toastRef }) {
                       padding: "9px 0",
                       width: "clamp(120px, 50%, 180px)",
                       fontSize: "0.8rem",
-                      fontWeight: 500,
+                      fontWeight: 600,
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",

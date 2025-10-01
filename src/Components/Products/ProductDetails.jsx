@@ -484,13 +484,37 @@ const confirmRemove = async () => {
                       style={{ height: "120px", objectFit: "contain" }}
                     />
                     <h6 className="fw-bold mb-1">{item.name}</h6>
-                    <p className="mb-2 text-dark">₹{item.price}</p>
-                    <button style={{ background: "rgba(50, 30, 20, 0.85)",color:'white'}}
-                      className="btn  rounded-pill px-4 py-1"
-                      onClick={() => handleAddToCart(item)}
-                    >
-                      {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
-                    </button>
+                    <p
+  className="mb-2"
+  style={{
+    fontSize: "1.2rem",              // bigger than normal
+    fontWeight: "600",               // bold but not too heavy
+    color: "#2c2c2c",                // deep royal purple (premium feel)
+    letterSpacing: "0.5px",          // slight spacing for elegance
+  }}
+>
+  ₹{item.price}
+</p>
+  <div style={{display:'flex',justifyContent:'center'}}>
+                  <button
+  onClick={() => handleAddToCart(item)}
+  className="btn mt-2 product-btn"
+  style={{
+    background: "rgba(50, 30, 20, 0.85)", // deep muted brown with transparency
+    color: "#fff",
+    borderRadius: "20px",
+    padding: "9px 0",
+    width: "clamp(120px, 50%, 180px)", // responsive width
+    fontSize: "0.8rem",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }}
+>
+  {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to Cart"}
+</button>
+</div>
                   </div>
                 ))}
               </div>
@@ -514,14 +538,37 @@ const confirmRemove = async () => {
             style={{ height: "120px", objectFit: "contain" }}
           />
           <h6 className="fw-bold mb-1">{item.name}</h6>
-          <p className="mb-2 text-dark">₹{item.price}</p>
-          <button
-            className="btn  rounded-pill px-4 py-1"
-            onClick={() => handleAddToCart(item)}
-            style={{ background: "rgba(50, 30, 20, 0.85)",color:'white'}}
-          >
-            {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
-          </button>
+           <p
+  className="mb-2"
+  style={{
+    fontSize: "1.2rem",              // bigger than normal
+    fontWeight: "600",               // bold but not too heavy
+    color: "#2c2c2c",                // deep royal purple (premium feel)
+    letterSpacing: "0.5px",          // slight spacing for elegance
+  }}
+>
+  ₹{item.price}
+</p>
+         <div style={{display:'flex',justifyContent:'center'}}>
+                  <button
+  onClick={() => handleAddToCart(item)}
+  className="btn mt-2 product-btn"
+  style={{
+    background: "rgba(50, 30, 20, 0.85)", // deep muted brown with transparency
+    color: "#fff",
+    borderRadius: "20px",
+    padding: "9px 0",
+    width: "clamp(120px, 50%, 180px)", // responsive width
+    fontSize: "0.8rem",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }}
+>
+  {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to Cart"}
+</button>
+</div>
         </div>
       ))}
     </div>
