@@ -174,7 +174,7 @@ export default function ProductDetails({ toastRef }) {
     padding: '20px',
     position: 'relative',
     overflow: 'hidden',
-    
+    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
   }}
 >
   <div
@@ -319,21 +319,19 @@ export default function ProductDetails({ toastRef }) {
               )}
             </div>
           </div>
-{/* Recommended Flavors */}
+
+          {/* Recommended */}
 {recommended.length > 0 && (
-  <div className="scroll-section mt-5">
+  <div className="mt-5">
     <h4>Recommended Flavors</h4>
-    <div className="scroll-container">
+    <div className="d-flex overflow-auto flex-nowrap gap-3 py-2 recommended-scroll">
       {recommended.map((item) => (
-        <div key={item.id} className="scroll-card">
-          <img src={item.image} alt={item.name} className="scroll-image mb-2" />
+        <div key={item.id} className="card p-2 shadow-sm rounded-4 recommended-card" style={{ minWidth: "180px", flex: "0 0 auto",background:'#fff8f0' }}>
+          <img src={item.image} alt={item.name} className="img-fluid recommended-image mb-2" />
           <h6 className="fw-bold mb-1">{item.name}</h6>
           <p className="mb-2 text-dark">₹{item.price}</p>
-          <button
-            className="btn btn-dark"
-            onClick={() => addToCart(item)}
-          >
-            {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to cart"}
+          <button className="btn btn-dark rounded-pill px-6 py-2" onClick={() => addToCart(item)}>
+            {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to Cart"}
           </button>
         </div>
       ))}
@@ -343,19 +341,16 @@ export default function ProductDetails({ toastRef }) {
 
 {/* Recently Viewed */}
 {recentlyViewedProduct && recentlyViewedProduct.length > 0 && (
-  <div className="scroll-section mt-5">
+  <div className="mt-5">
     <h4>Recently Viewed</h4>
-    <div className="scroll-container">
+    <div className="d-flex overflow-auto flex-nowrap gap-3 py-2 recommended-scroll">
       {recentlyViewedProduct.map((item) => (
-        <div key={item.id} className="scroll-card">
-          <img src={item.image} alt={item.name} className="scroll-image mb-2" />
+        <div key={item.id} className="card p-2 shadow-sm rounded-4 recommended-card" style={{ minWidth: "180px", flex: "0 0 auto" ,background:'#fff8f0'}}>
+          <img src={item.image} alt={item.name} className="img-fluid recommended-image mb-2" />
           <h6 className="fw-bold mb-1">{item.name}</h6>
           <p className="mb-2 text-dark">₹{item.price}</p>
-          <button
-            className="btn btn-dark"
-            onClick={() => addToCart(item)}
-          >
-            {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to cart"}
+          <button className="btn btn-dark rounded-pill px-6 py-2" onClick={() => addToCart(item)}>
+            {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove " : "Add to Cart"}
           </button>
         </div>
       ))}
@@ -433,61 +428,22 @@ export default function ProductDetails({ toastRef }) {
         .modal-backdrop { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(245,242,238,0.95); display:flex; justify-content:center; align-items:center; z-index:1050; }
         .modal-content { background:#fff8f0; max-width:500px; width:90%; max-height:80vh; overflow-y:auto; border-radius:25px; padding:30px 25px; box-shadow:0 25px 50px rgba(0,0,0,0.1); border:1px solid #ffe5d6; }
         .cursor-pointer { cursor:pointer; }
-    .scroll-section {
-  width: 100%;
-  overflow-x: hidden;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.scroll-container {
-  display: flex;
-  gap: 12px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 10px;
-}
-
-.scroll-card {
-  flex: 0 0 auto;
-  min-width: 140px;
-  scroll-snap-align: start;
-  background: #fff8f0;
-  border-radius: 15px;
-  padding: 10px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-}
-
-.scroll-image {
-  width: 100%;
-  height: 100px;
-  object-fit: contain;
-}
-
-.scroll-card button {
-  font-size: 0.85rem;
-  padding: 4px 6px;
-  min-width: auto;
-}
-
-@media (max-width: 576px) {
-  .scroll-card {
-    min-width: 120px;
-    padding: 8px;
+        @media(max-width:768px){
+          .product-image { max-height:250px; }
+          .recommended-image { height:100px; }
+        }
+           .recommended-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
-  .scroll-image {
-    height: 80px;
+  .recommended-scroll::-webkit-scrollbar {
+    height: 5px;
   }
-  .scroll-card button {
-    font-size: 0.75rem;
-    padding: 3px 5px;
+  .recommended-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 3px;
   }
-}
-
-
 
       `}</style>
     </>
