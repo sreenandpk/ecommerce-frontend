@@ -14,7 +14,7 @@ import profile from "../../../homeImages/profileDD.jpeg";
 import axios from "axios";
 import { Heart } from "lucide-react";
 import { SearchContext } from "../SearchContext/SearchContext";
-
+import ShareButton from "./ShareButton";
 export default function ProductDetails({ toastRef }) {
   const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
 
@@ -230,19 +230,34 @@ const confirmRemove = async () => {
            <div className="col-md-6 text-center">
 <div className="card shadow-sm rounded-4" style={{ background: "#fff8f0", position: "relative" }}>
   {/* Wishlist Icon Top Right */}
+ <div
+  style={{
+    position: "absolute",
+    top: 10,
+    right: 10,
+    display: "flex",
+    gap: 15, // spacing between icons
+    zIndex: 10,
+  }}
+>
+  {/* Wishlist Heart */}
   <Heart
+  className="mt-1"
     onClick={() => handleToggleWishlist(product)}
     color={wishlistIds.includes(product.id) ? "#111" : "gray"}
     fill={wishlistIds.includes(product.id) ? "#111" : "none"}
     size={wishlistIds.includes(product.id) ? 28 : 30}
     style={{
-      position: "absolute",
-      top: "10px",
-      right: "10px",
       cursor: "pointer",
-      zIndex: 10,
     }}
   />
+
+  {/* Share Button */}
+  <ShareButton
+    url={`${window.location.origin}/productDetails/${product.id}`}
+    title={product.name}
+  />
+</div>
 
   {/* Clickable Image */}
   <img
