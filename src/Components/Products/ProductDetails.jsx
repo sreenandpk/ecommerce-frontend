@@ -7,7 +7,6 @@ import {
   updateUser,
   BASE_URL,
 } from "../Fetch/FetchUser";
-import { SearchContext } from "../SearchContext/SearchContext";
 import Navbar from "../../Navbar/Navbar";
 import Footer from "../Home/Footer";
 import ScrollToTop from "../ScrollTop";
@@ -15,9 +14,10 @@ import { FaStar } from "react-icons/fa";
 import profile from "../../../homeImages/profileDD.jpeg";
 import axios from "axios";
 import { Heart } from "lucide-react";
-
+import { SearchContext } from "../SearchContext/SearchContext";
 export default function ProductDetails({ toastRef }) {
   const {
+     recentlyViewedProduct,
     setCartCount,
     setRecentlyViewedProducts,
     setWishlistIds,
@@ -153,6 +153,21 @@ export default function ProductDetails({ toastRef }) {
       toastRef?.current?.showToast("Error submitting review ❌");
     }
   };
+const shareProduct = (product) => {
+  if (navigator.share) {
+    navigator.share({
+      title: product.name,
+      text: `Check out this product: ${product.name} - ₹${product.price}`,
+      url: window.location.href, // current page link
+    })
+    .then(() => console.log("Product shared successfully"))
+    .catch((err) => console.error("Error sharing:", err));
+  } else {
+    // fallback for desktop browsers
+    navigator.clipboard.writeText(window.location.href);
+    toastRef?.current?.showToast("Link copied to clipboard 📋");
+  }
+};
 
   return (
     <>
@@ -202,6 +217,13 @@ export default function ProductDetails({ toastRef }) {
                   size={wishlistIds.includes(product.id) ? 28 : 30}
                   className="wishlist-icon mt-1"
                 />
+                {/* 🔹 New Share Button */}
+  <button
+    className="btn btn-outline-dark rounded-pill px-4 py-2"
+    onClick={() => shareProduct(product)}
+  >
+    Share
+  </button>
               </div>
 
               {product.story && (
@@ -283,6 +305,44 @@ export default function ProductDetails({ toastRef }) {
               </div>
             </div>
           )}
+          {/*recently viewed products*/}
+       {/* Recently Viewed Products */}
+{recentlyViewedProduct && recentlyViewedProduct.length > 0 && (
+  <div className="mt-5">
+    <h4>Recently Viewed</h4>
+    <div className="d-flex overflow-auto gap-3 py-2">
+      {recentlyViewedProduct.map((element) => (
+        <div
+          key={element.id}
+          className="card p-2 shadow-sm rounded-4"
+          style={{
+            minWidth: "180px",
+            flexShrink: 0,
+            background: "#fff8f0",
+          }}
+        >
+          <img
+            src={element.image}
+            alt={element.name}
+            className="img-fluid rounded-4 mb-2"
+            style={{ height: "120px", objectFit: "contain" }}
+          />
+          <h6 className="fw-bold mb-1">{element.name}</h6>
+          <p className="mb-2 text-dark">₹{element.price}</p>
+          <button
+            className="btn btn-dark rounded-pill px-4 py-2"
+            onClick={() => addToCart(element)}
+          >
+            {currentUser?.cart?.some((p) => p.id === element.id)
+              ? "Remove"
+              : "Add to Cart"}
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
 
           {/* Reviews Section */}
           <div className="mt-4">
@@ -389,7 +449,7 @@ export default function ProductDetails({ toastRef }) {
           position: fixed;
           top: 0; left: 0;
           width: 100%; height: 100%;
-          background: rgba(255, 248, 240, 0.95);
+          background: rgba(245, 242, 238, 0.95);
           display: flex;
           justify-content: center;
           align-items: center;
