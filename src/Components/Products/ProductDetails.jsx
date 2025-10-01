@@ -166,42 +166,13 @@ export default function ProductDetails({ toastRef }) {
           <div className="row g-4 align-items-center">
             {/* Product Image */}
             <div className="col-md-6 text-center">
-             <div
-  className="product-image-card"
-  style={{
-    background: '#fff8f0',
-    borderRadius: '25px',
-    padding: '20px',
-    position: 'relative',
-    overflow: 'hidden',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-  }}
->
-  <div
-    style={{
-      position: 'absolute',
-      top: '-50%',
-      left: '-50%',
-      width: '200%',
-      height: '200%',
-      
-      transform: 'rotate(45deg)',
-      pointerEvents: 'none',
-    }}
-  ></div>
-  <img
-    src={product.image}
-    alt={product.name}
-    className="img-fluid product-image"
-    style={{
-      position: 'relative',
-      zIndex: 1,
-      maxHeight: '350px',
-      objectFit: 'contain',
-    }}
-  />
-</div>
-
+              <div className="card shadow-sm p-3 rounded-4 product-image-card">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="img-fluid product-image"
+                />
+              </div>
             </div>
 
             {/* Product Details */}
@@ -280,7 +251,7 @@ export default function ProductDetails({ toastRef }) {
               <div className="row g-3 mb-3">
                 {product.ingredients && (
                   <div className="col-6">
-                    <div className="card p-3 shadow-sm rounded-4 "style={{background:'#fff8f0'}}>
+                    <div className="card p-3 shadow-sm rounded-4 bg-light">
                       <h6 className="fw-bold">Ingredients</h6>
                       <ul className="list-unstyled mb-0">
                         {product.ingredients.map((ing, i) => (
@@ -306,7 +277,7 @@ export default function ProductDetails({ toastRef }) {
 
               {/* Nutrition */}
               {product.nutrition && (
-                <div className="card p-3 shadow-sm rounded-4 mb-3 "style={{background:'#fff8f0'}}>
+                <div className="card p-3 shadow-sm rounded-4 mb-3 bg-light">
                   <h6 className="fw-bold">Nutrition Facts</h6>
                   <ul className="list-unstyled mb-0">
                     <li>Calories: {product.nutrition.calories}</li>
@@ -321,43 +292,42 @@ export default function ProductDetails({ toastRef }) {
           </div>
 
           {/* Recommended */}
-{recommended.length > 0 && (
-  <div className="mt-5">
-    <h4>Recommended Flavors</h4>
-    <div className="d-flex overflow-auto flex-nowrap gap-3 py-2 recommended-scroll">
-      {recommended.map((item) => (
-        <div key={item.id} className="card p-2 shadow-sm rounded-4 recommended-card" style={{ minWidth: "180px", flex: "0 0 auto",background:'#fff8f0' }}>
-          <img src={item.image} alt={item.name} className="img-fluid recommended-image mb-2" />
-          <h6 className="fw-bold mb-1">{item.name}</h6>
-          <p className="mb-2 text-dark">₹{item.price}</p>
-          <button className="btn btn-dark rounded-pill px-6 py-2" onClick={() => addToCart(item)}>
-            {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to Cart"}
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+          {recommended.length > 0 && (
+            <div className="mt-5">
+              <h4>Recommended Flavors</h4>
+              <div className="d-flex overflow-auto gap-3 py-2">
+                {recommended.map((item) => (
+                  <div key={item.id} className="card p-2 shadow-sm rounded-4 recommended-card">
+                    <img src={item.image} alt={item.name} className="img-fluid recommended-image mb-2" />
+                    <h6 className="fw-bold mb-1">{item.name}</h6>
+                    <p className="mb-2 text-dark">₹{item.price}</p>
+                    <button className="btn btn-dark rounded-pill px-6 py-2" onClick={() => addToCart(item)}>
+                      {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove" : "Add to Cart"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-{/* Recently Viewed */}
-{recentlyViewedProduct && recentlyViewedProduct.length > 0 && (
-  <div className="mt-5">
-    <h4>Recently Viewed</h4>
-    <div className="d-flex overflow-auto flex-nowrap gap-3 py-2 recommended-scroll">
-      {recentlyViewedProduct.map((item) => (
-        <div key={item.id} className="card p-2 shadow-sm rounded-4 recommended-card" style={{ minWidth: "180px", flex: "0 0 auto" ,background:'#fff8f0'}}>
-          <img src={item.image} alt={item.name} className="img-fluid recommended-image mb-2" />
-          <h6 className="fw-bold mb-1">{item.name}</h6>
-          <p className="mb-2 text-dark">₹{item.price}</p>
-          <button className="btn btn-dark rounded-pill px-6 py-2" onClick={() => addToCart(item)}>
-            {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove " : "Add to Cart"}
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
+          {/* Recently Viewed */}
+          {recentlyViewedProduct && recentlyViewedProduct.length > 0 && (
+            <div className="mt-5">
+              <h4>Recently Viewed</h4>
+              <div className="d-flex overflow-auto gap-3 py-2">
+                {recentlyViewedProduct.map((item) => (
+                  <div key={item.id} className="card p-2 shadow-sm rounded-4 recommended-card">
+                    <img src={item.image} alt={item.name} className="img-fluid recommended-image mb-2" />
+                    <h6 className="fw-bold mb-1">{item.name}</h6>
+                    <p className="mb-2 text-dark">₹{item.price}</p>
+                    <button className="btn btn-dark rounded-pill px-6 py-2" onClick={() => addToCart(item)}>
+                      {currentUser?.cart?.some((p) => p.id === item.id) ? "Remove " : "Add to Cart"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Reviews */}
           <div className="mt-4">
@@ -432,19 +402,6 @@ export default function ProductDetails({ toastRef }) {
           .product-image { max-height:250px; }
           .recommended-image { height:100px; }
         }
-           .recommended-scroll {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
-  .recommended-scroll::-webkit-scrollbar {
-    height: 5px;
-  }
-  .recommended-scroll::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.2);
-    border-radius: 3px;
-  }
-
       `}</style>
     </>
   );
