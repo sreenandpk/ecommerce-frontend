@@ -30,6 +30,7 @@ export default function ProductDetails({ toastRef }) {
   const [recommended, setRecommended] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
+const [showImageModal, setShowImageModal] = useState(false);
 
   const [showReviewModal, setShowReviewModal] = useState(false); // "view" | "write"
   const [reviewText, setReviewText] = useState("");
@@ -164,16 +165,39 @@ export default function ProductDetails({ toastRef }) {
         >
           <div className="row g-4">
             {/* Left: Product Image */}
-            <div className="col-md-6 text-center">
-              <div className="card shadow-sm p-3 rounded-4" style={{ background: "#fff8f0" }}>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="img-fluid rounded-4"
-                  style={{ maxHeight: "400px", objectFit: "contain" }}
-                />
-              </div>
-            </div>
+           <div className="col-md-6 text-center">
+  <div className="card shadow-sm p-3 rounded-4" style={{ background: "#fff8f0" }}>
+    {/* Clickable Image */}
+    <img
+      src={product.image}
+      alt={product.name}
+      className="img-fluid rounded-4"
+      style={{ maxHeight: "400px", objectFit: "contain", cursor: "pointer" }}
+      onClick={() => setShowImageModal(true)}
+    />
+  </div>
+
+  {/* Image Modal */}
+  {showImageModal && (
+    <div
+      className="modal-backdrop"
+      onClick={() => setShowImageModal(false)}
+    >
+      <div
+        className="modal-content d-flex justify-content-center align-items-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img
+          src={product.image}
+          alt={product.name}
+          className="img-fluid"
+          style={{ maxHeight: "80vh", objectFit: "contain" }}
+        />
+      </div>
+    </div>
+  )}
+</div>
+
 
             {/* Right: Product Details */}
             <div className="col-md-6">
@@ -283,7 +307,7 @@ export default function ProductDetails({ toastRef }) {
               </div>
             </div>
           )}
-         {/* Recently Viewed */}
+        {/* Recently Viewed */}
 {recentlyViewedProduct?.length > 0 && (
   <div className="mt-5">
     <h4>Recently Viewed</h4>
