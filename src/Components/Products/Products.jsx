@@ -70,6 +70,25 @@ export default function Products({ toastRef }) {
     const productAll = await fetchProducts();
     setFilterd(productAll);
   };
+  const [sortOrder, setSortOrder] = useState("asc"); // default ascending
+
+const sortByPrice = async () => {
+  const productAll = await fetchProducts();
+
+  const sorted = [...productAll].sort((a, b) => {
+    if (sortOrder === "asc") {
+      return a.price - b.price; // Low → High
+    } else {
+      return b.price - a.price; // High → Low
+    }
+  });
+
+  setFilterd(sorted);
+
+  // Toggle next sort order
+  setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+};
+
 
   // Add / Remove Cart
   const handleCartClick = (item) => {
@@ -175,6 +194,8 @@ export default function Products({ toastRef }) {
       >
         {[
           { label: "Show All", key: "", fn: showAll },
+          { label: sortOrder === "asc" ? "Price: Low → High" : "Price: High → Low", key: "sort", fn: sortByPrice },
+
           { label: "Vanilla", key: "vanilla", fn: vanila },
           { label: "Strawberry", key: "strawberry", fn: strawberry },
           { label: "Chocolate", key: "chocolate", fn: choclate },
@@ -190,9 +211,9 @@ export default function Products({ toastRef }) {
               fontWeight: 600,
               fontFamily: "SF Pro, -apple-system, sans-serif",
               flex: "0 0 auto",
-              minWidth: "120px",
+              minWidth: "130px",
               padding: "8px 0",
-              fontSize: "1rem",
+              fontSize: "0.8rem",
               textAlign: "center",
             }}
           >
