@@ -244,7 +244,7 @@ const confirmRemove = async () => {
     src={product.image}
     alt={product.name}
     className="img-fluid rounded-4"
-    style={{ maxHeight: "370px", objectFit: "contain", cursor: "pointer", }}
+    style={{ maxHeight: "400px", objectFit: "contain", cursor: "pointer", minHeight: "200px" }}
     onClick={() => setShowImageModal(true)}
   />
 
