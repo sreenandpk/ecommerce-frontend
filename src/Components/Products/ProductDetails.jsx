@@ -17,7 +17,6 @@ import { Heart } from "lucide-react";
 import { SearchContext } from "../SearchContext/SearchContext";
 export default function ProductDetails({ toastRef }) {
   const {
-     recentlyViewedProduct,
     setCartCount,
     setRecentlyViewedProducts,
     setWishlistIds,
@@ -254,56 +253,35 @@ export default function ProductDetails({ toastRef }) {
           </div>
 
           {/* Recommended */}
-{recommended.length > 0 && (
-  <div className="scroll-section mt-5">
-    <h4>Recommended Flavors</h4>
-    <div className="scroll-container">
-      {recommended.map((item) => (
-        <div key={item.id} className="scroll-card">
-          <img
-            src={item.image}
-            alt={item.name}
-            className="scroll-image mb-2"
-          />
-          <h6 className="fw-bold mb-1">{item.name}</h6>
-          <p className="mb-2 text-dark">₹{item.price}</p>
-          <button
-            className="btn btn-dark rounded-pill px-4 py-2"
-            onClick={() => addToCart(item)}
-          >
-            {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
-{/* Recently Viewed */}
-{recentlyViewedProduct?.length > 0 && (
-  <div className="scroll-section mt-5">
-    <h4>Recently Viewed</h4>
-    <div className="scroll-container">
-      {recentlyViewedProduct.map((item) => (
-        <div key={item.id} className="scroll-card">
-          <img
-            src={item.image}
-            alt={item.name}
-            className="scroll-image mb-2"
-          />
-          <h6 className="fw-bold mb-1">{item.name}</h6>
-          <p className="mb-2 text-dark">₹{item.price}</p>
-          <button
-            className="btn btn-dark rounded-pill px-4 py-2"
-            onClick={() => addToCart(item)}
-          >
-            {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+          {recommended.length > 0 && (
+            <div className="mt-5">
+              <h4>Recommended Flavors</h4>
+              <div className="d-flex overflow-auto gap-3 py-2">
+                {recommended.map((item) => (
+                  <div
+                    key={item.id}
+                    className="card p-2 shadow-sm rounded-4"
+                    style={{ minWidth: "180px", flexShrink: 0, background: '#fff8f0' }}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="img-fluid rounded-4 mb-2"
+                      style={{ height: "120px", objectFit: "contain" }}
+                    />
+                    <h6 className="fw-bold mb-1">{item.name}</h6>
+                    <p className="mb-2 text-dark">₹{item.price}</p>
+                    <button
+                      className="btn btn-dark rounded-pill px-4 py-2"
+                      onClick={() => addToCart(item)}
+                    >
+                      {currentUser?.cart?.some(p => p.id === item.id) ? "Remove" : "Add to Cart"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Reviews Section */}
           <div className="mt-4">
@@ -441,60 +419,6 @@ export default function ProductDetails({ toastRef }) {
         @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
         @keyframes slideUp { from {transform:translateY(50px);opacity:0;} to {transform:translateY(0);opacity:1;} }
         .cursor-pointer { cursor: pointer; }
-        .scroll-section {
-  width: 100%;
-  overflow-x: hidden;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.scroll-container {
-  display: flex;
-  gap: 12px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 10px;
-}
-
-.scroll-card {
-  flex: 0 0 auto; /* important for mobile horizontal scroll */
-  min-width: 150px; /* adjust for small screens */
-  scroll-snap-align: start;
-  background: #fff8f0;
-  border-radius: 15px;
-  padding: 10px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-}
-
-.scroll-image {
-  width: 100%;
-  height: 100px;
-  object-fit: contain;
-}
-
-.scroll-card button {
-  font-size: 0.85rem;
-  padding: 4px 6px;
-  min-width: auto;
-}
-
-@media (max-width: 576px) {
-  .scroll-card {
-    min-width: 120px;
-    padding: 8px;
-  }
-  .scroll-image {
-    height: 80px;
-  }
-  .scroll-card button {
-    font-size: 0.75rem;
-    padding: 3px 5px;
-  }
-}
-
       `}</style>
 
       <Footer />
