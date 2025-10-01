@@ -140,7 +140,11 @@ const confirmRemove = async () => {
 
 
   const addToCart = async (item) => {
-    if (!currentUser) return navigate("/login");
+     const userId = localStorage.getItem("userId");
+     if (!userId) {
+        toastRef.current.showToast("Login first", { label: "Login", onClick: () => navigate("/login") });
+        return;
+      }
 
     const exists = currentUser.cart?.some(p => p.id === item.id);
     const updatedCart = exists
@@ -209,7 +213,7 @@ const confirmRemove = async () => {
       setReviewText("");
       setShowReviewModal(false);
 
-      toastRef?.current?.showToast("Review submitted ✅");
+      toastRef?.current?.showToast("Review submitted ");
 
       await axios.patch(`${BASE_URL}/products/${id}`, {
         reviews: [...(product.reviews || []), newReview],
