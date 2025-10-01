@@ -52,7 +52,16 @@ export default function Navbar() {
     }
     lastScrollY.current = window.scrollY;
   };
-
+  // Collapse search when user scrolls
+  useEffect(() => {
+    const handleScroll = () => {
+      if (mobileSearchOpen) {
+        setMobileSearchOpen(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [mobileSearchOpen]);
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -89,6 +98,7 @@ export default function Navbar() {
 
   return () => window.removeEventListener("profileUpdated", handleProfileUpdate);
 }, [savedUserId]);
+
 
   return (
     <>
@@ -214,24 +224,25 @@ export default function Navbar() {
             </div>
           </div>
 
-         {mobileSearchOpen && (
-  <form onSubmit={handleSearchSubmit} className="px-2 pb-2">
-    <input
-      placeholder="Search"
-      onChange={(e) => setInputValue(e.target.value)}
-      className="form-control ps-3 pe-4"
-      style={{
-        height: "40px",
-        fontSize: "16px",         // ✅ prevents iOS zoom
-        borderRadius: "20px",
-        background: "#fff8f0",
-        lineHeight: "1.5",        // better vertical alignment
-      }}
-      autoFocus
-    />
-  </form>
-)}
 
+      {/* Search Input (only when open) */}
+      {mobileSearchOpen && (
+        <form onSubmit={handleSearchSubmit} className="px-2 pb-2">
+          <input
+            placeholder="Search"
+            onChange={(e) => setInputValue(e.target.value)}
+            className="form-control ps-3 pe-4"
+            style={{
+              height: "40px",
+              fontSize: "16px",
+              borderRadius: "20px",
+              background: "#fff8f0",
+              lineHeight: "1.5",
+            }}
+            autoFocus
+          />
+        </form>
+      )}
 
           {/* Mobile Navigation */}
           <div className="d-flex justify-content-around pb-2">
