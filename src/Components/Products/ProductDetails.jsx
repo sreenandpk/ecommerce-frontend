@@ -177,25 +177,75 @@ const [showImageModal, setShowImageModal] = useState(false);
     />
   </div>
 
-  {/* Image Modal */}
-  {showImageModal && (
-    <div
-      className="modal-backdrop"
+{/* Image Modal */}
+{showImageModal && (
+  <div
+    className="image-modal-backdrop"
+    onClick={() => setShowImageModal(false)}
+  >
+    {/* Close Button */}
+    <button
+      className="image-modal-close"
       onClick={() => setShowImageModal(false)}
     >
-      <div
-        className="modal-content d-flex justify-content-center align-items-center"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <img
-          src={product.image}
-          alt={product.name}
-          className="img-fluid"
-          style={{ maxHeight: "80vh", objectFit: "contain" }}
-        />
-      </div>
-    </div>
-  )}
+      &times;
+    </button>
+
+    <img
+      src={product.image}
+      alt={product.name}
+      className="image-modal-img"
+      onClick={(e) => e.stopPropagation()} // Prevent closing when clicking image
+    />
+  </div>
+)}
+
+<style>{`
+  .image-modal-backdrop {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #fff8f0; /* same as page background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    cursor: zoom-out;
+  }
+  .image-modal-img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+  }
+  .image-modal-img:hover {
+    transform: scale(1.1); /* zoom effect */
+  }
+
+  /* Close Button */
+  .image-modal-close {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    
+    color: #000000ff;
+    border: none;
+    font-size: 25px;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1060;
+    transition: background 0.3s;
+  }
+  
+`}</style>
+
 </div>
 
 
