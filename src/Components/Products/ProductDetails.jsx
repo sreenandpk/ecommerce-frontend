@@ -284,43 +284,9 @@ export default function ProductDetails({ toastRef }) {
             </div>
           )}
           {/*recently viewed products*/}
-       {/* Recently Viewed Products */}
-{recentlyViewedProduct && recentlyViewedProduct.length > 0 && (
-  <div className="mt-5">
-    <h4>Recently Viewed</h4>
-    <div className="d-flex overflow-auto gap-3 py-2">
-      {recentlyViewedProduct.map((element) => (
-        <div
-          key={element.id}
-          className="card p-2 shadow-sm rounded-4"
-          style={{
-            minWidth: "180px",
-            flexShrink: 0,
-            background: "#fff8f0",
-          }}
-        >
-          <img
-            src={element.image}
-            alt={element.name}
-            className="img-fluid rounded-4 mb-2"
-            style={{ height: "120px", objectFit: "contain" }}
-          />
-          <h6 className="fw-bold mb-1">{element.name}</h6>
-          <p className="mb-2 text-dark">₹{element.price}</p>
-          <button
-            className="btn btn-dark rounded-pill px-4 py-2"
-            onClick={() => addToCart(element)}
-          >
-            {currentUser?.cart?.some((p) => p.id === element.id)
-              ? "Remove"
-              : "Add to Cart"}
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
+          <div>{recentlyViewedProduct.map((element)=>{
+            return <div key={element.id}><p>{element.name}</p></div>
+          })}</div>
 
           {/* Reviews Section */}
           <div className="mt-4">
