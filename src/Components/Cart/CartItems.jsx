@@ -175,15 +175,41 @@ export default function Cart() {
             ))}
         </div>
 
-        <div className="d-flex justify-content-center my-4">
-          <button
-            className="btn btn-dark btn-lg rounded-pill px-5 py-3 shadow-lg fw-bold text-uppercase"
-            onClick={handleBuyAll}
-          >
-            🛒 Buy All
-          </button>
-        </div>
-      </div>
+ <div className="d-flex justify-content-center my-4">
+  <button
+    onClick={handleBuyAll}
+    style={{
+      backgroundColor: "#c6e7ff",     // sky blue background
+      color: "#373737ff",               // deep blue text
+      padding: "9px 20px",            // compact size
+      borderRadius: "30px",           // modern pill shape
+      fontWeight: "600",
+      fontSize: "0.95rem",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.15)", // subtle shadow
+     
+      transition: "all 0.3s ease",
+      minWidth: "300px",
+      border: "none",
+      cursor: "pointer",
+     
+    }}
+    onMouseEnter={(e) => {
+     
+      e.target.style.transform = "scale(1.05)";
+    }}
+    onMouseLeave={(e) => {
+   
+      e.target.style.transform = "scale(1)";
+    }}
+  >
+    Proceed to Checkout
+  </button>
+</div>
+
+</div>
+
+
+   
 
       {/* Radix Dialog */}
       <Dialog.Root
