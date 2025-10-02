@@ -286,7 +286,7 @@ export default function Navbar() {
     className="d-flex d-md-none justify-content-between align-items-center container-fluid "
     style={{
       backgroundColor: "#fff8f0",
-      padding: "15px 15px",
+      padding: "10px 15px",
       boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
      
       
@@ -303,7 +303,7 @@ export default function Navbar() {
         Diary
       </div>
 
-      <div className="d-flex align-items-center gap-2">
+      <div className="d-flex align-items-center gap-3">
         <button
           onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
           className="btn p-1"
