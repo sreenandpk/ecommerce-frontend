@@ -224,19 +224,20 @@ export default function Home() {
           style={{ minWidth: "300px", maxWidth: "500px" }}
         >
           <h1
-            style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}
-            className="mx-5"
-            data-aos="fade-up"
-          >
-            Delicious Milkshakes <br /> Just for You
-          </h1>
-          <p
-            style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1.5rem" }}
-            className="mx-5"
-            data-aos="fade-up"
-          >
-            Explore our creamy milkshakes <br /> and find your favorite flavor.
-          </p>
+  style={{ fontSize: "2.7rem", fontWeight: "bold", color: "#0a2141" }}
+  className="mx-5"
+  data-aos="fade-up"
+>
+  Delicious Icecreams <br /> Just for You
+</h1>
+<p
+  style={{ fontSize: "1.7rem", color: "#333", marginBottom: "1.5rem" }}
+  className="mx-5"
+  data-aos="fade-up"
+>
+  Explore our creamy icecreams <br /> and find your favorite flavor.
+</p>
+
           <button
             onClick={() => navigate("/products")}
             style={{
@@ -245,13 +246,13 @@ export default function Home() {
               color: "#fff",
               border: "none",
               borderRadius: "12px",
-              fontSize: "1rem",
+              fontSize: "1.5rem",
               cursor: "pointer",
             }}
             className="mx-5"
             data-aos="fade-up"
           >
-            Explore Milkshakes →
+            Explore icecreams →
           </button>
         </div>
         <div

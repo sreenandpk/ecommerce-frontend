@@ -15,6 +15,8 @@ import axios from "axios";
 import { Heart } from "lucide-react";
 import { SearchContext } from "../SearchContext/SearchContext";
 import ShareButton from "./ShareButton";
+import * as Dialog from "@radix-ui/react-dialog";
+
 export default function ProductDetails({ toastRef }) {
   const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
 
@@ -696,33 +698,73 @@ const confirmRemove = async () => {
               </div>
             )}
           </div>
-          {confirmDialog.open && (
-  <div
-    className="confirm-modal-backdrop"
-    onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}
+     {/* Radix Dialog for Cart/Wishlist Confirmation */}
+<Dialog.Root 
+  open={confirmDialog.open} 
+  onOpenChange={(open) => setConfirmDialog({ ...confirmDialog, open })}
+>
+  <Dialog.Overlay
+    style={{
+      backgroundColor: "rgba(0,0,0,0.5)",
+      position: "fixed",
+      inset: 0,
+      zIndex: 1100,
+    }}
+  />
+  <Dialog.Content
+    style={{
+      backgroundColor: "#fff8f0",
+      borderRadius: "15px",
+      padding: "25px 20px",
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "90%",
+      maxWidth: "360px",
+      textAlign: "center",
+      zIndex: 1101,
+      boxShadow: "0 15px 30px rgba(0,0,0,0.2)",
+    }}
   >
-    <div
-      className="confirm-modal-content"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <h5>Are you sure?</h5>
-      <p>
-        Do you want to remove <strong>{confirmDialog.item.name}</strong> from {confirmDialog.type}?
-      </p>
-      <div className="d-flex justify-content-end gap-2 mt-3">
-        <button
-          className="btn btn-secondary"
-          onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}
-        >
-          Cancel
-        </button>
-        <button className="btn btn-danger" onClick={confirmRemove}>
-          Remove
-        </button>
-      </div>
+    <Dialog.Title style={{ fontSize: "1.4rem", fontWeight: 700, marginBottom: "12px" }}>
+      Are you sure?
+    </Dialog.Title>
+    <Dialog.Description style={{ fontSize: "0.95rem", marginBottom: "22px" }}>
+      Do you want to remove <strong>{confirmDialog.item?.name}</strong> from {confirmDialog.type}?
+    </Dialog.Description>
+    <div className="d-flex flex-column flex-md-row justify-content-center gap-2">
+      <button
+        className="btn"
+        style={{
+          backgroundColor: "#e0e0e0",
+          color: "#111",
+          padding: "10px 0",
+          fontSize: "0.95rem",
+          borderRadius: "12px",
+          flex: 1,
+        }}
+        onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}
+      >
+        Cancel
+      </button>
+      <button
+        className="btn btn-danger"
+        style={{
+          color: "#fff",
+          padding: "10px 0",
+          fontSize: "0.95rem",
+          borderRadius: "12px",
+          flex: 1,
+        }}
+        onClick={confirmRemove}
+      >
+        Remove
+      </button>
     </div>
-  </div>
-)}
+  </Dialog.Content>
+</Dialog.Root>
+
 
         </div>
         

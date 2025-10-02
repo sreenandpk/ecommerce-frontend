@@ -367,16 +367,15 @@ const sortByPrice = async () => {
                 flex: 1,
                 transition: "all 0.2s",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#cfcfcf")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#e0e0e0")}
+             
               onClick={() => setConfirmDialog({ open: false, item: null, type: "" })}
             >
               Cancel
             </button>
             <button
-              className="btn"
+              className="btn btn-danger"
               style={{
-                backgroundColor: "#d64b65ff",
+              
                 color: "#fff",
                 padding: "10px 0",
                 fontSize: "0.95rem",
@@ -384,8 +383,7 @@ const sortByPrice = async () => {
                 flex: 1,
                 transition: "all 0.2s",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#e9435e")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#ff4d6d")}
+             
               onClick={confirmRemove}
             >
               Remove

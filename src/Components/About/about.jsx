@@ -17,12 +17,7 @@ export default function About() {
           
          
             <div className="flex-grow-1 mb-4 mb-lg-0 " style={{ minWidth: "300px", maxWidth: "500px" }}>
-               <h5 className=" mb-5 mx-5"data-aos="fade-up">the best ice cream brands</h5>
-              <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}className="mx-5"data-aos="fade-up">
-                You think you’re
-old? <br /> Ice cream is
-older!
-              </h1>
+              <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }} className="mx-5" data-aos="fade-up" > Delicious Milkshakes <br /> Just for You </h1> <p style={{ fontSize: "1.5rem", color: "#333", marginBottom: "1.5rem" }} className="mx-5" data-aos="fade-up" > Explore our creamy milkshakes <br /> and find your favorite flavor. </p>
               
               <button onClick={()=>navigate("/products")}
                 style={{
@@ -31,11 +26,11 @@ older!
                   color: "#fff",
                   border: "none",
                   borderRadius: "12px",
-                  fontSize: "1.5rem",
+                  fontSize: "1.4rem",
                   cursor: "pointer",
-                }}className="mx-5 mt-5"
+                }}className="mx-5 mt-2"
               data-aos="fade-up">
-                Explore ice creams →
+                Explore milkshakes →
               </button>
             </div>
             <div className="flex-grow-1 text-center mt-3 " style={{ minWidth: "300px", maxWidth: "550px" }}data-aos="fade-up">
@@ -79,7 +74,7 @@ older!
             justifyContent:'center'
           }}
        data-aos="fade-up">
-         <span className="mt-4">
+         <span >
           About Our Dairy Products
           </span>  <span>
          
@@ -110,7 +105,7 @@ older!
             flexWrap: "wrap",
             justifyContent: "space-around",
             gap: "20px",
-            marginTop: "20px",
+            marginTop: "10px",
           }}data-aos="fade-up"
         >
           {/* Example Product Card */}
@@ -139,7 +134,7 @@ older!
                 height: "120px",
                 objectFit: "cover",
                 borderRadius: "50%",
-                marginBottom: "15px",
+                marginBottom: "10px",
                 boxShadow: "0 6px 12px rgba(0,0,0,0.08)",
               }}
             />
@@ -176,7 +171,7 @@ older!
                 height: "120px",
                 objectFit: "cover",
                 borderRadius: "50%",
-                marginBottom: "15px",
+                marginBottom: "10px",
                 boxShadow: "0 6px 12px rgba(0,0,0,0.08)",
               }}
             />
@@ -213,7 +208,7 @@ older!
                 height: "120px",
                 objectFit: "cover",
                 borderRadius: "50%",
-                marginBottom: "15px",
+                marginBottom: "10px",
                 boxShadow: "0 6px 12px rgba(0,0,0,0.08)",
               }}
             />
