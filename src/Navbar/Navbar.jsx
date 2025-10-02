@@ -67,6 +67,15 @@ export default function Navbar() {
     }
     lastScrollY.current = window.scrollY;
   };
+  useEffect(() => {
+  if (!savedUserId) {
+    setCartCount(0);
+    setWishlistCount(0);
+    setWishlistIds([]);
+    setRecentlyViewedProducts([]);
+  }
+}, [savedUserId]);
+
 
   useEffect(() => {
     if (!mobileSearchOpen) return;
