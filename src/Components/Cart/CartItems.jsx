@@ -179,8 +179,8 @@ export default function Cart() {
   <button
     onClick={handleBuyAll}
     style={{
-      backgroundColor: "#c6e7ff",     // sky blue background
-      color: "#373737ff",               // deep blue text
+     background: "rgba(50, 30, 20, 0.85)", // deep muted brown with transparency
+        color: "#fff",          // deep blue text
       padding: "9px 20px",            // compact size
       borderRadius: "30px",           // modern pill shape
       fontWeight: "600",
@@ -188,7 +188,7 @@ export default function Cart() {
       boxShadow: "0 4px 12px rgba(0,0,0,0.15)", // subtle shadow
      
       transition: "all 0.3s ease",
-      minWidth: "300px",
+      minWidth: "200px",
       border: "none",
       cursor: "pointer",
      

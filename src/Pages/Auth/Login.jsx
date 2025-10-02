@@ -11,7 +11,7 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedUserId = localStorage.getItem("userId"); // ✅ only check userId
+    const savedUserId = localStorage.getItem("userId");
     if (savedUserId) {
       navigate("/");
     }
@@ -20,16 +20,25 @@ function Login() {
   const submit = async (event) => {
     event.preventDefault();
     setError("");
+
     try {
       const existingUser = await fetchUserLogin(email, password);
+
       if (existingUser.data.length > 0) {
         const user = existingUser.data[0];
+
         if (user.block === true) {
           setError("Your account is blocked. Contact admin.");
           return;
         }
-        // ✅ store only id
+
+        // ✅ store only user id in localStorage
         localStorage.setItem("userId", JSON.stringify(user.id));
+
+        // ✅ dispatch event so Navbar re-fetches profile/cart/wishlist
+        window.dispatchEvent(new Event("profileUpdated"));
+
+        // ✅ navigate to home
         navigate("/");
       } else {
         setError("Invalid email or password");
@@ -42,11 +51,11 @@ function Login() {
   return (
     <>
       <div className="parent">
-        {/* Left side - Animation */}
-        {/* Right side - Form */}
+        {/* Left side can be animation / image */}
         <div className="right">
           <form onSubmit={submit} style={{ background: "#fff8f0" }}>
             <h2>Login</h2>
+
             <label htmlFor="email">Email:</label>
             <input
               type="email"
@@ -56,6 +65,7 @@ function Login() {
               placeholder="Enter your email"
               style={{ backgroundColor: "#fff8f0" }}
             />
+
             <label htmlFor="password">Password:</label>
             <input
               type={showPassword ? "text" : "password"}
@@ -65,11 +75,18 @@ function Login() {
               placeholder="Enter your password"
               style={{ backgroundColor: "#fff8f0" }}
             />
-            <button type="button" onClick={() => setShowPassword(!showPassword)}>
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
               {showPassword ? "Hide Password" : "👁️ Show Password"}
             </button>
-            <button type="submit ">Login</button>
+
+            <button type="submit">Login</button>
+
             {error && <p className="error">{error}</p>}
+
             <p
               style={{
                 textAlign: "center",
@@ -92,101 +109,102 @@ function Login() {
             </p>
           </form>
         </div>
+
         {/* CSS styles */}
         <style>
           {`
-      .parent {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 40px;
-        padding: 20px;
-        min-height: 100vh;
-        flex-wrap: wrap;
-      }
+          .parent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            padding: 20px;
+            min-height: 100vh;
+            flex-wrap: wrap;
+          }
 
-      .left, .right {
-        flex: 1 1 400px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+          .left, .right {
+            flex: 1 1 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
 
-      .left lottie-player, .left div {
-        width: 100%;
-        max-width: 350px;
-        height: auto;
-      }
+          .left lottie-player, .left div {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+          }
 
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        padding: 30px;
-        border-radius: 12px;
-        background-color: white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        width: 100%;
-        max-width: 350px;
-      }
+          form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 30px;
+            border-radius: 12px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+          }
 
-      form h2 {
-        text-align: center;
-        margin-bottom: 10px;
-        color: #333;
-      }
+          form h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+          }
 
-      form input {
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-      }
+          form input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+          }
 
-      form button {
-        padding: 12px;
-        border-radius: 8px;
-        border: none;
-        background: linear-gradient(135deg, #2b2726ff, #1d1d1eff);
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.3s;
-      }
+          form button {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #2b2726ff, #1d1d1eff);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+          }
 
-      form button[type="button"] {
-        background: #f0f0f0;
-        color: #333;
-        font-size: 14px;
-      }
+          form button[type="button"] {
+            background: #f0f0f0;
+            color: #333;
+            font-size: 14px;
+          }
 
-      form button:hover {
-        opacity: 0.9;
-      }
+          form button:hover {
+            opacity: 0.9;
+          }
 
-      .error {
-        color: red;
-        text-align: center;
-      }
+          .error {
+            color: red;
+            text-align: center;
+          }
 
-      /* Mobile Responsive */
-      @media (max-width: 768px) {
-        .parent {
-          flex-direction: column;
-        }
+          /* Mobile Responsive */
+          @media (max-width: 768px) {
+            .parent {
+              flex-direction: column;
+            }
 
-        .left, .right {
-          flex: unset;
-          width: 100%;
-        }
+            .left, .right {
+              flex: unset;
+              width: 100%;
+            }
 
-        .left lottie-player, .left div {
-          max-width: 300px; /* animation size on mobile */
-          margin-bottom: 20px;
-        }
-      }
-    `}
+            .left lottie-player, .left div {
+              max-width: 300px; 
+              margin-bottom: 20px;
+            }
+          }
+        `}
         </style>
       </div>
     </>

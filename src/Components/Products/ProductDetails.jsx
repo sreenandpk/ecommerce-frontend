@@ -41,6 +41,20 @@ const [showImageModal, setShowImageModal] = useState(false);
   const [reviewRating, setReviewRating] = useState(0);
   const [currentUser, setCurrentUser] = useState(null);
  
+    // 🔄 Sync wishlist when user logs in
+  useEffect(() => {
+    async function fetchWishlist() {
+      const savedUserId = JSON.parse(localStorage.getItem("userId"));
+      if (savedUserId) {
+        const user = await fetchUser(savedUserId);
+        if (user?.wishlist) {
+          setWishlistIds(user.wishlist.map((item) => item.id));
+        }
+      }
+    }
+    fetchWishlist();
+  }, []);
+
   
   useEffect(() => {
     // Scroll to top whenever the product ID changes

@@ -18,6 +18,19 @@ export default function Products({ toastRef }) {
   const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
   const navigate = useNavigate();
 
+  // 🔄 Sync wishlist when user logs in
+  useEffect(() => {
+    async function fetchWishlist() {
+      const savedUserId = JSON.parse(localStorage.getItem("userId"));
+      if (savedUserId) {
+        const user = await fetchUser(savedUserId);
+        if (user?.wishlist) {
+          setWishlistIds(user.wishlist.map((item) => item.id));
+        }
+      }
+    }
+    fetchWishlist();
+  }, []);
 
   useEffect(()=>{
     async function fetchCart() {
