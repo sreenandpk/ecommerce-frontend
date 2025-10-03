@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ScrollToTop from "../ScrollTop";
 import Lottie from "lottie-react";
 import emptyWishlistAnim from "../../../jsonAnimation/emptyCart.json";
+import { AiOutlineDelete } from "react-icons/ai";
 
 export default function Wishlist() {
   const [likedProducts, setLikedProducts] = useState([]);
@@ -94,30 +95,12 @@ export default function Wishlist() {
     <>
       <Navbar />
       <div style={{ height: "30px" }}></div>
-      <h4 style={{ textAlign: "center" }} className=" mt-4 ">
+      <h4 style={{ textAlign: "center" }} className="mt-4">
         My Wishlist
       </h4>
       <p className="text-center mb-3" style={{ fontFamily: "revert" }}>
         Your Saved Items({wishlistIds.length})
       </p>
-
-      {/* Delete Selected */}
-      {selectedItems.length > 0 && (
-        <div className="d-flex justify-content-end mb-3 pe-3 flex-wrap mx-2">
-          <button
-            className="btn delete-selected-btn-modern"
-            onClick={() => removeFromWishlist(selectedItems)}
-          >
-            Delete Selected ({selectedItems.length})
-          </button>
-          <button
-            className="btn close-selected-btn-modern  "
-            onClick={() => setSelectedItems([])}
-          >
-            ×
-          </button>
-        </div>
-      )}
 
       <div className="row justify-content-center g-3">
         {likedProducts.length > 0 ? (
@@ -126,20 +109,9 @@ export default function Wishlist() {
               key={index}
               className="col-12 d-flex justify-content-center"
               data-aos="fade-up"
+              style={{ position: "relative" }} // for absolute delete button
             >
-              <div
-                className="wishlist-card"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 8px 20px rgba(0,0,0,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow =
-                    "0 4px 12px rgba(0,0,0,0.08)";
-                }}
-              >
+              <div className="wishlist-card">
                 {/* Modern Checkbox */}
                 <label className="modern-checkbox">
                   <input
@@ -149,6 +121,16 @@ export default function Wishlist() {
                   />
                   <span className="checkmark"></span>
                 </label>
+
+                {/* Modern Delete Button */}
+                {selectedItems.includes(item.id) && (
+                  <button
+                    className="modern-delete-btn"
+                    onClick={() => removeFromWishlist([item.id])}
+                  >
+                    <AiOutlineDelete size={20} color="#fff" />
+                  </button>
+                )}
 
                 {/* Image */}
                 <img
@@ -220,6 +202,12 @@ export default function Wishlist() {
           position: relative;
           transition: transform 0.25s ease, box-shadow 0.25s ease;
           flex-wrap: nowrap;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .wishlist-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         /* Modern Checkbox */
@@ -243,7 +231,7 @@ export default function Wishlist() {
           height: 19px;
           width: 19px;
           background-color: #fff;
-          border: 2px solid rgba(50,30,20,0.85);
+          border: 2px solid rgba(50, 30, 20, 0.85);
           border-radius: 6px;
           transition: all 0.3s ease;
         }
@@ -267,6 +255,31 @@ export default function Wishlist() {
           border: solid #fff;
           border-width: 0 2px 2px 0;
           transform: rotate(45deg);
+        }
+
+        /* Modern Delete Button */
+        .modern-delete-btn {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: #dc2626 !important; /* Keep red */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          transition: transform 0.2s ease, box-shadow 0.2s ease,
+            background-color 0.2s ease !important;
+          z-index: 10;
+        }
+        .modern-delete-btn:hover {
+          background-color: #dc2626 !important; /* Keep red on hover */
+          transform: scale(1.1);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
         }
 
         /* Wishlist Image */
@@ -320,63 +333,16 @@ export default function Wishlist() {
           transform: scale(1.05);
         }
 
-        /* Delete Selected */
-        .delete-selected-btn-modern {
-          background: linear-gradient(135deg, #56cfe1, #48bfe3);
-          color: #fff !important;
-          padding: 6px 18px;
-          border-radius: 30px;
-          font-weight: 600;
-          font-size: 0.85rem;
-          border: none;
-          margin-right: 10px;
-          margin-bottom: 5px;
-          transition: transform 0.3s ease;
-        }
-        .delete-selected-btn-modern:hover,
-        .delete-selected-btn-modern:focus,
-        .delete-selected-btn-modern:active {
-          color: #fff !important;
-          transform: scale(1.05);
-        }
-
-        /* Close Selected */
-        .close-selected-btn-modern {
-          background: rgba(50, 30, 20, 0.85);
-          color: #fff !important;
-          border-radius: 50%;
-          width: 32px;
-          height: 32px;
-          padding: 0;
-          font-weight: 700;
-          font-size: 1rem;
-          line-height: 1;
-          border: none;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: transform 0.3s ease, background-color 0.3s ease;
-          
-        }
-        /* Fix hover background so it doesn't turn white */
-        .close-selected-btn-modern:hover,
-        .close-selected-btn-modern:focus,
-        .close-selected-btn-modern:active {
-          color: #fff !important;
-          background-color: rgba(50, 30, 20, 0.85);
-          transform: scale(1.1);
-        }
-
         /* Browse Products Button */
         .browse-products-btn {
-          background: rgba(50, 30, 20, 0.85);
-          color: #fff;
+          background: rgba(50, 30, 20, 0.85) !important;
+          color: #fff !important;
           padding: 8px 20px;
           border-radius: 30px;
           font-weight: 600;
           font-size: 0.9rem;
           border: none;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
           cursor: pointer;
           transition: transform 0.3s ease;
           min-width: 140px;
@@ -398,15 +364,15 @@ export default function Wishlist() {
           }
 
           .wishlist-name {
-            font-size: 1rem;
+            font-size: 1.2rem;
           }
 
           .wishlist-story {
-            font-size: 0.75rem;
+            font-size: 0.80rem;
           }
 
           .wishlist-price {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
           }
         }
       `}</style>
