@@ -281,10 +281,10 @@ export default function Cart() {
     padding: "10px 25px",
     borderRadius: "30px",
     fontWeight: "700",
-    fontSize: "1rem",
-    boxShadow: "0 6px 15px rgba(0,0,0,0.15)",
+    fontSize: "0.8rem",
+    boxShadow: "0 6px 15px rgba(0,0,0,0.10)",
     transition: "all 0.3s ease",
-    minWidth: "210px",
+    minWidth: "200px",
     border: "none",
     cursor: "pointer",
    
