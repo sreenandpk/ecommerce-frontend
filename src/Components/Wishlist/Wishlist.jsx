@@ -11,7 +11,7 @@ import emptyWishlistAnim from "../../../jsonAnimation/emptyCart.json"; // 👈 a
 
 export default function Wishlist() {
   const [likedProducts, setLikedProducts] = useState([]);
-  const { setWishlistIds, setWishlistCount, setCartCount } = useContext(SearchContext);
+  const { setWishlistIds, setWishlistCount, setCartCount,wishlistIds } = useContext(SearchContext);
   const navigate = useNavigate();
 
   const addtoCart = async (item) => {
@@ -82,6 +82,9 @@ export default function Wishlist() {
       <h3 style={{ textAlign: "center" }} className="mb-4 mt-4">
         My Wishlist
       </h3>
+      <p className="text-center mb-4" style={{ fontFamily: "revert" }}>
+         Your Saved Items({wishlistIds.length})
+        </p>
 
       <div className="row justify-content-center g-4">
         {likedProducts.length > 0 ? (
