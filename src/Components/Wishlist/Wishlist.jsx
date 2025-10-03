@@ -9,10 +9,12 @@ import ScrollToTop from "../ScrollTop";
 import Lottie from "lottie-react";
 import emptyWishlistAnim from "../../../jsonAnimation/emptyCart.json";
 import { AiOutlineDelete } from "react-icons/ai";
+import Footer from "../Home/Footer";
 
 export default function Wishlist() {
   const [likedProducts, setLikedProducts] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const { setWishlistIds, setWishlistCount, setCartCount, wishlistIds } =
     useContext(SearchContext);
   const navigate = useNavigate();
@@ -26,19 +28,21 @@ export default function Wishlist() {
         return;
       }
       const user = await fetchUser(userId);
-      let removeItemFromCart = user.cart.some(
-        (product) => product.id === item.id
-      );
-      let updatedCart = removeItemFromCart
+      const isInCart = user.cart.some((product) => product.id === item.id);
+
+      let updatedCart = isInCart
         ? user.cart.filter((product) => product.id !== item.id)
         : [...user.cart, item];
-      if (!removeItemFromCart) infoToast(`${item.name} added to cart`);
 
       await updateUser(userId, { cart: updatedCart });
-      localStorage.setItem("cartTotalLength", updatedCart.length);
+      setCartItems(updatedCart); // update state instead of localStorage
       setCartCount(updatedCart.length);
+
+      infoToast(
+        `${item.name} ${isInCart ? "removed from" : "added to"} cart`
+      );
     } catch (err) {
-      console.log("error in cart update", err);
+      console.log("Error in cart update", err);
     }
   };
 
@@ -53,6 +57,9 @@ export default function Wishlist() {
         setLikedProducts(wishlist);
         setWishlistIds(wishlist.map((item) => item.id));
         setWishlistCount(wishlist.length);
+
+        // Set cart items
+        setCartItems(userResponse.cart || []);
       } catch (err) {
         console.log("Failed to fetch wishlist", err);
       }
@@ -102,14 +109,13 @@ export default function Wishlist() {
         Your Saved Items({wishlistIds.length})
       </p>
 
-      <div className="row justify-content-center g-3">
+      <div className="row justify-content-center g-3 mb-5">
         {likedProducts.length > 0 ? (
           likedProducts.map((item, index) => (
             <div
               key={index}
               className="col-12 d-flex justify-content-center"
-              data-aos="fade-up"
-              style={{ position: "relative" }} // for absolute delete button
+              style={{ position: "relative" }}
             >
               <div className="wishlist-card">
                 {/* Modern Checkbox */}
@@ -151,7 +157,9 @@ export default function Wishlist() {
                       className="btn wishlist-add-btn"
                       onClick={() => addtoCart(item)}
                     >
-                      Add
+                      {cartItems.some((cartItem) => cartItem.id === item.id)
+                        ? "Remove"
+                        : "Add"}
                     </button>
                   </div>
                 </div>
@@ -185,8 +193,6 @@ export default function Wishlist() {
           </div>
         )}
       </div>
-
-      <ScrollToTop />
 
       {/* CSS */}
       <style jsx="true">{`
@@ -325,7 +331,7 @@ export default function Wishlist() {
           border: none;
           flex: 0 0 auto;
           padding: 6px 50px;
-          font-size: 0.75rem;
+          font-size: 0.80rem;
           cursor: pointer;
           transition: transform 0.3s ease;
         }
@@ -376,6 +382,7 @@ export default function Wishlist() {
           }
         }
       `}</style>
+      <Footer />
     </>
   );
 }
