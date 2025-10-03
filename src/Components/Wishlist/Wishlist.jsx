@@ -79,9 +79,9 @@ export default function Wishlist() {
     <>
       <Navbar />
       <div style={{ height: "40px" }}></div>
-      <h2 style={{ textAlign: "center" }} className="mb-3 mt-4">
+      <h4 style={{ textAlign: "center" }} className="mb-3 mt-4">
         My Wishlist
-      </h2>
+      </h4>
       <p className="text-center mb-3" style={{ fontFamily: "revert" }}>
          Your Saved Items({wishlistIds.length})
         </p>
