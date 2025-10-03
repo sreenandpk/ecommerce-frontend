@@ -78,8 +78,8 @@ export default function Wishlist() {
   return (
     <>
       <Navbar />
-      <div style={{ height: "40px" }}></div>
-      <h4 style={{ textAlign: "center" }} className="mb-3 mt-4">
+      <div style={{ height: "30px" }}></div>
+      <h4 style={{ textAlign: "center" }} className="mb-2 mt-4">
         My Wishlist
       </h4>
       <p className="text-center mb-3" style={{ fontFamily: "revert" }}>
