@@ -157,7 +157,7 @@ export default function Wishlist() {
           ))
         ) : (
           <div className="text-center my-5">
-            <Lottie animationData={emptyWishlistAnim} style={{ height: 200, margin: "0 auto" }} />
+            <Lottie animationData={emptyWishlistAnim} style={{ height: 250, margin: "0 auto" }} />
             <h5 style={{ color: "rgba(50,30,20,0.85)", fontWeight: "600", marginTop: "10px" }}>
               Your wishlist is empty
             </h5>
