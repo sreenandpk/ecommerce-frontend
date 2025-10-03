@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../Home/Footer";
 import ScrollToTop from "../ScrollTop";
 import * as Dialog from "@radix-ui/react-dialog";
+import Lottie from "lottie-react";   // ✅ Import Lottie
+import emptyCartAnimation from "../../../jsonAnimation/emptyCart.json"; // ✅ Your JSON animation
 
 export default function Cart() {
   const [addedProducts, setAddedProducts] = useState([]);
@@ -26,7 +28,7 @@ export default function Cart() {
         const cart = user.cart || [];
         setAddedProducts(cart.reverse());
         const totalItems = cart.reduce((sum, p) => sum + (p.quantity || 1), 0);
-        const totalPrice = cart.reduce((sum, p) => sum + (p.price * (p.quantity || 1)), 0);
+        const totalPrice = cart.reduce((sum, p) => sum + p.price * (p.quantity || 1), 0);
         setCartCount(totalItems);
         setCartTotalItems(totalItems);
         setCartTotalPrice(totalPrice);
@@ -93,7 +95,7 @@ export default function Cart() {
   const updateState = (cart) => {
     setAddedProducts(cart.reverse());
     const totalItems = cart.reduce((sum, p) => sum + (p.quantity || 1), 0);
-    const totalPrice = cart.reduce((sum, p) => sum + (p.price * (p.quantity || 1)), 0);
+    const totalPrice = cart.reduce((sum, p) => sum + p.price * (p.quantity || 1), 0);
     setCartCount(totalItems);
     setCartTotalItems(totalItems);
     setCartTotalPrice(totalPrice);
@@ -109,7 +111,7 @@ export default function Cart() {
         </p>
 
         <div className="row justify-content-center g-4">
-          {isLogin &&
+          {isLogin && addedProducts.length > 0 ? (
             addedProducts.map((item, index) => (
               <div key={index} className="col-12 col-sm-10 col-md-8 col-lg-7">
                 <div
@@ -137,11 +139,11 @@ export default function Cart() {
                   <div className="flex-grow-1">
                     <h6 className="fw-bold mb-1">{item.name}</h6>
                     <p className="fw-semibold mb-1">Price: ₹{item.price}</p>
-                   
-                    {item.category && <p className="text-muted small mb-1">Category: {item.category}</p>}
-                 
-                    
-                   
+                    {item.category && (
+                      <p className="text-muted small mb-1">
+                        Category: {item.category}
+                      </p>
+                    )}
                   </div>
 
                   {/* Quantity Controls */}
@@ -150,15 +152,25 @@ export default function Cart() {
                       <button
                         onClick={() => decrementQuantity(item)}
                         className="btn btn-light p-1"
-                        style={{ width: "32px", height: "32px", borderRadius: "50%" }}
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          borderRadius: "50%",
+                        }}
                       >
                         -
                       </button>
-                      <span className="align-self-center">{item.quantity || 1}</span>
+                      <span className="align-self-center">
+                        {item.quantity || 1}
+                      </span>
                       <button
                         onClick={() => incrementQuantity(item)}
                         className="btn btn-light p-1"
-                        style={{ width: "32px", height: "32px", borderRadius: "50%" }}
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          borderRadius: "50%",
+                        }}
                       >
                         +
                       </button>
@@ -172,44 +184,72 @@ export default function Cart() {
                   </div>
                 </div>
               </div>
-            ))}
-        </div>
-
- <div className="d-flex justify-content-center my-4">
+            ))
+          ) : (
+            // Show when not logged in OR empty cart
+            <div className="text-center my-5">
+              <Lottie animationData={emptyCartAnimation} loop={true} style={{ height: 250 }} />
+              <h5>Your cart is empty</h5>
+              <p className="text-muted">
+                {isLogin ? "Add items to your cart to continue shopping." : "Please log in to view and manage your cart."}
+              </p>
+              {!isLogin && (
   <button
-    onClick={handleBuyAll}
+    className="btn"
     style={{
-     background: "rgba(50, 30, 20, 0.85)", // deep muted brown with transparency
-        color: "#fff",          // deep blue text
-      padding: "9px 20px",            // compact size
-      borderRadius: "30px",           // modern pill shape
+      background: "rgba(50, 30, 20, 0.85)", // matches your checkout button
+      color: "#fff",
+      padding: "9px 22px",
+      borderRadius: "30px",
       fontWeight: "600",
       fontSize: "0.95rem",
-      boxShadow: "0 4px 12px rgba(0,0,0,0.15)", // subtle shadow
-     
-      transition: "all 0.3s ease",
-      minWidth: "200px",
       border: "none",
-      cursor: "pointer",
-     
+      boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+      transition: "all 0.3s ease",
+      minWidth: "140px",
     }}
-    onMouseEnter={(e) => {
-     
-      e.target.style.transform = "scale(1.05)";
-    }}
-    onMouseLeave={(e) => {
-   
-      e.target.style.transform = "scale(1)";
-    }}
+    onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+    onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+    onClick={() => navigate("/login")}
   >
-    Proceed to Checkout
+    Login
   </button>
-</div>
+)}
 
-</div>
+            </div>
+          )}
+        </div>
 
-
-   
+        {/* Checkout button - show only if logged in and cart has items */}
+        {isLogin && addedProducts.length > 0 && (
+          <div className="d-flex justify-content-center my-4">
+            <button
+              onClick={handleBuyAll}
+              style={{
+                background: "rgba(50, 30, 20, 0.85)",
+                color: "#fff",
+                padding: "9px 20px",
+                borderRadius: "30px",
+                fontWeight: "600",
+                fontSize: "0.95rem",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                transition: "all 0.3s ease",
+                minWidth: "200px",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = "scale(1.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = "scale(1)";
+              }}
+            >
+              Proceed to Checkout
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Radix Dialog */}
       <Dialog.Root
@@ -240,11 +280,16 @@ export default function Cart() {
             boxShadow: "0 15px 30px rgba(0,0,0,0.2)",
           }}
         >
-          <Dialog.Title style={{ fontSize: "1.4rem", fontWeight: 700, marginBottom: "12px" }}>
+          <Dialog.Title
+            style={{ fontSize: "1.4rem", fontWeight: 700, marginBottom: "12px" }}
+          >
             Are you sure?
           </Dialog.Title>
-          <Dialog.Description style={{ fontSize: "0.95rem", marginBottom: "22px" }}>
-            Do you want to remove <strong>{confirmDialog.item?.name}</strong> from cart?
+          <Dialog.Description
+            style={{ fontSize: "0.95rem", marginBottom: "22px" }}
+          >
+            Do you want to remove{" "}
+            <strong>{confirmDialog.item?.name}</strong> from cart?
           </Dialog.Description>
           <div className="d-flex flex-column flex-md-row justify-content-center gap-2">
             <button

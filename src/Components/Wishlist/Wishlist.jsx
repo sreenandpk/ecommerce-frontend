@@ -6,6 +6,8 @@ import { infoToast } from "../toast";
 import { fetchUser, updateUser } from "../Fetch/FetchUser";
 import { useNavigate } from "react-router-dom";
 import ScrollToTop from "../ScrollTop";
+import Lottie from "lottie-react";
+import emptyWishlistAnim from "../../../jsonAnimation/emptyCart.json"; // 👈 add your animation file
 
 export default function Wishlist() {
   const [likedProducts, setLikedProducts] = useState([]);
@@ -28,8 +30,6 @@ export default function Wishlist() {
       if (!removeItemFromCart) infoToast(`${item.name} added to cart`);
 
       await updateUser(userId, { cart: updatedCart });
-
-      // just update cart count
       localStorage.setItem("cartTotalLength", updatedCart.length);
       setCartCount(updatedCart.length);
     } catch (err) {
@@ -64,9 +64,7 @@ export default function Wishlist() {
       const userResponse = await fetchUser(userId);
       const filteredWishlist = userResponse.wishlist.filter((i) => i.id !== item.id);
 
-      await updateUser(userId, {
-        wishlist: filteredWishlist,
-      });
+      await updateUser(userId, { wishlist: filteredWishlist });
 
       setLikedProducts(filteredWishlist);
       setWishlistIds(filteredWishlist.map((i) => i.id));
@@ -82,8 +80,9 @@ export default function Wishlist() {
       <Navbar />
       <div style={{ height: "40px" }}></div>
       <h3 style={{ textAlign: "center" }} className="mb-4 mt-4">
-        My wishlist
+        My Wishlist
       </h3>
+
       <div className="row justify-content-center g-4">
         {likedProducts.length > 0 ? (
           likedProducts.map((item, index) => (
@@ -111,18 +110,13 @@ export default function Wishlist() {
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
                 }}
-                data-aos="fade-up"
               >
                 <div className="card-body d-flex flex-column justify-content-between p-2">
                   <img
                     src={item.image}
                     alt={item.name}
                     className="img-fluid mb-3"
-                    style={{
-                      height: "180px",
-                      objectFit: "contain",
-                      maxWidth: "100%",
-                    }}
+                    style={{ height: "180px", objectFit: "contain", maxWidth: "100%" }}
                     onClick={() => navigate(`/productDetails/${item.id}`)}
                   />
                   <h5 className="card-title fw-semibold mb-3" style={{ fontSize: "0.95rem" }}>
@@ -130,15 +124,29 @@ export default function Wishlist() {
                   </h5>
 
                   <button
-                    className="btn btn-dark rounded-pill w-100 mb-2"
-                    style={{ padding: "8px 0", fontSize: "0.85rem" }}
+                    className="btn w-100 mb-2"
+                    style={{
+                      background: "rgba(50, 30, 20, 0.85)",
+                      color: "#fff",
+                      padding: "8px 0",
+                      fontSize: "0.85rem",
+                      borderRadius: "30px",
+                      border: "none",
+                    }}
                     onClick={() => addtoCart(item)}
                   >
-                    {likedProducts.some((p) => p.id === item.id) ? "Remove" : "Add"}
+                    Add to Cart
                   </button>
                   <button
-                    className="btn btn-danger rounded-pill w-100"
-                    style={{ padding: "8px 0", fontSize: "0.85rem" }}
+                    className="btn w-100"
+                    style={{
+                      background: "#e63946",
+                      color: "#fff",
+                      padding: "8px 0",
+                      fontSize: "0.85rem",
+                      borderRadius: "30px",
+                      border: "none",
+                    }}
                     onClick={() => removeFromWishlist(item)}
                   >
                     Discard
@@ -148,9 +156,36 @@ export default function Wishlist() {
             </div>
           ))
         ) : (
-          <p className="text-center text-muted">Your wishlist is empty.</p>
+          <div className="text-center my-5">
+            <Lottie animationData={emptyWishlistAnim} style={{ height: 200, margin: "0 auto" }} />
+            <h5 style={{ color: "rgba(50,30,20,0.85)", fontWeight: "600", marginTop: "10px" }}>
+              Your wishlist is empty
+            </h5>
+            <p className="text-muted mb-4">Start exploring and add items you love!</p>
+            <button
+              className="btn"
+              style={{
+                background: "rgba(50, 30, 20, 0.85)",
+                color: "#fff",
+                padding: "9px 22px",
+                borderRadius: "30px",
+                fontWeight: "600",
+                fontSize: "0.95rem",
+                border: "none",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                transition: "all 0.3s ease",
+                minWidth: "160px",
+              }}
+              onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+              onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+              onClick={() => navigate("/products")} // 👈 go back to products page
+            >
+              Browse Products
+            </button>
+          </div>
         )}
       </div>
+
       <ScrollToTop />
     </>
   );
