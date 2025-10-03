@@ -147,41 +147,91 @@ export default function Cart() {
                   </div>
 
                   {/* Quantity Controls */}
-                  <div className="d-flex flex-column align-items-center gap-2">
-                    <div className="d-flex gap-2 mb-2">
-                      <button
-                        onClick={() => decrementQuantity(item)}
-                        className="btn btn-light p-1"
-                        style={{
-                          width: "32px",
-                          height: "32px",
-                          borderRadius: "50%",
-                        }}
-                      >
-                        -
-                      </button>
-                      <span className="align-self-center">
-                        {item.quantity || 1}
-                      </span>
-                      <button
-                        onClick={() => incrementQuantity(item)}
-                        className="btn btn-light p-1"
-                        style={{
-                          width: "32px",
-                          height: "32px",
-                          borderRadius: "50%",
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                    <button
-                      onClick={() => handleRemoveClick(item)}
-                      className="btn btn-danger btn-sm rounded-pill px-3"
-                    >
-                      Remove
-                    </button>
-                  </div>
+            <div className="d-flex flex-column align-items-center gap-2">
+  {/* Quantity Controls */}
+  <div className="d-flex align-items-center gap-2 mb-2">
+    {/* Decrement Button */}
+    <button
+      onClick={() => decrementQuantity(item)}
+      style={{
+        width: "36px",
+        height: "36px",
+        borderRadius: "50%",
+        backgroundColor: "#e2f3f1", // soft background color
+        color: "#009688",           // your website theme color
+        border: "none",
+        fontSize: "1.2rem",
+        fontWeight: "600",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "all 0.2s ease",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    >
+      −
+    </button>
+
+    {/* Quantity Display */}
+    <span
+      style={{
+        minWidth: "30px",
+        textAlign: "center",
+        fontWeight: "600",
+        fontSize: "1rem",
+      }}
+    >
+      {item.quantity || 1}
+    </span>
+
+    {/* Increment Button */}
+    <button
+      onClick={() => incrementQuantity(item)}
+      style={{
+        width: "36px",
+        height: "36px",
+        borderRadius: "50%",
+        backgroundColor: "#e2f3f1",
+        color: "#009688",
+        border: "none",
+        fontSize: "1.2rem",
+        fontWeight: "600",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "all 0.2s ease",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    >
+      +
+    </button>
+  </div>
+
+  {/* Remove Button */}
+  <button
+    onClick={() => handleRemoveClick(item)}
+    style={{
+      backgroundColor: "#ff6b6b", // soft red matching your website
+      color: "#fff",
+      border: "none",
+      borderRadius: "20px",
+      padding: "6px 18px",
+      fontSize: "0.9rem",
+      fontWeight: "600",
+      cursor: "pointer",
+      transition: "all 0.2s ease",
+    }}
+    onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+    onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+  >
+    Remove
+  </button>
+</div>
+
                 </div>
               </div>
             ))
@@ -223,30 +273,35 @@ export default function Cart() {
         {/* Checkout button - show only if logged in and cart has items */}
         {isLogin && addedProducts.length > 0 && (
           <div className="d-flex justify-content-center my-4">
-            <button
-              onClick={handleBuyAll}
-              style={{
-                background: "rgba(50, 30, 20, 0.85)",
-                color: "#fff",
-                padding: "9px 20px",
-                borderRadius: "30px",
-                fontWeight: "600",
-                fontSize: "0.95rem",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                transition: "all 0.3s ease",
-                minWidth: "200px",
-                border: "none",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.transform = "scale(1.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = "scale(1)";
-              }}
-            >
-              Proceed to Checkout
-            </button>
+           <button
+  onClick={handleBuyAll}
+  style={{
+    backgroundColor: "#50c2c9", // soft teal, replace with your exact site color
+    color: "#fff",
+    padding: "10px 25px",
+    borderRadius: "30px",
+    fontWeight: "700",
+    fontSize: "1rem",
+    boxShadow: "0 6px 15px rgba(0,0,0,0.15)",
+    transition: "all 0.3s ease",
+    minWidth: "210px",
+    border: "none",
+    cursor: "pointer",
+   
+    letterSpacing: "0.5px",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "scale(1.05)";
+    e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "scale(1)";
+    e.currentTarget.style.boxShadow = "0 6px 15px rgba(0,0,0,0.15)";
+  }}
+>
+  Proceed to Checkout
+</button>
+
           </div>
         )}
       </div>
