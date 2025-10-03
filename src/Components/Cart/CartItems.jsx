@@ -290,14 +290,7 @@ export default function Cart() {
    
     letterSpacing: "0.5px",
   }}
-  onMouseEnter={(e) => {
-    e.currentTarget.style.transform = "scale(1.05)";
-    e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.transform = "scale(1)";
-    e.currentTarget.style.boxShadow = "0 6px 15px rgba(0,0,0,0.15)";
-  }}
+ 
 >
   Proceed to Checkout
 </button>
