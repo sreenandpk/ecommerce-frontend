@@ -133,7 +133,7 @@ function Login() {
             padding: 12px;
             border-radius: 12px;
             border: 1px solid #ffd6e0;
-            font-size: 15px;
+            font-size: 16px;
             outline: none;
             background: #fff8f8;
             transition: 0.3s;
