@@ -224,14 +224,14 @@ export default function Home() {
           style={{ minWidth: "300px", maxWidth: "500px" }}
         >
           <h1
-  style={{ fontSize: "2.7rem", fontWeight: "bold", color: "#0a2141" }}
+  style={{ fontSize: "2.5rem", fontWeight: "bold", color: "#0a2141" }}
   className="mx-5"
   data-aos="fade-up"
 >
   Delicious Icecreams <br /> Just for You
 </h1>
 <p
-  style={{ fontSize: "1.7rem", color: "#333", marginBottom: "1.5rem" }}
+  style={{ fontSize: "1.7rem", color: "#333", marginBottom: "1.2rem" }}
   className="mx-5"
   data-aos="fade-up"
 >
@@ -246,7 +246,7 @@ export default function Home() {
               color: "#fff",
               border: "none",
               borderRadius: "12px",
-              fontSize: "1.5rem",
+              fontSize: "1.2rem",
               cursor: "pointer",
             }}
             className="mx-5"

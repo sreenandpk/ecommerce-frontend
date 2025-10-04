@@ -154,22 +154,23 @@ export default function Footer() {
             color: #000000ff;
             transform: translateX(3px);
           }
-          .btn-submit {
-            width: 150px;
-            height: 35px;
-            border-radius: 25px;
-            border: none;
-            background-color:black;
-            color: #fff;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-          }
-          .btn-submit:hover {
-            background-color: black;
-            transform: scale(1.05);
-          }
+         .btn-submit {
+  width: 150px;
+  height: 35px;
+  border-radius: 25px;
+  border: none;
+  background: rgba(50, 30, 20, 0.85) !important;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-submit:hover {
+  background: rgba(50, 30, 20, 0.95) !important; /* darker on hover */
+  transform: scale(1.05);
+}
+
           @media (max-width: 768px) {
             .text-md-start { text-align: center !important; }
             .btn-submit { width: 100%; }
