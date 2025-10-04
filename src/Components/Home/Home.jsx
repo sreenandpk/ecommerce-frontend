@@ -231,7 +231,7 @@ export default function Home() {
   Delicious Icecreams <br /> Just for You
 </h1>
 <p
-  style={{ fontSize: "1.7rem", color: "#333", marginBottom: "1.2rem" }}
+  style={{ fontSize: "1.6rem", color: "#333", marginBottom: "1.2rem" }}
   className="mx-5"
   data-aos="fade-up"
 >
