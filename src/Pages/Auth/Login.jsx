@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchUserLogin } from "../../Components/Fetch/FetchUser";
-import { FaEye, FaEyeSlash } from "react-icons/fa";  // 👁️ import icons
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -13,9 +12,7 @@ function Login() {
 
   useEffect(() => {
     const savedUserId = localStorage.getItem("userId");
-    if (savedUserId) {
-      navigate("/");
-    }
+    if (savedUserId) navigate("/");
   }, [navigate]);
 
   const submit = async (event) => {
@@ -46,129 +43,136 @@ function Login() {
 
   return (
     <>
-      <div className="parent">
-        <div className="right">
-          <form onSubmit={submit} style={{ background: "#fff8f0" }}>
-            <h2>Login</h2>
+      <div className="login-parent">
+        <form onSubmit={submit} className="login-form">
+          <h2> Welcome Back!</h2>
 
-            <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+          />
+
+          <label htmlFor="password">Password</label>
+          <div className="password-wrapper">
             <input
-              type="email"
+              type={showPassword ? "text" : "password"}
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              style={{ backgroundColor: "#fff8f0" }}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
             />
-
-            <label htmlFor="password">Password:</label>
-            <div className="password-wrapper">
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                style={{ backgroundColor: "#fff8f0" }}
-              />
-              <span
-                className="eye-icon"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
-
-            <button type="submit">Login</button>
-
-            {error && <p className="error">{error}</p>}
-
-            <p
-              style={{
-                textAlign: "center",
-                marginTop: "10px",
-                fontSize: "14px",
-                color: "#555",
-              }}
+            <span
+              className="eye-icon"
+              onClick={() => setShowPassword(!showPassword)}
             >
-              Don’t have an account?{" "}
-              <span
-                style={{
-                  color: "#2575fc",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                }}
-                onClick={() => navigate("/register")}
-              >
-                Register
-              </span>
-            </p>
-          </form>
-        </div>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
-        {/* CSS */}
+          <button type="submit">Login</button>
+
+          {error && <p className="error">{error}</p>}
+
+          <p className="register-text">
+            Don’t have an account?{" "}
+            <span onClick={() => navigate("/register")}>Register</span>
+          </p>
+        </form>
+
         <style>
           {`
-          .parent {
+          .login-parent {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
-            padding: 20px;
             min-height: 100vh;
-            flex-wrap: wrap;
+            background:  #fff8f0;
+            padding: 20px;
           }
 
-          form {
+          @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+
+          .login-form {
+            background: #fff;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 380px;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            padding: 30px;
-            border-radius: 12px;
-            background-color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 350px;
-          }
-
-          form h2 {
             text-align: center;
-            margin-bottom: 10px;
-            color: #333;
           }
 
-          form input {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            width: 100%;
+          .login-form h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff6a88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+
+          .login-form label {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: left;
+            color: #444;
+          }
+
+          .login-form input {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ffd6e0;
+            font-size: 15px;
+            outline: none;
+            background: #fff8f8;
+            transition: 0.3s;
+          }
+
+          .login-form input:focus {
+            border-color: #ff6a88;
+            box-shadow: 0 0 6px rgba(255,106,136,0.4);
           }
 
           .password-wrapper {
             position: relative;
-            display: flex;
-            align-items: center;
           }
 
           .password-wrapper input {
             width: 100%;
-            padding-right: 40px; /* space for eye icon */
+            padding-right: 40px;
           }
 
           .eye-icon {
             position: absolute;
-            right: 10px;
-            cursor: pointer;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
             font-size: 18px;
-            color: #555;
+            color: #888;
+            cursor: pointer;
+            transition: 0.3s;
           }
 
-          form button {
+          .eye-icon:hover {
+            color: #ff6a88;
+          }
+
+          .login-form button {
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             border: none;
-            background: linear-gradient(135deg, #2b2726ff, #1d1d1eff);
+            background: linear-gradient(135deg, #ff758c, #ff7eb3, #ff9a9e);
             color: white;
             font-size: 16px;
             font-weight: bold;
@@ -176,19 +180,25 @@ function Login() {
             transition: 0.3s;
           }
 
-          form button:hover {
-            opacity: 0.9;
+          .login-form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(255,118,137,0.4);
           }
 
           .error {
-            color: red;
-            text-align: center;
+            color: #ff3333;
+            font-size: 14px;
           }
 
-          @media (max-width: 768px) {
-            .parent {
-              flex-direction: column;
-            }
+          .register-text {
+            font-size: 14px;
+            color: #555;
+          }
+
+          .register-text span {
+            color: #ff6a88;
+            font-weight: bold;
+            cursor: pointer;
           }
         `}
         </style>

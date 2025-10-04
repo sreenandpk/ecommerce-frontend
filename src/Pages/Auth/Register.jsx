@@ -1,220 +1,259 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import registerAnimation from "../../../jsonAnimation/Register.json"
-import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../Components/Fetch/FetchUser";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function Register(){
-    const savedUserId = JSON.parse(localStorage.getItem("userId")); // ✅ only store id
-    const [name,setName]=useState("")
-    const [email,setEmail]=useState("")
-    const [password,setPassword]=useState("")
-    const [confirmPassword,setConfirmPassword]=useState("");
-    const [error,setError]=useState("");
-    const [showPassword,setShowPassword]=useState(false);
+function Register() {
+  const savedUserId = JSON.parse(localStorage.getItem("userId")); 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const navigate=useNavigate()
-    const cart=[];
-    const wishlist=[];
-    const recentlyViewed=[];
-    const myOrders=[];
-    const booking=[];
-    const payment=[];
-    const block=false;
-    const image="";
-        
-    useEffect(function(){
-      if(savedUserId){
-        navigate("/")
+  const navigate = useNavigate();
+  const cart = [];
+  const wishlist = [];
+  const recentlyViewed = [];
+  const myOrders = [];
+  const booking = [];
+  const payment = [];
+  const block = false;
+  const image = "";
+
+  useEffect(() => {
+    if (savedUserId) navigate("/");
+  }, [savedUserId, navigate]);
+
+  const submit = async (event) => {
+    event.preventDefault();
+    setError("");
+
+    try {
+      const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!%&])(?=.*\d).{8,}$/;
+
+      if (!regEx.test(password)) {
+        setError("Password must include small letter, capital letter, digit, and special character");
+        return;
       }
-    },[])
 
-    const submit= async function(event){
-        event.preventDefault();
-        setError("")
+      if (confirmPassword !== password) {
+        setError("Password and Confirm Password must be same");
+        return;
+      }
 
-        try{
-            const regEx=/^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!%&])(?=.*\d).{8,}$/;
+      const existing = await axios.get(`${BASE_URL}/users?email=${email}`);
+      if (existing.data.length > 0) {
+        setError("User with this email already exists");
+        return;
+      }
 
-            if(!regEx.test(password)){
-                setError("Password must include small letter, capital letter, digit, and special character");
-                return;
-            }
+      const res = await axios.post(`${BASE_URL}/users`, {
+        name, email, password, cart, wishlist, recentlyViewed, myOrders, booking, payment, block, image
+      });
 
-            if(confirmPassword!==password) {
-                setError("password and confirm password must be same");
-                return;
-            }
-            
-            const existing=await axios.get(`${BASE_URL}/users?email=${email}`);
-            if(existing.data.length>0){
-                setError("user with this email already exist");
-                return;
-            }
-
-            // ✅ Save user, then only put id in localStorage
-            const res = await axios.post(`${BASE_URL}/users`,{
-              name,email,password,cart,wishlist,recentlyViewed,myOrders,booking,payment,block,image
-            });
-
-            localStorage.setItem("userId", JSON.stringify(res.data.id)); // ✅ only id stored
-       
-            setEmail("");
-            setName("")
-            setPassword("")
-            setConfirmPassword("");
-            console.log("registration success");
-            setError("");
-            navigate("/login")
-        }catch(err){
-            const errorMessage = err.response?.data?.message || err.message || "Error registering user";
-            setError(errorMessage);
-            console.log(err);
-        }
+      localStorage.setItem("userId", JSON.stringify(res.data.id)); 
+      setEmail("");
+      setName("");
+      setPassword("");
+      setConfirmPassword("");
+      navigate("/login");
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || err.message || "Error registering user";
+      setError(errorMessage);
     }
-    
-    return(
-   <>
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      minHeight: "100vh",
-      padding: "20px",
-    }}
-  >
-    {/* Animation */}
-    <div style={{ maxWidth: "220px", marginBottom: "20px" }}>
-      <Lottie animationData={registerAnimation} loop={true} />
-    </div>
+  };
 
-    {/* Error */}
-    {error && (
-      <p style={{ color: "red", fontWeight: "bold", marginBottom: "10px" }}>
-        {error}
-      </p>
-    )}
+  return (
+    <>
+      <div className="register-parent">
+        {/* Error */}
+        {error && <p className="error">{error}</p>}
 
-    {/* Form */}
-    <form
-      onSubmit={submit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "15px",
-        maxWidth: "400px",
-        width: "100%",
-        padding: "25px",
-        borderRadius: "12px",
-        backgroundColor: "#fff8f0",
-        boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
-      }}
-    >
-      <h2 style={{ textAlign: "center", color: "#333", marginBottom: "10px" }}>
-        ✨ Register
-      </h2>
+        {/* Form */}
+        <form onSubmit={submit} className="register-form">
+          <h2> Create Account</h2>
 
-      <input
-        type="text"
-        required
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-        placeholder="Type your name"
-        style={{
-          padding: "12px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          fontSize: "14px",
-          backgroundColor: "#fff8f0",
-        }}
-      />
+          <input
+            type="text"
+            required
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            placeholder="Full Name"
+          />
 
-      <input
-        type="email"
-        required
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-        placeholder="Email"
-        style={{
-          padding: "12px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          fontSize: "14px",
-          backgroundColor: "#fff8f0",
-        }}
-      />
+          <input
+            type="email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            placeholder="Email Address"
+          />
 
-      <div style={{ display: "flex", gap: "8px" }}>
-        <input
-          type={showPassword ? "text" : "password"}
-          required
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          placeholder="Password"
-          style={{
-            flex: 1,
-            padding: "12px",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-            fontSize: "14px",
-            backgroundColor: "#fff8f0",
-          }}
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          style={{
-            padding: "12px",
-            borderRadius: "8px",
-            border: "none",
-            backgroundColor: "#f0f0f0",
-            cursor: "pointer",
-          }}
-        >
-          {showPassword ? "🙈" : "👁️"}
-        </button>
+          {/* Password */}
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              placeholder="Password"
+            />
+            <span
+              className="eye-icon"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          {/* Confirm Password */}
+          <div className="password-wrapper">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
+              placeholder="Confirm Password"
+            />
+            <span
+              className="eye-icon"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          <button type="submit">Register</button>
+
+          <p className="login-text">
+            Already have an account?{" "}
+            <span onClick={() => navigate("/login")}>Login</span>
+          </p>
+        </form>
+
+        {/* CSS */}
+        <style>
+          {`
+          .register-parent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background:  #fff8f0;
+            padding: 20px;
+          }
+
+          @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+
+          .register-form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+          }
+
+          .register-form h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff6a88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+
+          .register-form input {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ffd6e0;
+            font-size: 15px;
+            outline: none;
+            background: #fff8f8;
+            transition: 0.3s;
+          }
+
+          .register-form input:focus {
+            border-color: #ff6a88;
+            box-shadow: 0 0 6px rgba(255,106,136,0.4);
+          }
+
+          .password-wrapper {
+            position: relative;
+          }
+
+          .password-wrapper input {
+            width: 100%;
+            padding-right: 40px;
+          }
+
+          .eye-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #888;
+            cursor: pointer;
+            transition: 0.3s;
+          }
+
+          .eye-icon:hover {
+            color: #ff6a88;
+          }
+
+          .register-form button {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3, #ff9a9e);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+          }
+
+          .register-form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(255,118,137,0.4);
+          }
+
+          .error {
+            color: #ff3333;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: bold;
+          }
+
+          .login-text {
+            font-size: 14px;
+            color: #555;
+          }
+
+          .login-text span {
+            color: #ff6a88;
+            font-weight: bold;
+            cursor: pointer;
+          }
+        `}
+        </style>
       </div>
-
-      <input
-        type="password"
-        required
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        value={confirmPassword}
-        placeholder="Confirm password"
-        style={{
-          padding: "12px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          fontSize: "14px",
-          backgroundColor: "#fff8f0",
-        }}
-      />
-
-      <button
-        type="submit"
-        style={{
-          padding: "12px",
-          borderRadius: "8px",
-          border: "none",
-          background: "linear-gradient(135deg, #2b2726ff, #1d1d1eff)",
-          color: "white",
-          fontSize: "16px",
-          fontWeight: "bold",
-          cursor: "pointer",
-          transition: "0.3s",
-        }}
-        onMouseOver={(e) => (e.target.style.opacity = "0.9")}
-        onMouseOut={(e) => (e.target.style.opacity = "1")}
-      >
-         Register
-      </button>
-    </form>
-  </div>
-</>
-    )
+    </>
+  );
 }
 
 export default Register;
