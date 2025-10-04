@@ -201,7 +201,7 @@ function Login({ toastRef }) {
           }
           .login-form input, .login-form button {
             padding: 10px;
-            font-size: 14px;
+            font-size: 16px;
           }
         }
         `}

@@ -248,7 +248,7 @@ function Register({ toastRef }) {
           }
           .register-form input, .register-form button {
             padding: 10px;
-            font-size: 14px;
+            font-size: 16px;
           }
         }
         `}
