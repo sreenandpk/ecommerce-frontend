@@ -94,7 +94,7 @@ export default function Footer() {
                     name="name"
                     placeholder="Your Name"
                     required
-                    style={{ fontSize: "0.9rem", padding: "5px 10px" }}
+                    style={{ fontSize: "16px", padding: "5px 10px" }}
                   />
                 </div>
                 <div className="mb-2">
@@ -105,7 +105,7 @@ export default function Footer() {
                     name="email"
                     placeholder="Your Email"
                     required
-                    style={{ fontSize: "0.9rem", padding: "5px 10px" }}
+                    style={{ fontSize: "16px", padding: "5px 10px" }}
                   />
                 </div>
                 <div className="mb-2">
