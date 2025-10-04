@@ -116,7 +116,7 @@ export default function Footer() {
                     rows="2"
                     placeholder="Your Message"
                     required
-                    style={{ fontSize: "0.9rem", padding: "5px 10px" }}
+                    style={{ fontSize: "16px", padding: "5px 10px" }}
                   ></textarea>
                 </div>
                 <div className="text-center">
