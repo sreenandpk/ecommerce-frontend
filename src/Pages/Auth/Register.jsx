@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../Components/Fetch/FetchUser";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-function Register() {
+function Register({ toastRef }) {
   const savedUserId = JSON.parse(localStorage.getItem("userId")); 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -66,12 +66,12 @@ function Register() {
       setError(errorMessage);
     }
   };
-
+ toastRef?.current?.showToast(`${error}`);
   return (
     <>
       <div className="register-parent">
-        {/* Error */}
-        {error && <p className="error">{error}</p>}
+       
+        
 
         {/* Form */}
         <form onSubmit={submit} className="register-form">

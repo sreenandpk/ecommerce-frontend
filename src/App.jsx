@@ -112,7 +112,7 @@ const toastRef = useRef();
   /></div>}>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<Register  toastRef={toastRef}/>} />
           <Route path="/account" element={<Account />} />
           <Route path="/products" element={<Products toastRef={toastRef} />} />
           <Route path="/about" element={<About />} />
