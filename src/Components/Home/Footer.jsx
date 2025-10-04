@@ -171,10 +171,18 @@ export default function Footer() {
   transform: scale(1.05);
 }
 
-          @media (max-width: 768px) {
-            .text-md-start { text-align: center !important; }
-            .btn-submit { width: 100%; }
-          }
+      @media (max-width: 768px) {
+  .text-md-start { 
+    text-align: center !important; 
+  }
+  .btn-submit { 
+    width: auto;         /* keep natural size */
+    min-width: 120px;    /* ensure it's not too small */
+    padding: 5px 20px;   /* balanced padding */
+    display: inline-block;
+  }
+}
+
         `}</style>
       </footer>
     </>
