@@ -66,193 +66,194 @@ function Register({ toastRef }) {
       setError(errorMessage);
     }
   };
- toastRef?.current?.showToast(`${error}`);
+
+  useEffect(() => {
+    if (error) toastRef?.current?.showToast(`${error}`);
+  }, [error, toastRef]);
+
   return (
-    <>
-      <div className="register-parent">
-       
-        
+    <div className="register-parent">
+      <form onSubmit={submit} className="register-form">
+        <h2>Create Account</h2>
 
-        {/* Form */}
-        <form onSubmit={submit} className="register-form">
-          <h2> Create Account</h2>
+        <input
+          type="text"
+          required
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+          placeholder="Full Name"
+        />
 
+        <input
+          type="email"
+          required
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          placeholder="Email Address"
+        />
+
+        <div className="password-wrapper">
           <input
-            type="text"
+            type={showPassword ? "text" : "password"}
             required
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-            placeholder="Full Name"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            placeholder="Password"
           />
+          <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
 
+        <div className="password-wrapper">
           <input
-            type="email"
+            type={showConfirmPassword ? "text" : "password"}
             required
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            placeholder="Email Address"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={confirmPassword}
+            placeholder="Confirm Password"
           />
+          <span className="eye-icon" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
 
-          {/* Password */}
-          <div className="password-wrapper">
-            <input
-              type={showPassword ? "text" : "password"}
-              required
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              placeholder="Password"
-            />
-            <span
-              className="eye-icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
+        <button type="submit">Register</button>
 
-          {/* Confirm Password */}
-          <div className="password-wrapper">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              required
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              value={confirmPassword}
-              placeholder="Confirm Password"
-            />
-            <span
-              className="eye-icon"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            >
-              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
+        <p className="login-text">
+          Already have an account? <span onClick={() => navigate("/login")}>Login</span>
+        </p>
+      </form>
 
-          <button type="submit">Register</button>
+      {/* Styles */}
+      <style>
+        {`
+        body, html {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          overflow: hidden; /* prevents scrolling on mobile */
+        }
 
-          <p className="login-text">
-            Already have an account?{" "}
-            <span onClick={() => navigate("/login")}>Login</span>
-          </p>
-        </form>
+        .register-parent {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          background: #fff8f0;
+          padding: 20px;
+        }
 
-        {/* CSS */}
-        <style>
-          {`
-          .register-parent {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background:  #fff8f0;
+        .register-form {
+          background: #fff;
+          padding: 30px;
+          border-radius: 20px;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+          width: 100%;
+          max-width: 400px;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          text-align: center;
+        }
+
+        .register-form h2 {
+          margin-bottom: 10px;
+          font-size: 24px;
+          font-weight: bold;
+          background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff6a88);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .register-form input {
+          padding: 12px;
+          border-radius: 12px;
+          border: 1px solid #ffd6e0;
+          font-size: 16px;
+          outline: none;
+          background: #fff8f8;
+          transition: 0.3s;
+        }
+
+        .register-form input:focus {
+          border-color: #ff6a88;
+          box-shadow: 0 0 6px rgba(255,106,136,0.4);
+        }
+
+        .password-wrapper {
+          position: relative;
+        }
+
+        .password-wrapper input {
+          width: 100%;
+          padding-right: 40px;
+        }
+
+        .eye-icon {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 18px;
+          color: #888;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+
+        .eye-icon:hover {
+          color: #ff6a88;
+        }
+
+        .register-form button {
+          padding: 12px;
+          border-radius: 12px;
+          border: none;
+          background: linear-gradient(135deg, #ff758c, #ff7eb3, #ff9a9e);
+          color: white;
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+
+        .register-form button:hover {
+          transform: scale(1.05);
+          box-shadow: 0 6px 16px rgba(255,118,137,0.4);
+        }
+
+        .error {
+          color: #ff3333;
+          font-size: 14px;
+          margin-bottom: 12px;
+          text-align: center;
+          font-weight: bold;
+        }
+
+        .login-text {
+          font-size: 14px;
+          color: #555;
+        }
+
+        .login-text span {
+          color: #ff6a88;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        /* Responsive adjustments */
+        @media (max-height: 700px) {
+          .register-form {
             padding: 20px;
           }
-
-          @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-
-          .register-form {
-            background: #fff;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            text-align: center;
-          }
-
-          .register-form h2 {
-            margin-bottom: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff6a88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-          }
-
-          .register-form input {
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #ffd6e0;
-            font-size: 16px;
-            outline: none;
-            background: #fff8f8;
-            transition: 0.3s;
-          }
-
-          .register-form input:focus {
-            border-color: #ff6a88;
-            box-shadow: 0 0 6px rgba(255,106,136,0.4);
-          }
-
-          .password-wrapper {
-            position: relative;
-          }
-
-          .password-wrapper input {
-            width: 100%;
-            padding-right: 40px;
-          }
-
-          .eye-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            color: #888;
-            cursor: pointer;
-            transition: 0.3s;
-          }
-
-          .eye-icon:hover {
-            color: #ff6a88;
-          }
-
-          .register-form button {
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, #ff758c, #ff7eb3, #ff9a9e);
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-          }
-
-          .register-form button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(255,118,137,0.4);
-          }
-
-          .error {
-            color: #ff3333;
+          .register-form input, .register-form button {
+            padding: 10px;
             font-size: 14px;
-            margin-bottom: 12px;
-            text-align: center;
-            font-weight: bold;
           }
-
-          .login-text {
-            font-size: 14px;
-            color: #555;
-          }
-
-          .login-text span {
-            color: #ff6a88;
-            font-weight: bold;
-            cursor: pointer;
-          }
+        }
         `}
-        </style>
-      </div>
-    </>
+      </style>
+    </div>
   );
 }
 
