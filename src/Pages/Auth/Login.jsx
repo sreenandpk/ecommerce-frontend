@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchUserLogin } from "../../Components/Fetch/FetchUser";
+import { FaEye, FaEyeSlash } from "react-icons/fa";  // 👁️ import icons
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -32,13 +33,8 @@ function Login() {
           return;
         }
 
-        // ✅ store only user id in localStorage
         localStorage.setItem("userId", JSON.stringify(user.id));
-
-        // ✅ dispatch event so Navbar re-fetches profile/cart/wishlist
         window.dispatchEvent(new Event("profileUpdated"));
-
-        // ✅ navigate to home
         navigate("/");
       } else {
         setError("Invalid email or password");
@@ -51,7 +47,6 @@ function Login() {
   return (
     <>
       <div className="parent">
-        {/* Left side can be animation / image */}
         <div className="right">
           <form onSubmit={submit} style={{ background: "#fff8f0" }}>
             <h2>Login</h2>
@@ -67,21 +62,22 @@ function Login() {
             />
 
             <label htmlFor="password">Password:</label>
-            <input
-              type={showPassword ? "text" : "password"}
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              style={{ backgroundColor: "#fff8f0" }}
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "Hide Password" : "👁️ Show Password"}
-            </button>
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                style={{ backgroundColor: "#fff8f0" }}
+              />
+              <span
+                className="eye-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
 
             <button type="submit">Login</button>
 
@@ -110,7 +106,7 @@ function Login() {
           </form>
         </div>
 
-        {/* CSS styles */}
+        {/* CSS */}
         <style>
           {`
           .parent {
@@ -121,19 +117,6 @@ function Login() {
             padding: 20px;
             min-height: 100vh;
             flex-wrap: wrap;
-          }
-
-          .left, .right {
-            flex: 1 1 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-
-          .left lottie-player, .left div {
-            width: 100%;
-            max-width: 350px;
-            height: auto;
           }
 
           form {
@@ -158,7 +141,27 @@ function Login() {
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #ccc;
-            font-size: 14px;
+            font-size: 16px;
+            width: 100%;
+          }
+
+          .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+          }
+
+          .password-wrapper input {
+            width: 100%;
+            padding-right: 40px; /* space for eye icon */
+          }
+
+          .eye-icon {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #555;
           }
 
           form button {
@@ -173,12 +176,6 @@ function Login() {
             transition: 0.3s;
           }
 
-          form button[type="button"] {
-            background: #f0f0f0;
-            color: #333;
-            font-size: 14px;
-          }
-
           form button:hover {
             opacity: 0.9;
           }
@@ -188,20 +185,9 @@ function Login() {
             text-align: center;
           }
 
-          /* Mobile Responsive */
           @media (max-width: 768px) {
             .parent {
               flex-direction: column;
-            }
-
-            .left, .right {
-              flex: unset;
-              width: 100%;
-            }
-
-            .left lottie-player, .left div {
-              max-width: 300px; 
-              margin-bottom: 20px;
             }
           }
         `}
