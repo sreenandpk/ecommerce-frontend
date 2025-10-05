@@ -3,7 +3,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useContext, useState, useEffect } from "react";
 import { SearchContext } from "../SearchContext/SearchContext";
 import { useNavigate } from "react-router-dom";
-import { fetchAvailableCitiesFromDb, updateUser } from "../Fetch/FetchUser";
+import { fetchAvailableCitiesFromDb, updateUser, fetchUser } from "../Fetch/FetchUser";
 import Navbar from "../../Navbar/Navbar";
 import { infoToast } from "../toast";
 import Footer from "../Home/Footer";
@@ -31,7 +31,7 @@ export default function BookingPage() {
   useEffect(() => {
     async function fetchCities() {
       const cities = await fetchAvailableCitiesFromDb();
-      setAvailableCities(cities || []);
+      setAvailableCities(cities?.city || []);
     }
     fetchCities();
   }, []);
@@ -47,9 +47,11 @@ export default function BookingPage() {
     if (phoneNo.length < 10) return infoToast("Enter a valid phone number");
     if (!regex.test(address)) return infoToast("Special characters are not allowed in address");
 
+    const userId = localStorage.getItem("userId");
+    if (!userId) return infoToast("User not logged in");
+
     const options = { timeZone: "Asia/Kolkata", hour12: true, hour: "2-digit", minute: "2-digit" };
     const istTime = new Intl.DateTimeFormat("en-US", options).format(new Date());
-    const savedUser = JSON.parse(localStorage.getItem("existingUser"));
 
     const newBooking = {
       id: Date.now().toString(),
@@ -62,13 +64,19 @@ export default function BookingPage() {
     };
 
     try {
-      const updatedBookings = [...(savedUser.booking || []), newBooking];
-      await updateUser(savedUser.id, { ...savedUser, booking: updatedBookings });
-      const updatedSavedUser = { ...savedUser, booking: updatedBookings };
-      localStorage.setItem("existingUser", JSON.stringify(updatedSavedUser));
+      // Fetch user details directly from DB
+      const userData = await fetchUser(userId);
+      const existingBookings = userData?.booking || [];
+
+      // Update bookings directly in DB
+      const updatedBookings = [...existingBookings, newBooking];
+      await updateUser(userId, { booking: updatedBookings });
+
+      infoToast("Booking confirmed!");
       navigate(`/payment/${newBooking.id}`);
-    } catch {
-      alert("Failed to update user booking details");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update booking in database");
     }
   };
 
@@ -103,7 +111,7 @@ export default function BookingPage() {
                     placeholder="Enter your name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    style={{backgroundColor:'#fff8f0'}}
+                    style={{ backgroundColor: "#fff8f0" }}
                   />
                 </div>
 
@@ -115,17 +123,19 @@ export default function BookingPage() {
                     placeholder="Enter phone number"
                     value={phoneNo}
                     maxLength={10}
-                    onChange={(e) => setPhoneNo(e.target.value.replace(/\D/g, ""))}style={{backgroundColor:'#fff8f0'}}
+                    onChange={(e) => setPhoneNo(e.target.value.replace(/\D/g, ""))}
+                    style={{ backgroundColor: "#fff8f0" }}
                   />
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label fw-semibold">City</label>
-                  <select style={{backgroundColor:'#fff8f0'}}
+                  <select
                     className="form-select rounded-pill"
+                    style={{ backgroundColor: "#fff8f0" }}
                     onChange={(e) => {
                       const selectedCity = availableCities.find((city) => city.name === e.target.value);
-                      setPincode(selectedCity ? selectedCity.pin : "");
+                      setPincode(selectedCity ? selectedCity.pincode : "");
                     }}
                   >
                     <option>Select</option>
@@ -138,24 +148,26 @@ export default function BookingPage() {
                 </div>
 
                 <div className="mb-3">
-                  <label style={{backgroundColor:'#fff8f0'}} className="form-label fw-semibold">Pin Code</label>
-                  <input style={{backgroundColor:'#fff8f0'}}
+                  <label className="form-label fw-semibold">Pin Code</label>
+                  <input
                     type="text"
                     className="form-control rounded-pill"
                     value={pincode || ""}
                     placeholder="Auto-filled pin code"
                     readOnly
+                    style={{ backgroundColor: "#fff8f0" }}
                   />
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Address</label>
-                  <textarea style={{backgroundColor:'#fff8f0'}}
+                  <textarea
                     className="form-control rounded-3"
                     rows="2"
                     placeholder="Enter delivery address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
+                    style={{ backgroundColor: "#fff8f0" }}
                   ></textarea>
                 </div>
 

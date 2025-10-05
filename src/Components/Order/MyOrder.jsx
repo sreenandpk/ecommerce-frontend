@@ -1,180 +1,268 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
-import { fetchUser } from "../Fetch/FetchUser";
+import { fetchUser, updateUser } from "../Fetch/FetchUser";
 import Navbar from "../../Navbar/Navbar";
 import Footer from "../Home/Footer";
 import ScrollToTop from "../ScrollTop";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 
 export default function Orders() {
   const [productBooked, setProductBooked] = useState([]);
+  const [timeLeft, setTimeLeft] = useState({});
+  const [deliveryTimeLeft, setDeliveryTimeLeft] = useState({});
 
   useEffect(() => {
     async function fetchBookedUser() {
-      const savedUser = JSON.parse(localStorage.getItem("existingUser"));
-      if (!savedUser) return;
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
 
-      const bookedUser = await fetchUser(savedUser.id);
-      setProductBooked(bookedUser.payment || []);
+      try {
+        const bookedUser = await fetchUser(userId);
+        setProductBooked(bookedUser.payment || []);
+      } catch (error) {
+        console.error("Error fetching user orders:", error);
+      }
     }
     fetchBookedUser();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const updatedCancelTimes = {};
+      const updatedDeliveryTimes = {};
+
+      productBooked.forEach((order) => {
+        const orderTime = new Date(order.createdAt).getTime();
+        const cancelWindow = 10 * 60 * 1000;
+        const deliveryWindow = 30 * 60 * 1000;
+
+        updatedCancelTimes[order.razorpayId] = Math.max(cancelWindow - (now - orderTime), 0);
+        updatedDeliveryTimes[order.razorpayId] = Math.max(deliveryWindow - (now - orderTime), 0);
+      });
+
+      setTimeLeft(updatedCancelTimes);
+      setDeliveryTimeLeft(updatedDeliveryTimes);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [productBooked]);
+
+  const handleCancel = async (razorpayId) => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    const userData = await fetchUser(userId);
+    const updatedPayments = userData.payment.filter((p) => p.razorpayId !== razorpayId);
+
+    await updateUser(userId, { payment: updatedPayments });
+    setProductBooked(updatedPayments);
+  };
+
   return (
     <>
+      {/* Google Font */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet"
+      />
       <Navbar />
-      <div style={{ height: '50px' }}></div>
-      <div style={{ maxWidth: "1200px", margin: "auto", padding: "1rem" }}>
-        <h2 style={{
-          textAlign: "center",
-          fontWeight: 700,
-          fontSize: "2rem",
-          marginBottom: "2rem",
-          color: "#111",
-          fontFamily: "SF Pro Display, sans-serif",
-          letterSpacing: "-0.5px"
-        }}>
-          My Orders
-        </h2>
+      <div style={{ height: "30px" }}></div>
 
-        {productBooked && productBooked.length > 0 ? (
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "1.5rem",
-          }}>
-            {productBooked.reverse().map((order, index) => (
-              <div key={index} className="order-card" style={{
-                display: "flex",
-                flexDirection: "column",
-                background: "#fff8f0",
-                borderRadius: "22px",
-                overflow: "hidden",
-                boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
-                transition: "transform 0.4s ease, box-shadow 0.4s ease",
-                cursor: "pointer",
-              }}>
-                {/* Header */}
-                <div style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "0.6rem 1rem",
-                  fontWeight: 600,
-                  fontSize: "0.9rem",
-                  color: "#fff",
-                  background: order.status === "paid"
-                    ? "linear-gradient(90deg, #1c1c1e, #3a3a3c)"
-                    : "linear-gradient(90deg, #8e2de2, #4a00e0)"
-                }}>
-                  <span>{order.status.toUpperCase()}</span>
-                  <span>{order.time}</span>
-                </div>
+      <h4 className="page-title text-center mt-4">My Orders</h4>
+      <p className="text-center mb-3">
+        Your Orders({productBooked.length})
+      </p>
 
-                {/* Products Vertical Stack */}
-                <div style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: "1rem",
-                  gap: "0.75rem"
-                }}>
-                  {order.products.map((item) => (
-                    <div key={item.id} style={{
-                      display: "flex",
-                      alignItems: "center",
-                      background:"#fff8f0",
-                      borderRadius: "15px",
-                      padding: "0.5rem",
-                     
-                      transition: "transform 0.3s, box-shadow 0.3s"
-                    }} className="product-card">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        style={{
-                          width: "60px",
-                          height: "60px",
-                          objectFit: "cover",
-                          borderRadius: "12px",
-                          marginRight: "0.8rem"
-                        }}
-                      />
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <p style={{ margin: 0, fontSize: "0.85rem", fontWeight: 600, color: "#111" }}>
-                          {item.name} x{item.quantity}
-                        </p>
-                        
-                        
-                      </div>
-                      
+      <div className="orders-container d-flex flex-column align-items-center mb-5">
+        {productBooked.length > 0 ? (
+          productBooked.slice().reverse().map((order, index) => {
+            const remainingCancelMs = timeLeft[order.razorpayId] || 0;
+            const remainingDeliveryMs = deliveryTimeLeft[order.razorpayId] || 0;
+
+            const cancelMinutes = Math.floor(remainingCancelMs / 60000);
+            const cancelSeconds = Math.floor((remainingCancelMs % 60000) / 1000);
+
+            const deliveryMinutes = Math.floor(remainingDeliveryMs / 60000);
+            const deliverySeconds = Math.floor((remainingDeliveryMs % 60000) / 1000);
+
+            const canCancel = remainingCancelMs > 0 && order.status === "paid";
+
+            return (
+              <div key={index} className="d-flex justify-content-center w-100 mb-3">
+                <div className="wishlist-card order-card">
+                  {/* Order Header */}
+                  <div className="order-header">
+                    <div className="order-left">
+                      <span>{order.status?.toUpperCase() || "PENDING"}</span>
+                      <span>₹{order.amount}</span>
                     </div>
-                    
-                  ))}<p style={{ margin: 0, fontSize: "0.7rem", color: "#666" }}>
-                        delivered  {order.deliveryTime ? order.deliveryTime : "within 30 min"}
-                        </p>
-                </div>
+                    <div className="order-right">
+                      Delivery in: {Math.max(deliveryMinutes, 0)}:
+                      {Math.max(deliverySeconds, 0).toString().padStart(2, "0")} min
+                    </div>
+                  </div>
 
-                {/* Footer */}
-                <div style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "0.6rem 1rem",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  background: "#fff8f0",
-                  borderTop: "1px solid #e5e5e5"
-                }}>
-                  <span>ID: {order.razorpayId || "N/A"}</span>
-                  <span style={{ color: "#1c1c1e" }}>Paid ₹{order.amount}</span>
-                  <button
-                    style={{
-                      backgroundColor: "#ff3b30",
-                      border: "none",
-                      color: "#fff",
-                      padding: "0.3rem 0.7rem",
-                      borderRadius: "25px",
-                      fontSize: "0.75rem",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease"
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#d32f2f"}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#ff3b30"}
-                  >
-                    Cancel
-                  </button>
+                  {/* Overlapping Product Images */}
+                  <div className="order-products mt-2">
+                    {order.products?.map((item, idx) => (
+                      <div key={idx} className="product-card">
+                        <img src={item.image} alt={item.name} className="wishlist-image" />
+                        {item.quantity > 1 && <span className="qty-badge">x{item.quantity}</span>}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="order-footer d-flex justify-content-end align-items-center mt-2">
+                    {remainingDeliveryMs <= 0 ? (
+                     <span className="delivered-icon ">
+      <AiOutlineCheckCircle size={20} /> Delivered 
+    </span>
+                    ) : (
+                      canCancel && (
+                        <>
+                          <button
+                            className="wishlist-add-btn"
+                            onClick={() => handleCancel(order.razorpayId)}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.backgroundColor = "#d32f2f")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.backgroundColor = "rgba(50,30,20,0.85)")
+                            }
+                          >
+                            Cancel
+                          </button>
+                          <span className="cancel-timer fw-bold mx-2">
+                            {cancelMinutes}:{cancelSeconds.toString().padStart(2, "0")}
+                          </span>
+                        </>
+                      )
+                    )}
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })
         ) : (
-          <p style={{
-            textAlign: "center",
-            fontSize: "0.9rem",
-            marginTop: "2rem",
-            color: "#888"
-          }}>
-            No orders found
-          </p>
+          <p className="text-center mt-5 text-muted">No orders found</p>
         )}
       </div>
 
-      {/* CSS for smooth Apple-like hover effects */}
-      <style jsx>{`
-        .order-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+      <style>{`
+        body {
+          background: #fff8f0;
+          font-family: 'Roboto', sans-serif;
         }
-       
+        .orders-container {
+          width: 100%;
+          padding: 0 15px;
+          background: #fff8f0;
+        }
+        .wishlist-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          background: #fff8f0;
+          border-radius: 18px;
+          width: 100%;
+          max-width: 600px;
+          padding: 15px;
+          position: relative;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+          flex-wrap: nowrap;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .wishlist-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .order-header {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          padding-bottom: 0.5rem;
+          font-weight: 500;
+          font-size: 0.95rem;
+          color: #1c1c1e;
+        }
+        .order-left span {
+          margin-right: 10px;
+        }
+        .order-products {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          padding: 5px 0;
+        }
+        .product-card {
+          position: relative;
+          width: 130px;
+          height: 130px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin-left: -30px;
+          flex-shrink: 0;
+        }
+        .product-card:first-child {
+          margin-left: 0;
+        }
+        .wishlist-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .qty-badge {
+          position: absolute;
+          bottom: -5px;
+          right: -5px;
+          background: #d32f2f;
+          color: #fff;
+          font-size: 0.65rem;
+          padding: 2px 5px;
+          border-radius: 12px;
+          font-weight: 600;
+        }
+        .order-footer {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          width: 100%;
+          padding-top: 0.5rem;
+        }
+        .wishlist-add-btn {
+          background: rgba(50, 30, 20, 0.85) !important;
+          color: #fff !important;
+          border-radius: 25px;
+          border: none;
+          padding: 6px 25px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+        }
+        .wishlist-add-btn:hover {
+          transform: scale(1.05);
+        }
+        .cancel-timer {
+          font-size: 0.75rem;
+          color: #ff3b30;
+        }
+        .delivered-text {
+          font-size: 0.85rem;
+          color: #28a745;
+        }
         @media (max-width: 576px) {
-          .order-card {
-            margin-bottom: 1rem;
+          .wishlist-card {
+            flex-wrap: nowrap;
           }
           .product-card {
-            flex-direction: row;
-            gap: 0.5rem;
+            width: 55px;
+            height: 55px;
           }
         }
       `}</style>
+
       <Footer />
       <ScrollToTop />
     </>

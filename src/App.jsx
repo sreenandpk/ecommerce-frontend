@@ -111,7 +111,7 @@ const toastRef = useRef();
     style={{ width: "80%", maxWidth: 300, height: "auto" }} // 👈 responsive
   /></div>}>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login  toastRef={toastRef}/>} />
           <Route path="/register" element={<Register  toastRef={toastRef}/>} />
           <Route path="/account" element={<Account />} />
           <Route path="/products" element={<Products toastRef={toastRef} />} />
