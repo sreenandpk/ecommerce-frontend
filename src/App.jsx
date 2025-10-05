@@ -124,8 +124,8 @@ const toastRef = useRef();
           <Route path="/category" element={<Category />} />
           <Route path="/recentlyViewed" element={<Recent />} />
           <Route path="/myOrders" element={<MyOrders />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/payment/:bookingId" element={<PaymentPage />}/>
+          <Route path="/booking" element={<Booking toastRef={toastRef}/>} />
+          <Route path="/payment/:bookingId" element={<PaymentPage toastRef={toastRef} />}/>
           <Route path="/admin/*" element={<Admin />}/>
           
           {/* catch unwanted routes */}

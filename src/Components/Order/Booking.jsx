@@ -5,10 +5,9 @@ import { SearchContext } from "../SearchContext/SearchContext";
 import { useNavigate } from "react-router-dom";
 import { fetchAvailableCitiesFromDb, updateUser, fetchUser } from "../Fetch/FetchUser";
 import Navbar from "../../Navbar/Navbar";
-import { infoToast } from "../toast";
 import Footer from "../Home/Footer";
 
-export default function BookingPage() {
+export default function BookingPage({ toastRef }) {
   const [availableCities, setAvailableCities] = useState([]);
   const [pincode, setPincode] = useState("");
   const [fullName, setFullName] = useState("");
@@ -30,25 +29,29 @@ export default function BookingPage() {
 
   useEffect(() => {
     async function fetchCities() {
-      const cities = await fetchAvailableCitiesFromDb();
-      setAvailableCities(cities?.city || []);
+      try {
+        const cities = await fetchAvailableCitiesFromDb();
+        setAvailableCities(cities?.city || []);
+      } catch (err) {
+        toastRef?.current?.showToast("Failed to fetch cities");
+      }
     }
     fetchCities();
-  }, []);
+  }, [toastRef]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const regex = /^[a-zA-Z0-9\s,.-]+$/;
 
-    if (!pincode) return infoToast("Select city");
-    if (!fullName) return infoToast("Enter full name");
-    if (!address) return infoToast("Fill address");
-    if (!phoneNo) return infoToast("Enter phone number");
-    if (phoneNo.length < 10) return infoToast("Enter a valid phone number");
-    if (!regex.test(address)) return infoToast("Special characters are not allowed in address");
+    if (!pincode) return toastRef?.current?.showToast("Select city");
+    if (!fullName) return toastRef?.current?.showToast("Enter full name");
+    if (!address) return toastRef?.current?.showToast("Fill address");
+    if (!phoneNo) return toastRef?.current?.showToast("Enter phone number");
+    if (phoneNo.length < 10) return toastRef?.current?.showToast("Enter a valid phone number");
+    if (!regex.test(address)) return toastRef?.current?.showToast("Special characters are not allowed in address");
 
     const userId = localStorage.getItem("userId");
-    if (!userId) return infoToast("User not logged in");
+    if (!userId) return toastRef?.current?.showToast("User not logged in");
 
     const options = { timeZone: "Asia/Kolkata", hour12: true, hour: "2-digit", minute: "2-digit" };
     const istTime = new Intl.DateTimeFormat("en-US", options).format(new Date());
@@ -64,19 +67,20 @@ export default function BookingPage() {
     };
 
     try {
-      // Fetch user details directly from DB
+      // Fetch user details from DB
       const userData = await fetchUser(userId);
       const existingBookings = userData?.booking || [];
 
-      // Update bookings directly in DB
+      // Update bookings in DB
       const updatedBookings = [...existingBookings, newBooking];
       await updateUser(userId, { booking: updatedBookings });
 
-      infoToast("Booking confirmed!");
+     
       navigate(`/payment/${newBooking.id}`);
     } catch (error) {
       console.error(error);
-      alert("Failed to update booking in database");
+      const errMsg = error.response?.data?.message || "Failed to update booking in database";
+      toastRef?.current?.showToast(errMsg);
     }
   };
 
@@ -86,10 +90,6 @@ export default function BookingPage() {
     <>
       <Navbar />
       <div className="container my-5" style={{ maxWidth: "900px" }}>
-        <h2 className="fw-bold text-center mb-4" style={{ fontFamily: "SF Pro, -apple-system, sans-serif" }}>
-          Book Your Order
-        </h2>
-
         <div className="row g-4">
           {/* Booking Form */}
           <div className="col-12 col-lg-6">
@@ -190,7 +190,7 @@ export default function BookingPage() {
                   {bookingProducts.map((item, index) => (
                     <div key={index} className="d-flex justify-content-between align-items-center mb-3">
                       <div className="d-flex align-items-center gap-2">
-                        <img src={item.image} alt={item.name} style={{ height: "70px", borderRadius: "10px" }} />
+                        <img src={item.image} alt={item.name} style={{ height: "90px", borderRadius: "10px" }} />
                         <span>
                           {item.name} x {item.quantity || 1}
                         </span>

@@ -276,7 +276,7 @@ export default function Cart() {
            <button
   onClick={handleBuyAll}
   style={{
-    backgroundColor: "#50c2c9", // soft teal, replace with your exact site color
+    backgroundColor: "rgba(50,30,20,0.85)", // soft teal, replace with your exact site color
     color: "#fff",
     padding: "10px 25px",
     borderRadius: "30px",
