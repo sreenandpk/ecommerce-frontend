@@ -127,16 +127,7 @@ export default function Account({ toastRef }) {
             gap: "25px",
           }}
         >
-          <h2
-            style={{
-              color: "#2c2c2e",
-              fontSize: "28px",
-              fontWeight: "600",
-              marginBottom: "5px",
-            }}
-          >
-            Your Account
-          </h2>
+        
 
           {/* Profile Image */}
           <div style={{ position: "relative", width: "160px", height: "160px", marginBottom: "10px" }}>
@@ -171,7 +162,7 @@ export default function Account({ toastRef }) {
                 transition: "transform 0.3s ease, background 0.3s ease",
               }}
             >
-              <FaCamera size={18} />
+              <FaCamera size={20} />
               <input
                 id="imageUpload"
                 type="file"
@@ -222,7 +213,7 @@ const inputStyle = {
 };
 
 const buttonStyle = {
-  padding: "14px 20px",
+  padding: "10px 20px",
   borderRadius: "18px",
   border: "none",
   backgroundColor: "black",
