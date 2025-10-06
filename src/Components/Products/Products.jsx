@@ -36,7 +36,7 @@ export default function Products({ toastRef }) {
     async function fetchCart() {
       const id=JSON.parse(localStorage.getItem("userId"))
       const res=await fetchUser(id)
-      setCartItems(res.cart)
+      setCartItems(res.cart||[])
     }
     fetchCart()
   },[])
