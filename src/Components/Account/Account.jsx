@@ -14,7 +14,7 @@ export default function Account({ toastRef }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // ✅ Fetch user details initially
+  // Fetch user details initially
   useEffect(() => {
     async function loadUser() {
       if (!savedUserId) return;
@@ -32,7 +32,7 @@ export default function Account({ toastRef }) {
     loadUser();
   }, [savedUserId]);
 
-  // ✅ Handle profile image change
+  // Handle profile image change
   const handleImageChange = (e) => {
     if (!savedUserId) {
       infoToast("Login first");
@@ -46,7 +46,7 @@ export default function Account({ toastRef }) {
     reader.readAsDataURL(file);
   };
 
-  // ✅ Update user info with email uniqueness & password validation
+  // Update profile
   const updateProfile = async () => {
     if (!savedUserId) {
       infoToast("Login first");
@@ -65,11 +65,13 @@ export default function Account({ toastRef }) {
         }
       }
 
-      // Fetch all users to check email uniqueness
-      const allUsers = await fetchUser(); // fetchUser() with no id returns all users
-      if (allUsers && Array.isArray(allUsers)) {
+      // Fetch all users for email uniqueness
+      const allUsers = await fetchUser(); // Make sure this returns ALL users
+      if (Array.isArray(allUsers)) {
         const emailExists = allUsers.some(
-          (user) => user.email === email && user._id !== savedUserId
+          (user) =>
+            user.email === email &&
+            user.id.toString() !== savedUserId.toString()
         );
         if (emailExists) {
           setError("This email is already registered by another user.");
@@ -82,9 +84,7 @@ export default function Account({ toastRef }) {
         name,
         email,
       };
-      if (password.trim() !== "") {
-        updateData.password = password;
-      }
+      if (password.trim() !== "") updateData.password = password;
 
       await updateUser(savedUserId, updateData);
       infoToast("Profile updated successfully!");
@@ -97,7 +97,6 @@ export default function Account({ toastRef }) {
     }
   };
 
-  // ✅ Show error using toast if provided
   useEffect(() => {
     if (error) toastRef?.current?.showToast(`${error}`);
   }, [error, toastRef]);
@@ -139,15 +138,8 @@ export default function Account({ toastRef }) {
             Your Account
           </h2>
 
-          {/* Profile Image Section */}
-          <div
-            style={{
-              position: "relative",
-              width: "160px",
-              height: "160px",
-              marginBottom: "10px",
-            }}
-          >
+          {/* Profile Image */}
+          <div style={{ position: "relative", width: "160px", height: "160px", marginBottom: "10px" }}>
             <img
               src={imageUrl || profile}
               alt="Profile"
@@ -191,29 +183,9 @@ export default function Account({ toastRef }) {
           </div>
 
           {/* Inputs */}
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
-            style={inputStyle}
-          />
-
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            style={inputStyle}
-          />
-
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="New Password (optional)"
-            style={inputStyle}
-          />
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" style={inputStyle} />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" style={inputStyle} />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="New Password (optional)" style={inputStyle} />
 
           <button
             onClick={updateProfile}
@@ -236,7 +208,6 @@ export default function Account({ toastRef }) {
   );
 }
 
-// ✅ Reusable input style
 const inputStyle = {
   width: "100%",
   padding: "14px 16px",
@@ -250,7 +221,6 @@ const inputStyle = {
   transition: "all 0.3s ease",
 };
 
-// ✅ Reusable button style
 const buttonStyle = {
   padding: "14px 20px",
   borderRadius: "18px",

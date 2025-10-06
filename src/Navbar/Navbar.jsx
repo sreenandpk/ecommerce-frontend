@@ -249,7 +249,7 @@ export default function Navbar() {
                     height: "45px",
                     width: "45px",
                     borderRadius: "50%",
-                    border: "1px solid gray",
+                    border: "1px solid white",
                   }}
                 />
               </Dropdown.Toggle>
@@ -353,7 +353,7 @@ export default function Navbar() {
                 height: "40px",
                 width: "40px",
                 borderRadius: "50%",
-                border: "1px solid gray",
+                border: "1px solid white",
               }}
             />
           </Dropdown.Toggle>
