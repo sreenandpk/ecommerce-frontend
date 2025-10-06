@@ -4,23 +4,27 @@ import Footer from "../Home/Footer";
 import Navbar from "../../Navbar/Navbar";
 import { infoToast } from "../toast";
 import profile from "../../../homeImages/profileDD.jpeg";
+import { FaCamera } from "react-icons/fa";
 
-export default function Account() {
+export default function Account({ toastRef }) {
   const savedUserId = JSON.parse(localStorage.getItem("userId"));
   const [imageUrl, setImageUrl] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // ✅ fetch user details initially
+  // ✅ Fetch user details initially
   useEffect(() => {
     async function loadUser() {
       if (!savedUserId) return;
       try {
         const res = await fetchUser(savedUserId);
-        setImageUrl(res.image || "");
-        setName(res.name || "");
-        setEmail(res.email || "");
+        if (res) {
+          setImageUrl(res.image || "");
+          setName(res.name || "");
+          setEmail(res.email || "");
+        }
       } catch (err) {
         console.log(err);
       }
@@ -28,26 +32,7 @@ export default function Account() {
     loadUser();
   }, [savedUserId]);
 
-  const imageFn = async function () {
-    try {
-      if (savedUserId) {
-        await updateUser(savedUserId, { image: imageUrl, name, email });
-
-        // ✅ keep only userId in localStorage
-        localStorage.setItem("userId", JSON.stringify(savedUserId));
-
-        // ✅ trigger event so Navbar refetches user
-        window.dispatchEvent(new Event("profileUpdated"));
-
-        infoToast("Profile updated successfully!");
-      } else {
-        infoToast("Login first");
-      }
-    } catch {
-      setError("Failed to update profile");
-    }
-  };
-
+  // ✅ Handle profile image change
   const handleImageChange = (e) => {
     if (!savedUserId) {
       infoToast("Login first");
@@ -60,6 +45,62 @@ export default function Account() {
     reader.onloadend = () => setImageUrl(reader.result);
     reader.readAsDataURL(file);
   };
+
+  // ✅ Update user info with email uniqueness & password validation
+  const updateProfile = async () => {
+    if (!savedUserId) {
+      infoToast("Login first");
+      return;
+    }
+
+    try {
+      // Validate password if entered
+      if (password.trim() !== "") {
+        const regEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!%&])(?=.*\d).{8,}$/;
+        if (!regEx.test(password)) {
+          setError(
+            "Password must include lowercase, uppercase, digit, and special character"
+          );
+          return;
+        }
+      }
+
+      // Fetch all users to check email uniqueness
+      const allUsers = await fetchUser(); // fetchUser() with no id returns all users
+      if (allUsers && Array.isArray(allUsers)) {
+        const emailExists = allUsers.some(
+          (user) => user.email === email && user._id !== savedUserId
+        );
+        if (emailExists) {
+          setError("This email is already registered by another user.");
+          return;
+        }
+      }
+
+      const updateData = {
+        image: imageUrl,
+        name,
+        email,
+      };
+      if (password.trim() !== "") {
+        updateData.password = password;
+      }
+
+      await updateUser(savedUserId, updateData);
+      infoToast("Profile updated successfully!");
+      setError("");
+      setPassword("");
+      window.dispatchEvent(new Event("profileUpdated"));
+    } catch (err) {
+      console.log(err);
+      setError("Failed to update profile");
+    }
+  };
+
+  // ✅ Show error using toast if provided
+  useEffect(() => {
+    if (error) toastRef?.current?.showToast(`${error}`);
+  }, [error, toastRef]);
 
   return (
     <>
@@ -98,19 +139,7 @@ export default function Account() {
             Your Account
           </h2>
 
-          {error && (
-            <p
-              style={{
-                color: "#ff375f",
-                fontWeight: "600",
-                fontSize: "14px",
-              }}
-            >
-              {error}
-            </p>
-          )}
-
-          {/* Profile Image */}
+          {/* Profile Image Section */}
           <div
             style={{
               position: "relative",
@@ -132,88 +161,63 @@ export default function Account() {
                 transition: "transform 0.3s ease",
               }}
             />
-            <input
-              type="file"
-              onChange={handleImageChange}
+            <label
+              htmlFor="imageUpload"
               style={{
                 position: "absolute",
-                bottom: "0",
-                left: "50%",
-                transform: "translateX(-50%)",
-                opacity: 0,
-                width: "160px",
-                height: "160px",
+                bottom: "10px",
+                right: "10px",
+                background: "black",
+                color: "white",
+                borderRadius: "50%",
+                padding: "10px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 cursor: "pointer",
+                boxShadow: "0 3px 8px rgba(0,0,0,0.3)",
+                transition: "transform 0.3s ease, background 0.3s ease",
               }}
-            />
+            >
+              <FaCamera size={18} />
+              <input
+                id="imageUpload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+              />
+            </label>
           </div>
 
-          {/* Name Input */}
+          {/* Inputs */}
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
-            style={{
-              width: "100%",
-              padding: "14px 16px",
-              borderRadius: "16px",
-              border: "1px solid #e0e0eb",
-              fontSize: "16px",
-              color: "#2c2c2e",
-              fontWeight: "500",
-              background: "#fff8f0",
-              outline: "none",
-              transition: "all 0.3s ease",
-            }}
-            onFocus={(e) =>
-              (e.target.style.boxShadow =
-                "0 0 0 3px rgba(99, 102, 241, 0.2)")
-            }
-            onBlur={(e) => (e.target.style.boxShadow = "none")}
+            style={inputStyle}
           />
 
-          {/* Email Input */}
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            style={{
-              width: "100%",
-              padding: "14px 16px",
-              borderRadius: "16px",
-              border: "1px solid #e0e0eb",
-              fontSize: "16px",
-              color: "#2c2c2e",
-              fontWeight: "500",
-              background: "#fff8f0",
-              outline: "none",
-              transition: "all 0.3s ease",
-            }}
-            onFocus={(e) =>
-              (e.target.style.boxShadow =
-                "0 0 0 3px rgba(99, 102, 241, 0.2)")
-            }
-            onBlur={(e) => (e.target.style.boxShadow = "none")}
+            style={inputStyle}
           />
 
-          {/* Update Button */}
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="New Password (optional)"
+            style={inputStyle}
+          />
+
           <button
-            onClick={imageFn}
-            style={{
-              padding: "14px 20px",
-              borderRadius: "18px",
-              border: "none",
-              backgroundColor: "black",
-              color: "white",
-              fontSize: "17px",
-              fontWeight: "600",
-              cursor: "pointer",
-              width: "100%",
-              boxShadow: "0 6px 16px rgba(99, 102, 241, 0.3)",
-              transition: "all 0.3s ease",
-            }}
+            onClick={updateProfile}
+            style={buttonStyle}
             onMouseOver={(e) => {
               e.target.style.opacity = "0.95";
               e.target.style.transform = "translateY(-2px)";
@@ -227,8 +231,36 @@ export default function Account() {
           </button>
         </div>
       </div>
-
       <Footer />
     </>
   );
 }
+
+// ✅ Reusable input style
+const inputStyle = {
+  width: "100%",
+  padding: "14px 16px",
+  borderRadius: "16px",
+  border: "1px solid #e0e0eb",
+  fontSize: "16px",
+  color: "#2c2c2e",
+  fontWeight: "500",
+  background: "#fff8f0",
+  outline: "none",
+  transition: "all 0.3s ease",
+};
+
+// ✅ Reusable button style
+const buttonStyle = {
+  padding: "14px 20px",
+  borderRadius: "18px",
+  border: "none",
+  backgroundColor: "black",
+  color: "white",
+  fontSize: "17px",
+  fontWeight: "600",
+  cursor: "pointer",
+  width: "100%",
+  boxShadow: "0 6px 16px rgba(99, 102, 241, 0.3)",
+  transition: "all 0.3s ease",
+};

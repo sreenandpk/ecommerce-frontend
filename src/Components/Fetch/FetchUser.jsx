@@ -28,15 +28,18 @@ export async function fetchProductById(id) {
   }
 }
 
-// GET
+// GET user(s)
 export const fetchUser = async (userId) => {
   try {
-    const res = await axios.get(`${BASE_URL}/users/${userId}`);
+    const url = userId ? `${BASE_URL}/users/${userId}` : `${BASE_URL}/users`;
+    const res = await axios.get(url);
     return res.data;
   } catch {
     console.log("error in fetching user");
+    return null;
   }
 };
+
 
 // PATCH
 export const updateUser = async (userId, data) => {
