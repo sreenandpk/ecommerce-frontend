@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../api/user/axios";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "../../context/LoadingContext";
-import { BASE_URL } from "../../components/Fetch/FetchUser";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Register({ toastRef }) {
@@ -51,13 +50,13 @@ function Register({ toastRef }) {
         return;
       }
 
-      const existing = await axios.get(`${BASE_URL}/users?email=${email}`);
+      const existing = await api.get(`/users?email=${email}`);
       if (existing.data.length > 0) {
         setError("User with this email already exists");
         return;
       }
 
-      const res = await axios.post(`${BASE_URL}/users`, {
+      const res = await api.post("/users", {
         name, email, password, cart, wishlist, RecentlyViewed, myOrders, booking, payment, block, image
       });
 
