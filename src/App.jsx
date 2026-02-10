@@ -4,6 +4,7 @@ import { SearchProvider } from "./context/SearchContext";
 import loaderAnimation from "../jsonAnimation/loading.json";
 import ErrorAnimation from "../jsonAnimation/error.json";
 import Lottie from "lottie-react";
+import AppToast from "./components/Common/AppToast";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
