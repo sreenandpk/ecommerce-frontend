@@ -5,7 +5,7 @@ import api from "../../api/user/axios";
  * Redirects to the new unified API endpoints.
  */
 
-export const BASE_URL = "http://localhost:8000/api";
+export const BASE_URL = "http://13.53.193.159/api";
 
 export const fetchUser = async (userId) => {
     const res = await api.get("/accounts/profile/");
