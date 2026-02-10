@@ -8,7 +8,7 @@ import Lottie from "lottie-react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
-import AppToast from "./components/Common/AppToast";
+import AppToast from "./components/Common/AppToast.js";
 
 // 🔐 ROUTE GUARD
 import UserProtectedRoute from "./routes/UserProtectedRoute";
