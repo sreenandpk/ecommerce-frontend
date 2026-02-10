@@ -3,12 +3,11 @@ import { lazy, Suspense, useState, useEffect, useRef, useLayoutEffect } from "re
 import { SearchProvider } from "./context/SearchContext";
 import loaderAnimation from "../jsonAnimation/loading.json";
 import ErrorAnimation from "../jsonAnimation/error.json";
-import loaded from "../jsonAnimation/loaded.json";
 import Lottie from "lottie-react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
-import AppToast from "./components/Common/AppToast";
+
 
 // 🔐 ROUTE GUARD
 import UserProtectedRoute from "./routes/UserProtectedRoute";
