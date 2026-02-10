@@ -1,0 +1,44 @@
+/* Import Modern Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Global Modern Font for Entire App */
+* {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Use Poppins for headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Remove default margins */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff8f0;
+    /* Standardized cream background to prevent white flashes */
+}
+
+/* Hide Bootstrap Dropdown Arrows Globally */
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+/* Remove extra padding often added for space for the arrow */
+.dropdown-toggle {
+    padding-right: 0 !important;
+}

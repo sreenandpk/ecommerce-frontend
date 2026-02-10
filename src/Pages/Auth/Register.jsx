@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../Components/Fetch/FetchUser";
+import { useLoading } from "../../context/LoadingContext";
+import { BASE_URL } from "../../components/Fetch/FetchUser";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Register({ toastRef }) {
-  const savedUserId = JSON.parse(localStorage.getItem("userId")); 
+  const savedUserId = JSON.parse(localStorage.getItem("userId"));
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,8 +18,13 @@ function Register({ toastRef }) {
   const navigate = useNavigate();
   const cart = [];
   const wishlist = [];
-  const recentlyViewed = [];
+  const RecentlyViewed = [];
+  const { stopLoading } = useLoading();
   const myOrders = [];
+
+  useEffect(() => {
+    stopLoading();
+  }, []);
   const booking = [];
   const payment = [];
   const block = false;
@@ -52,10 +58,10 @@ function Register({ toastRef }) {
       }
 
       const res = await axios.post(`${BASE_URL}/users`, {
-        name, email, password, cart, wishlist, recentlyViewed, myOrders, booking, payment, block, image
+        name, email, password, cart, wishlist, RecentlyViewed, myOrders, booking, payment, block, image
       });
 
-      localStorage.setItem("userId", JSON.stringify(res.data.id)); 
+      localStorage.setItem("userId", JSON.stringify(res.data.id));
       setEmail("");
       setName("");
       setPassword("");
@@ -258,3 +264,6 @@ function Register({ toastRef }) {
 }
 
 export default Register;
+
+
+

@@ -1,0 +1,38 @@
+﻿
+> my-app@0.0.0 build
+> vite build
+
+[36mvite v7.1.2 [32mbuilding for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 133 modules transformed.
+node.exe : [31mΓ£ù[39m Build failed in 1.31s
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([3 
+   1mΓ£ù[39m Build failed in 1.31s:String) [],  
+   RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[31merror during build:
+[31mCould not resolve "./ShareButton" from 
+"src/pages/Products/ProductDetails.jsx"[31m
+file: [36mC:/Users/SREENAND PK/Desktop/Ecommerse
+-Website/frontend-test-products/src/pages/Product
+s/ProductDetails.jsx[31m
+    at getRollupError (file:///C:/Users/SREENAND%
+20PK/Desktop/Ecommerse-Website/frontend-test-prod
+ucts/node_modules/rollup/dist/es/shared/parseAst.
+js:401:41)
+    at error (file:///C:/Users/SREENAND%20PK/Desk
+top/Ecommerse-Website/frontend-test-products/node
+_modules/rollup/dist/es/shared/parseAst.js:397:42
+)
+    at ModuleLoader.handleInvalidResolvedId (file
+:///C:/Users/SREENAND%20PK/Desktop/Ecommerse-Webs
+ite/frontend-test-products/node_modules/rollup/di
+st/es/shared/node-entry.js:21490:24)
+    at file:///C:/Users/SREENAND%20PK/Desktop/Eco
+mmerse-Website/frontend-test-products/node_module
+s/rollup/dist/es/shared/node-entry.js:21450:26[3
+9m

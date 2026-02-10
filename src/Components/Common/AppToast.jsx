@@ -1,0 +1,112 @@
+import * as Toast from "@radix-ui/react-toast";
+import { useState, forwardRef, useImperativeHandle } from "react";
+
+
+const AppToast = forwardRef((props, ref) => {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [buttonConfig, setButtonConfig] = useState(null);
+
+  const showToast = (msg, btnConfig = null) => {
+    setMessage(msg);
+    setButtonConfig(btnConfig);
+    setOpen(true);
+
+    // Auto-close after 5s even on mobile
+    setTimeout(() => setOpen(false), 5000);
+  };
+
+  useImperativeHandle(ref, () => ({ showToast }));
+
+  return (
+    <Toast.Provider swipeDirection="down" duration={5000}>
+      <Toast.Root
+        open={open}
+        onOpenChange={setOpen}
+        duration={5000}
+        className="toast-root"
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            gap: "10px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <Toast.Title style={{ fontWeight: 600, fontSize: "0.75rem" }}>
+              {message}
+            </Toast.Title>
+          </div>
+
+          {buttonConfig && (
+            <button
+              onClick={() => {
+                buttonConfig.onClick?.();
+                setOpen(false);
+              }}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#FFFFFF",
+                cursor: "pointer",
+                fontWeight: 600,
+                fontSize: "0.75rem",
+              }}
+            >
+              {buttonConfig.label}
+            </button>
+          )}
+        </div>
+
+        <div className="toast-progress"></div>
+      </Toast.Root>
+
+      <Toast.Viewport className="toast-viewport" />
+
+      <style>{`
+.toast-root {
+  background: linear-gradient(135deg, #ff4d6d, #ff6f91);
+  color: #F5F5F5;
+  border-radius: 18px;
+  padding: 16px 24px;
+  width: clamp(350px, 90%, 350px);
+  height: 55px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  position: relative;
+  font-family: 'SF Pro', sans-serif;
+  transform: translateY(40px);
+  opacity: 0;
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.toast-viewport {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 9999;
+  width: auto;
+  max-width: 90vw;
+  padding: 0 12px;
+}
+      `}</style>
+    </Toast.Provider>
+  );
+});
+
+export default AppToast;
+

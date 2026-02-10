@@ -1,45 +1,72 @@
-import { createContext, useState, useEffect } from "react";
-import { fetchUsers } from "../fetch";
+import { createContext, useState, useEffect, useRef } from "react";
+import {
+  getAdminOrders,
+  getAdminOrderStats,
+} from "../../api/admin/orders";
+import { useAuth } from "../../context/AuthContext";
 
-export const OrdersLengthContext = createContext();
+export const OrdersLengthContext = createContext(null);
 
 export function OrdersLengthProvider({ children }) {
+  const { isAdmin, loading: authLoading } = useAuth();
+
   const [ordersLength, setOrdersLength] = useState(0);
-  const [orderAmount, setOrderAmount] = useState(0); // total revenue
+  const [orderAmount, setOrderAmount] = useState(0);
   const [totalOrders, setTotalOrders] = useState([]);
+  const [graphData, setGraphData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // 🔒 track fetch lifecycle
+  const fetchedRef = useRef(false);
 
   useEffect(() => {
-    async function fetchAllOrders() {
+    // ⛔ wait for auth
+    if (authLoading) return;
+
+    // ⛔ reset on logout / role change
+    if (!isAdmin) {
+      fetchedRef.current = false;
+      setOrdersLength(0);
+      setOrderAmount(0);
+      setTotalOrders([]);
+      return;
+    }
+
+    // ⛔ fetch only once per admin session
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+
+    async function fetchAdminOrders() {
       try {
-        const users = await fetchUsers();
-        const allOrders = users.flatMap(user => user.payment || []);
+        setLoading(true);
 
-        setTotalOrders(allOrders); // store full orders
-        setOrdersLength(allOrders.length); // number of orders
+        const ordersRes = await getAdminOrders();
+        const orders = ordersRes?.results ?? ordersRes ?? [];
 
-        const totalRevenue = allOrders.reduce(
-          (acc, order) => acc + (Number(order.amount) || 0),
-          0
-        );
-        setOrderAmount(totalRevenue);
+        setTotalOrders(orders);
+        setOrdersLength(Array.isArray(orders) ? orders.length : 0);
 
+        const stats = await getAdminOrderStats();
+        setOrderAmount(stats?.total_revenue ?? 0);
+        setGraphData(stats?.graph_data || []);
       } catch (err) {
-        console.error("Failed to fetch orders:", err);
+        console.error("Failed to fetch admin orders:", err);
+      } finally {
+        setLoading(false);
       }
     }
 
-    fetchAllOrders();
-  }, []);
+    fetchAdminOrders();
+  }, [authLoading, isAdmin]);
 
   return (
     <OrdersLengthContext.Provider
       value={{
         ordersLength,
-        setOrdersLength,
         orderAmount,
-        setOrderAmount,
         totalOrders,
-        setTotalOrders
+        graphData,
+        loading,
       }}
     >
       {children}

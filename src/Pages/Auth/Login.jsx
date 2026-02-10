@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchUserLogin } from "../../Components/Fetch/FetchUser";
+import { useAuth } from "../../context/AuthContext";
+import { useLoading } from "../../context/LoadingContext";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function Login({ toastRef }) {
@@ -9,6 +10,12 @@ function Login({ toastRef }) {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const { stopLoading } = useLoading();
+
+  useEffect(() => {
+    stopLoading();
+  }, []);
 
   useEffect(() => {
     const savedUserId = localStorage.getItem("userId");
@@ -20,24 +27,21 @@ function Login({ toastRef }) {
     setError("");
 
     try {
-      const existingUser = await fetchUserLogin(email, password);
+      const user = await login({ email, password });
 
-      if (existingUser.data.length > 0) {
-        const user = existingUser.data[0];
-
-        if (user.block === true) {
-          setError("Your account is blocked. Contact admin.");
-          return;
-        }
-
-        localStorage.setItem("userId", JSON.stringify(user.id));
+      if (user) {
         window.dispatchEvent(new Event("profileUpdated"));
-        navigate("/");
-      } else {
-        setError("Invalid email or password");
+        toastRef?.current?.showToast("Login Successful");
+
+        // redirect based on role
+        if (user.is_staff || user.is_superuser) {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       }
-    } catch {
-      setError("Server error. Try again later.");
+    } catch (err) {
+      setError(err.response?.data?.detail || "Invalid email or password");
     }
   };
 
@@ -211,3 +215,6 @@ function Login({ toastRef }) {
 }
 
 export default Login;
+
+
+

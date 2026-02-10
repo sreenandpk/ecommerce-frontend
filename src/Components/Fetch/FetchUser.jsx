@@ -1,108 +1,95 @@
-import axios from "axios";
- export const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+import api from "../../api/user/axios";
 
- // keep one place for easy change
+/**
+ * Compatibility layer for legacy FetchUser calls.
+ * Redirects to the new unified API endpoints.
+ */
 
+export const BASE_URL = "http://localhost:8000/api";
 
-// For fetching products by search term
-export async function fetchProducts() {
-  try {
-    const res = await axios.get(`${BASE_URL}/products`);
-
-    return res.data;
-  } catch {
-    console.log("error while fetching products");
-    return [];
-  }
-}
-
-// GET single product by ID
-export async function fetchProductById(id) {
-  try {
-    const res = await axios.get(`${BASE_URL}/products/${id}`);
-    console.log("API DATA:", res.data); 
-    return res.data;
-  } catch {
-    console.log("error while fetching product by id");
-    return null;
-  }
-}
-
-// GET user(s)
 export const fetchUser = async (userId) => {
-  try {
-    const url = userId ? `${BASE_URL}/users/${userId}` : `${BASE_URL}/users`;
-    const res = await axios.get(url);
+    const res = await api.get("/accounts/profile/");
     return res.data;
-  } catch {
-    console.log("error in fetching user");
-    return null;
-  }
 };
 
-
-// PATCH
 export const updateUser = async (userId, data) => {
-  try {
-    const res = await axios.patch(`${BASE_URL}/users/${userId}`, data);
+    const res = await api.patch("/accounts/profile/", data);
     return res.data;
-  } catch {
-    console.log("error while updating user");
-  }
 };
 
-
-
-
-
-// GET cities
-export async function fetchAvailableCitiesFromDb() {
-  try {
-    const res = await axios.get(`${BASE_URL}/available_cities`);
-    return res.data;
-  } catch {
-    console.log("error while fetching cities");
-    return null;
-  }
-}
-
-
-// GET pincode
-export async function fetchAvailablePincodeFromDb() {
-  try {
-    const res = await axios.get(`${BASE_URL}/available_pincode`);
-    return res.data;
-  } catch {
-    console.log("error while fetching cities");
-    return null;
-  }
-}
-
-
-
-
-export const fetchUserLogin = async (email,password) => {
-  try {
-    const res = await axios.get(`${BASE_URL}/users/?email=${email}&password=${password}`);
-    return res;
-  } catch {
-    console.log("error in fetching user");
-  }
+export const fetchProducts = async () => {
+    const res = await api.get("/products/");
+    return res.data.results || res.data;
 };
 
+export const fetchProductsPage = async (url) => {
+    const res = await api.get(url || "/products/");
+    return res.data; // Returns { count, next, previous, results }
+};
 
-export const fetchByCategory=async function(cat){
-    const response=await axios.get(`${BASE_URL}/products/?category=${cat}`);
-    return response.data
-}
-
-export async function fetchProductByName(query="") {
-  try {
-    const res = await axios.get(`${BASE_URL}/products/?name=${query}`);
-
+export const fetchProductBySlug = async (slug) => {
+    const res = await api.get(`/products/${slug}/`);
     return res.data;
-  } catch {
-    console.log("error while fetching products");
-    return [];
-  }
-}
+};
+
+export const fetchProductByName = async (name) => {
+    const res = await api.get(`/products/?search=${name}`);
+    return res.data.results || res.data;
+};
+
+export const fetchReviews = async (productId) => {
+    const res = await api.get(`/products/${productId}/reviews/`);
+    return res.data;
+};
+
+export const addReview = async (productId, data) => {
+    const res = await api.post(`/products/${productId}/reviews/`, data);
+    return res.data;
+};
+
+export const checkReviewEligibility = async (productId) => {
+    const res = await api.get(`/products/${productId}/review-eligibility/`);
+    return res.data;
+};
+
+export const fetchByCategory = async (categorySlug) => {
+    try {
+        // 1. Fetch all categories to find the ID for this slug
+        const catRes = await api.get("/categories/");
+        const categories = catRes.data.results || catRes.data;
+        const targetCategory = Array.isArray(categories)
+            ? categories.find(c => c.slug === categorySlug || c.name.toLowerCase() === categorySlug.toLowerCase())
+            : null;
+
+        // 2. Attempt server-side filtering by ID (more reliable in DRF) or Slug
+        const params = targetCategory ? { category: targetCategory.id } : { category_slug: categorySlug };
+        const res = await api.get("/products/", { params });
+        const products = res.data.results || res.data;
+
+        // 3. Fallback: Double check filtering on client side 
+        if (Array.isArray(products)) {
+            // If the server ignored the filter, we'll see products from other categories
+            const isFiltered = products.every(p =>
+                (p.category?.id === targetCategory?.id) ||
+                (p.category?.slug === categorySlug)
+            );
+
+            if (!isFiltered) {
+                return products.filter(p =>
+                    p.category?.slug === categorySlug ||
+                    p.category?.id === targetCategory?.id ||
+                    (p.category?.name && p.category.name.toLowerCase() === categorySlug.toLowerCase())
+                );
+            }
+        }
+        return products;
+    } catch (err) {
+        console.error("fetchByCategory error:", err);
+        // Fallback to searching all products if something goes wrong
+        const res = await api.get("/products/");
+        const products = res.data.results || res.data;
+        return Array.isArray(products)
+            ? products.filter(p => p.category?.slug === categorySlug || p.category?.name?.toLowerCase() === categorySlug.toLowerCase())
+            : [];
+    }
+};
