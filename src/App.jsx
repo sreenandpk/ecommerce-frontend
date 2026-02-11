@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense, useState, useEffect, useRef, useLayoutEffect } from "react";
 import { SearchProvider } from "./context/SearchContext";
-import loaderAnimation from "../jsonAnimation/loading.json";
-import ErrorAnimation from "../jsonAnimation/error.json";
+import loaderAnimation from "./jsonAnimation/loading.json";
+import ErrorAnimation from "./jsonAnimation/error.json";
 import Lottie from "lottie-react";
 import AppToast from "./components/Common/AppToast.jsx";
 

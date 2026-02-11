@@ -71,6 +71,8 @@ adminApi.interceptors.response.use(
             } catch (err) {
                 isRefreshing = false;
                 localStorage.removeItem("accessToken");
+                localStorage.removeItem("user");
+                localStorage.removeItem("userId");
                 attachAdminToken(null);
 
                 if (window.location.pathname !== "/login") {

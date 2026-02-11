@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 import { useLoading } from "../../context/LoadingContext";
 import { updateUser, fetchUser } from "../../components/Fetch/FetchUser";
 import Footer from "../../components/Layout/Footer";
-import profile from "../../../homeImages/profileDD.jpeg";
+import profile from "../../homeImages/profileDD.jpeg";
 import { Camera, User, Mail, Lock, AlertCircle, Save } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Account({ toastRef }) {
-  const savedUserId = JSON.parse(localStorage.getItem("userId"));
+  const { user: authUser } = useAuth();
+  const { stopLoading } = useLoading();
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [name, setName] = useState("");
@@ -15,27 +17,32 @@ export default function Account({ toastRef }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
-  const { stopLoading } = useLoading();
+  const savedUserId = authUser?.id || JSON.parse(localStorage.getItem("userId"));
 
   useEffect(() => {
-    async function loadUser() {
-      try {
-        if (!savedUserId) {
+    if (authUser) {
+      setImageUrl(authUser.image || profile);
+      setName(authUser.name || "");
+      setEmail(authUser.email || "");
+      stopLoading();
+    } else if (savedUserId) {
+      async function loadUser() {
+        try {
+          const res = await fetchUser(savedUserId);
+          if (res) {
+            setImageUrl(res.image || profile);
+            setName(res.name || "");
+            setEmail(res.email || "");
+          }
+        } finally {
           stopLoading();
-          return;
         }
-        const res = await fetchUser(savedUserId);
-        if (res) {
-          setImageUrl(res.image || "");
-          setName(res.name || "");
-          setEmail(res.email || "");
-        }
-      } finally {
-        stopLoading();
       }
+      loadUser();
+    } else {
+      stopLoading();
     }
-    loadUser();
-  }, [savedUserId]);
+  }, [authUser, savedUserId]);
 
   const handleImageChange = (e) => {
     if (!savedUserId) {
@@ -165,6 +172,7 @@ export default function Account({ toastRef }) {
                   <img
                     src={imageUrl || profile}
                     alt="Profile"
+                    onError={(e) => { e.target.onerror = null; e.target.src = profile; }}
                     style={{
                       width: "100%",
                       height: "100%",

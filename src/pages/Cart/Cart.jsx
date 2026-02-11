@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Layout/Footer";
 import ScrollToTop from "../../components/Common/ScrollToTop";
 import Lottie from "lottie-react";
-import emptyCartAnimation from "../../../jsonAnimation/emptyCart.json";
+import emptyCartAnimation from "../../jsonAnimation/emptyCart.json";
 import ConfirmationModal from "../../components/Common/ConfirmationModal";
 import { getCart, removeFromCart, updateCartQuantity } from "../../api/user/cart";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,7 +16,7 @@ export default function Cart() {
   const [addedProducts, setAddedProducts] = useState([]);
   const [cartTotalItems, setCartTotalItems] = useState(0);
   const [cartTotalPrice, setCartTotalPrice] = useState(0);
-  const { setCartCount, setBookingProducts } = useContext(SearchContext);
+  const { setBookingProducts, refreshCart } = useContext(SearchContext);
   const [isLogin, setIsLogin] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null });
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,7 @@ export default function Cart() {
       if (!token) {
         setIsLogin(false);
         setAddedProducts([]);
-        setCartCount(0);
+        await refreshCart();
         setCartTotalItems(0);
         setCartTotalPrice(0);
         setLoading(false);
@@ -50,7 +50,7 @@ export default function Cart() {
       }
     }
     loadCart();
-  }, [setCartCount]);
+  }, [refreshCart]);
 
   const incrementQuantity = async (item) => {
     try {
@@ -98,12 +98,15 @@ export default function Cart() {
     navigate("/booking");
   };
 
-  const updateState = (cart) => {
+  const updateState = async (cart) => {
     const items = Array.isArray(cart) ? cart : [];
     setAddedProducts(items);
     const totalItems = items.reduce((sum, item) => sum + (item.quantity || 1), 0);
     const totalPrice = items.reduce((sum, item) => sum + (item.product?.price || item.price || 0) * (item.quantity || 1), 0);
-    setCartCount(totalItems);
+
+    // Refresh global cart count
+    await refreshCart();
+
     setCartTotalItems(totalItems);
     setCartTotalPrice(totalPrice);
   };

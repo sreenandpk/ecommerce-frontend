@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { SearchContext } from "../../context/SearchContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Search } from "@mui/icons-material";
-import Dprofile from "../../../homeImages/profileDD.jpeg";
+import Dprofile from "../../homeImages/profileDD.jpeg";
 import { FaHeart, FaShoppingCart, FaSearch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dropdown } from "react-bootstrap";
@@ -26,7 +26,8 @@ export default function Navbar() {
     setSearchValue,
     cartCount = 0,
     wishlistIds = [],
-    setWishlistIds,
+    refreshCart,
+    refreshWishlist,
     setRecentlyViewedProducts,
     setCartCount,
     setWishlistCount,
@@ -116,10 +117,9 @@ export default function Navbar() {
     if (!savedUserId) {
       setCartCount(0);
       setWishlistCount(0);
-      setWishlistIds([]);
       setRecentlyViewedProducts([]);
     }
-  }, [savedUserId]);
+  }, [savedUserId, setCartCount, setWishlistCount, setRecentlyViewedProducts]);
 
 
   useEffect(() => {
@@ -140,11 +140,12 @@ export default function Navbar() {
       try {
         const res = await fetchUser(savedUserId);
         setProfileImage(res.image);
-        setWishlistIds(res.wishlist?.map((item) => item.id) || []);
-        setCartCount(res.cart?.length || 0);
-        setWishlistCount(res.wishlist?.length || 0);
+
+        // Refresh global counts correctly
+        await refreshCart();
+        await refreshWishlist();
       } catch (e) {
-        console.log(e);
+        console.log("Navbar: Error loading user data:", e);
       }
     }
 
@@ -156,7 +157,6 @@ export default function Navbar() {
       if (newId) loadUserData();
       else {
         setProfileImage("");
-        setWishlistIds([]);
         setCartCount(0);
         setWishlistCount(0);
         setRecentlyViewedProducts([]);
@@ -165,7 +165,7 @@ export default function Navbar() {
 
     window.addEventListener("profileUpdated", handleProfileUpdate);
     return () => window.removeEventListener("profileUpdated", handleProfileUpdate);
-  }, [savedUserId]);
+  }, [savedUserId, refreshCart, refreshWishlist, setCartCount, setWishlistCount, setRecentlyViewedProducts]);
 
   return (
     <>
@@ -441,6 +441,7 @@ export default function Navbar() {
               >
                 <img
                   src={profileImage || Dprofile}
+                  onError={(e) => { e.target.onerror = null; e.target.src = Dprofile; }}
                   style={{
                     height: "45px",
                     width: "45px",
@@ -557,6 +558,7 @@ export default function Navbar() {
                 >
                   <img
                     src={profileImage || Dprofile}
+                    onError={(e) => { e.target.onerror = null; e.target.src = Dprofile; }}
                     style={{
                       height: "38px",
                       width: "38px",

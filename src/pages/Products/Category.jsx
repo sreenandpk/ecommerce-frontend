@@ -14,7 +14,7 @@ export default function Category() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { stopLoading } = useLoading();
-  const { wishlistIds = [], setWishlistIds } = useContext(SearchContext);
+  const { wishlistIds = [], refreshWishlist } = useContext(SearchContext);
 
   const [products, setProducts] = useState([]);
   const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
@@ -27,9 +27,7 @@ export default function Category() {
 
         const token = localStorage.getItem("accessToken");
         if (token) {
-          const wishlistItems = await getWishlist();
-          const ids = Array.isArray(wishlistItems) ? wishlistItems.map((item) => item.product?.id || item.id) : [];
-          setWishlistIds(ids);
+          await refreshWishlist();
         }
       } catch (err) {
         console.error("Failed to load category data", err);
@@ -38,7 +36,7 @@ export default function Category() {
       }
     }
     init();
-  }, [slug, setWishlistIds]);
+  }, [slug, refreshWishlist]);
 
   const handleWishlistClick = (item) => {
     const token = localStorage.getItem("accessToken");
@@ -57,13 +55,10 @@ export default function Category() {
     try {
       const alreadyAdded = wishlistIds.includes(item.id);
       if (alreadyAdded) {
-        const wishlistItems = await getWishlist();
-        const wishItem = wishlistItems.find((w) => (w.product?.id === item.id) || (w.id === item.id));
-        if (wishItem?.id) await removeFromWishlist(wishItem.id);
-        setWishlistIds((prev) => prev.filter((id) => id !== item.id));
+        await refreshWishlist();
       } else {
         await addToWishlist(item.id);
-        setWishlistIds((prev) => [...prev, item.id]);
+        await refreshWishlist();
       }
     } catch (err) {
       console.error("Wishlist error", err);

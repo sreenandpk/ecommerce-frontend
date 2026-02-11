@@ -1,4 +1,7 @@
-import { createContext, useState, useEffect, useMemo } from "react";
+import { createContext, useState, useEffect, useMemo, useCallback } from "react";
+import { getCart } from "../api/user/cart";
+import { getWishlist } from "../api/user/wishlist";
+
 export const SearchContext = createContext();
 
 export function SearchProvider({ children }) {
@@ -13,10 +16,51 @@ export function SearchProvider({ children }) {
   const [productDetails, setProductDetails] = useState(null);
   const [bookingProducts, setBookingProducts] = useState([]);
 
-  // Placeholder for future wishlist sync if needed
-  useEffect(() => {
-    // We can fetch wishlist here using getWishlist() if needed
+  const refreshCart = useCallback(async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      setCartCount(0);
+      return [];
+    }
+    try {
+      const items = await getCart();
+      const count = Array.isArray(items) ? items.length : (items.items?.length || 0);
+      setCartCount(count);
+      return items;
+    } catch (err) {
+      console.error("SearchContext: Error refreshing cart:", err);
+      return [];
+    }
   }, []);
+
+  const refreshWishlist = useCallback(async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      setWishlistIds([]);
+      setWishlistCount(0);
+      return [];
+    }
+    try {
+      const items = await getWishlist();
+      const results = Array.isArray(items) ? items : (items.results || []);
+      const ids = results.map(item => item.product?.id || item.id);
+      setWishlistIds(ids);
+      setWishlistCount(ids.length);
+      return results;
+    } catch (err) {
+      console.error("SearchContext: Error refreshing wishlist:", err);
+      return [];
+    }
+  }, []);
+
+  // Sync on mount if logged in
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      refreshCart();
+      refreshWishlist();
+    }
+  }, [refreshCart, refreshWishlist]);
 
   // Memoize the value to prevent unnecessary re-renders
   const searchContextValue = useMemo(() => ({
@@ -28,6 +72,8 @@ export function SearchProvider({ children }) {
     setWishlistIds,
     wishlistCount,
     setWishlistCount,
+    refreshCart,
+    refreshWishlist,
     recentlyViewedProduct,
     setRecentlyViewedProducts,
     productDetails,
@@ -41,6 +87,8 @@ export function SearchProvider({ children }) {
     cartCount,
     wishlistIds,
     wishlistCount,
+    refreshCart,
+    refreshWishlist,
     recentlyViewedProduct,
     productDetails,
     bookingProducts,

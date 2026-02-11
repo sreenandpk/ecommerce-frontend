@@ -1,6 +1,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import { useLoading } from "../../context/LoadingContext";
+import { SearchContext } from "../../context/SearchContext";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   fetchProductBySlug,
@@ -19,7 +20,7 @@ import ShareButton from "../../components/Products/ShareButton";
 import Footer from "../../components/Layout/Footer";
 import { getCart, addToCart, removeFromCart } from "../../api/user/cart";
 import { getWishlist, addToWishlist, removeFromWishlist } from "../../api/user/wishlist";
-import profile from "../../../homeImages/profileDD.jpeg";
+import profile from "../../homeImages/profileDD.jpeg";
 export default function ProductDetails({ toastRef }) {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -28,11 +29,9 @@ export default function ProductDetails({ toastRef }) {
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const { wishlistIds = [], refreshCart, refreshWishlist } = useContext(SearchContext);
   const [RecentlyViewedProduct, setRecentlyViewedProducts] = useState([]);
   const [inWishlist, setInWishlist] = useState(false);
-  const [wishlistIds, setWishlistIds] = useState([]);
-  const [wishlistCount, setWishlistCount] = useState(0);
-  const [cartCount, setCartCount] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
   const [showImageModal, setShowImageModal] = useState(false);
@@ -43,26 +42,13 @@ export default function ProductDetails({ toastRef }) {
 
   // Initial fetch for cart and wishlist
   useEffect(() => {
-    async function fetchCartAndWishlist() {
-      const userId = localStorage.getItem("userId");
-      if (userId) {
-        try {
-          const cart = await getCart();
-          const items = Array.isArray(cart) ? cart : [];
-          setCartItems(items);
-          setCartCount(items.length);
-
-          const wishlist = await getWishlist();
-          const wItems = Array.isArray(wishlist) ? wishlist : [];
-          setWishlistIds(wItems.map(wi => wi.product?.id || wi.id));
-          setWishlistCount(wItems.length);
-        } catch (error) {
-          console.error("Failed to fetch cart/wishlist", error);
-        }
-      }
+    async function loadInitialData() {
+      const items = await refreshCart();
+      setCartItems(Array.isArray(items) ? items : []);
+      await refreshWishlist();
     }
-    fetchCartAndWishlist();
-  }, []);
+    loadInitialData();
+  }, [refreshCart, refreshWishlist]);
 
   // Fetch product and recommended
   useEffect(() => {
@@ -149,9 +135,9 @@ export default function ProductDetails({ toastRef }) {
 
         if (existingItem) {
           await removeFromCart(existingItem.id);
+          await refreshCart();
           const updatedCart = await getCart();
           const updatedItems = Array.isArray(updatedCart) ? updatedCart : [];
-          setCartCount(updatedItems.length);
           setCartItems(updatedItems); // ✅ Update local state
           toastRef?.current?.showToast(`${confirmDialog.item.name} removed from cart`);
         }
@@ -164,10 +150,7 @@ export default function ProductDetails({ toastRef }) {
 
         if (existingItem) {
           await removeFromWishlist(existingItem.id);
-          const updatedWishlist = await getWishlist();
-          const updatedItems = Array.isArray(updatedWishlist) ? updatedWishlist : [];
-          setWishlistIds(updatedItems.map(wi => wi.product?.id || wi.id));
-          setWishlistCount(updatedItems.length);
+          await refreshWishlist();
           setInWishlist(false);
           toastRef?.current?.showToast(`${confirmDialog.item.name} removed from wishlist`);
         }
@@ -199,10 +182,9 @@ export default function ProductDetails({ toastRef }) {
         await addToCart(item.id, 1);
 
         // Update cart count and local state
-        const updatedCart = await getCart();
-        const updatedItems = Array.isArray(updatedCart) ? updatedCart : [];
-        setCartCount(updatedItems.length);
-        setCartItems(updatedItems);
+        await refreshCart();
+        const items = await getCart();
+        setCartItems(Array.isArray(items) ? items : []);
 
         toastRef.current.showToast(
           `${item.name} added to cart`,
@@ -243,10 +225,7 @@ export default function ProductDetails({ toastRef }) {
       }
 
       // Update wishlist count
-      const updatedWishlist = await getWishlist();
-      const updatedItems = Array.isArray(updatedWishlist) ? updatedWishlist : [];
-      setWishlistIds(updatedItems.map(wi => wi.product?.id || wi.id));
-      setWishlistCount(updatedItems.length);
+      await refreshWishlist();
 
       // Vibration feedback
       if (navigator.vibrate) {

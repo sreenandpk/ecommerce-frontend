@@ -14,7 +14,7 @@ import { getWishlist, addToWishlist, removeFromWishlist } from "../../api/user/w
 
 export default function FilteredSearchProducts({ toastRef }) {
   const navigate = useNavigate();
-  const { searchValue, wishlistIds = [], setWishlistIds, setCartCount, setProductDetails } = useContext(SearchContext);
+  const { searchValue, wishlistIds = [], refreshCart, refreshWishlist, setProductDetails } = useContext(SearchContext);
   const { stopLoading } = useLoading();
 
   const [products, setProducts] = useState([]);
@@ -33,20 +33,18 @@ export default function FilteredSearchProducts({ toastRef }) {
           const u = await fetchUser(savedUserId);
           setUser(u);
 
+          await refreshCart();
+          await refreshWishlist();
+
           const cartData = await getCart();
           setCartItems(Array.isArray(cartData) ? cartData : []);
-
-          const wishlistItems = await getWishlist();
-          const ids = Array.isArray(wishlistItems) ? wishlistItems.map((item) => item.product?.id || item.id) : [];
-          setWishlistIds(ids);
-          setCartCount(Array.isArray(cartData) ? cartData.length : 0);
         } catch (err) {
           console.error("Failed to init user data", err);
         }
       }
     }
     initUser();
-  }, [setWishlistIds, setCartCount]);
+  }, [refreshCart, refreshWishlist]);
 
   // Fetch all products
   useEffect(() => {
@@ -100,10 +98,9 @@ export default function FilteredSearchProducts({ toastRef }) {
         await addToCart(item.id, 1);
       }
 
+      await refreshCart();
       const updatedCart = await getCart();
-      const items = Array.isArray(updatedCart) ? updatedCart : [];
-      setCartItems(items);
-      setCartCount(items.length);
+      setCartItems(Array.isArray(updatedCart) ? updatedCart : []);
 
       toastRef?.current.showToast(
         `${item.name} ${exists ? "removed from cart" : "added to cart"}`,
@@ -138,11 +135,11 @@ export default function FilteredSearchProducts({ toastRef }) {
         const wishlistItems = await getWishlist();
         const wishItem = wishlistItems.find((w) => (w.product?.id === item.id) || (w.id === item.id));
         if (wishItem?.id) await removeFromWishlist(wishItem.id);
-        setWishlistIds((prev) => prev.filter((id) => id !== item.id));
+        await refreshWishlist();
         toastRef?.current.showToast(`${item.name} removed from wishlist`);
       } else {
         await addToWishlist(item.id);
-        setWishlistIds((prev) => [...prev, item.id]);
+        await refreshWishlist();
         toastRef?.current.showToast(`${item.name} added to wishlist`);
       }
       if (navigator.vibrate) navigator.vibrate(50);

@@ -67,6 +67,8 @@ api.interceptors.response.use(
                 console.error(" Refresh failed:", refreshError);
 
                 localStorage.removeItem("accessToken");
+                localStorage.removeItem("user");
+                localStorage.removeItem("userId");
                 attachToken(null);
 
                 if (window.location.pathname !== "/login") {

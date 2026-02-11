@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ConfirmationModal from "../../components/Common/ConfirmationModal";
 
 export default function RecentlyViewed({ toastRef }) {
-    const { recentlyViewedProduct, setRecentlyViewedProducts, wishlistIds = [], setWishlistIds, setProductDetails, setCartCount } = useContext(SearchContext);
+    const { recentlyViewedProduct, setRecentlyViewedProducts, wishlistIds = [], refreshCart, refreshWishlist, setProductDetails } = useContext(SearchContext);
     const { startLoading, stopLoading } = useLoading();
     const [userId, setUserId] = useState(null);
     const [cartItems, setCartItems] = useState([]);
@@ -34,16 +34,14 @@ export default function RecentlyViewed({ toastRef }) {
                     const user = await fetchUser(id);
                     setRecentlyViewedProducts(user.recently_viewed || []);
 
-                    // Fetch wishlist to sync IDs
-                    const wishlistItems = await getWishlist();
-                    const ids = Array.isArray(wishlistItems) ? wishlistItems.map((item) => item.product?.id || item.id) : [];
-                    setWishlistIds(ids);
+                    // Refresh global cart and wishlist
+                    await refreshCart();
+                    await refreshWishlist();
 
-                    // Fetch cart to sync button state
+                    // Fetch cart locally for button state
                     const cart = await getCart();
                     const items = Array.isArray(cart) ? cart : [];
                     setCartItems(items);
-                    setCartCount(items.length);
                 } catch (err) {
                     console.error("Failed to fetch recently viewed", err);
                 } finally {
@@ -54,7 +52,7 @@ export default function RecentlyViewed({ toastRef }) {
         } else {
             stopLoading();
         }
-    }, [setWishlistIds, setCartCount, setRecentlyViewedProducts]);
+    }, [refreshCart, refreshWishlist, setRecentlyViewedProducts, startLoading, stopLoading]);
 
     const handleClearAll = async () => {
         if (!userId) return;
@@ -153,10 +151,8 @@ export default function RecentlyViewed({ toastRef }) {
             }
 
             // Refresh cart
-            const updatedCart = await getCart();
-            const updatedItems = Array.isArray(updatedCart) ? updatedCart : [];
-            setCartItems(updatedItems);
-            setCartCount(updatedItems.length);
+            const updatedItems = await refreshCart();
+            setCartItems(Array.isArray(updatedItems) ? updatedItems : []);
 
             toastRef?.current?.showToast(
                 `${item.name} ${existingItem ? "removed from" : "added to"} cart`,
@@ -192,11 +188,11 @@ export default function RecentlyViewed({ toastRef }) {
                 const wishlistItems = await getWishlist();
                 const wishItem = wishlistItems.find((w) => (w.product?.id === item.id) || (w.id === item.id));
                 if (wishItem?.id) await removeFromWishlist(wishItem.id);
-                setWishlistIds((prev) => prev.filter((id) => id !== item.id));
+                await refreshWishlist();
                 toastRef?.current?.showToast(`${item.name} removed from wishlist`);
             } else {
                 await addToWishlist(item.id);
-                setWishlistIds((prev) => [...prev, item.id]);
+                await refreshWishlist();
                 toastRef?.current?.showToast(`${item.name} added to wishlist`);
             }
             if (navigator.vibrate) navigator.vibrate(50);

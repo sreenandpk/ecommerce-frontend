@@ -12,30 +12,57 @@ export const AuthProvider = ({ children }) => {
     const [accessToken, setAccessToken] = useState(null);
     const [authError, setAuthError] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    // 🔐 critical flag used by route guards
     const [isInitializing, setIsInitializing] = useState(true);
+
     const { startLoading, stopLoading } = useLoading();
 
     /* =========================
-       REHYDRATE ON APP LOAD
+       HELPERS
+    ========================= */
+    const clearAuth = () => {
+        setUser(null);
+        setAccessToken(null);
+        attachToken(null);
+        attachAdminToken(null);
+
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userId");
+    };
+
+    /* =========================
+       INITIAL AUTH (APP LOAD)
     ========================= */
     useEffect(() => {
-        const savedToken = localStorage.getItem("accessToken");
-        const savedUser = localStorage.getItem("user");
-
         const initializeAuth = async () => {
-            if (savedToken) {
+            const savedToken = localStorage.getItem("accessToken");
+
+            if (!savedToken) {
+                // If token missing but ID exists, clear it to avoid loops
+                if (localStorage.getItem("userId")) clearAuth();
+                setIsInitializing(false);
+                return;
+            }
+
+            try {
+                console.log("AuthProvider: Initializing with token...");
                 attachToken(savedToken);
                 attachAdminToken(savedToken);
                 setAccessToken(savedToken);
 
-                // ✅ verify user from backend
-                await fetchMe();
+                // 🔥 DO NOT trust cached user — ask backend
+                await fetchMe(false);
+                console.log("AuthProvider: Auth initialized successfully");
+            } catch (err) {
+                console.warn("Initial auth failed:", err);
+                // Clear state if initial check fails (e.g. invalid stored token)
+                clearAuth();
+            } finally {
+                // ✅ only end initialization AFTER backend check
+                setIsInitializing(false);
             }
-
-            if (savedUser) {
-                setUser(JSON.parse(savedUser));
-            }
-            setIsInitializing(false);
         };
 
         initializeAuth();
@@ -56,17 +83,44 @@ export const AuthProvider = ({ children }) => {
             setAccessToken(data.access);
             localStorage.setItem("accessToken", data.access);
 
-            await fetchMe();
-            return data.user; // ✅ REQUIRED
+            try {
+                await fetchMe(true);
+            } catch (fetchErr) {
+                console.error("Profile fetch failed after login:", fetchErr);
+                setAuthError("Logged in, but failed to load user profile. Please try again.");
+                clearAuth();
+                throw fetchErr;
+            }
+
+            return data.user;
         } catch (err) {
-            const message =
-                err.response?.data?.detail ||
-                err.response?.data?.message ||
-                "Invalid email or password";
+            // If it's already our "Profile fetch failed" error, don't overwrite
+            if (authError) throw err;
+
+            console.error("Login attempt failed:", err.response?.data || err.message);
+
+            const errorData = err.response?.data;
+            let message = "Invalid email or password";
+
+            if (errorData) {
+                if (typeof errorData === "string") {
+                    message = errorData;
+                } else if (errorData.detail) {
+                    // This is where our DEBUG messages from the backend live
+                    message = Array.isArray(errorData.detail) ? errorData.detail[0] : errorData.detail;
+                } else if (errorData.message) {
+                    message = errorData.message;
+                } else {
+                    // Handle field-level errors
+                    const fieldErrors = Object.entries(errorData)
+                        .map(([key, val]) => `${key}: ${Array.isArray(val) ? val.join(", ") : val}`)
+                        .join(" | ");
+                    if (fieldErrors) message = fieldErrors;
+                }
+            }
 
             setAuthError(message);
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("user");
+            clearAuth();
             throw err;
         } finally {
             setLoading(false);
@@ -87,8 +141,8 @@ export const AuthProvider = ({ children }) => {
             setAccessToken(data.access);
             localStorage.setItem("accessToken", data.access);
 
-            await fetchMe();
-            return data.user; // ✅ REQUIRED
+            await fetchMe(true);
+            return data.user;
         } catch (err) {
             const message =
                 err.response?.data?.detail ||
@@ -96,8 +150,7 @@ export const AuthProvider = ({ children }) => {
                 "Registration failed";
 
             setAuthError(message);
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("user");
+            clearAuth();
             throw err;
         } finally {
             setLoading(false);
@@ -114,20 +167,9 @@ export const AuthProvider = ({ children }) => {
         try {
             await logoutUser();
         } catch (err) {
-            console.warn("Logout API failed, clearing local state anyway", err);
+            console.warn("Logout API failed, clearing local state anyway");
         } finally {
-            setUser(null);
-            setAccessToken(null);
-            attachToken(null);
-            attachAdminToken(null);
-
-            // ✅ EXHAUSTIVE CLEAR (Ensures admin and user side are both clean)
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("user");
-            localStorage.removeItem("userId");
-            localStorage.removeItem("admin_access_token");
-            localStorage.removeItem("admin_refresh_token");
-
+            clearAuth();
             setLoading(false);
         }
     };
@@ -135,24 +177,28 @@ export const AuthProvider = ({ children }) => {
     /* =========================
        FETCH CURRENT USER
     ========================= */
-    const fetchMe = async () => {
+    const fetchMe = async (shouldLogout = true) => {
         try {
-            const [userRes, profileRes] = await Promise.all([
-                getMe(),
-                getProfile().catch(() => ({ image: null })) // fallback if profile fails
-            ]);
+            // Optimized: We only need /me for basic auth state.
+            // Profile data (with history) is fetched on demand by profile page.
+            const userRes = await getMe();
 
-            const userData = { ...userRes.data, ...profileRes };
+            const userData = userRes.data;
             setUser(userData);
             localStorage.setItem("user", JSON.stringify(userData));
             localStorage.setItem("userId", userData.id);
-        } catch {
-            // token invalid → logout silently
-            logout();
+        } catch (err) {
+            if (shouldLogout) {
+                clearAuth();
+            }
+            throw err;
         }
     };
 
-    const isAdmin = user?.is_superuser || user?.is_staff || false;
+    /* =========================
+       ROLE CHECK
+    ========================= */
+    const isAdmin = !!(user?.is_superuser || user?.is_staff);
 
     return (
         <AuthContext.Provider

@@ -2,19 +2,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useLoading } from "../../context/LoadingContext";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-import Icecream1 from "../../../homeImages/iceCreamTopHome6.png";
-import Icecream3 from "../../../homeImages/icecream3.jpg";
-import Icecream4 from "../../../homeImages/iceCreamHomeTop7.png";
-import Icecream2 from "../../../homeImages/iceCreamHomeTop8.png";
+import Icecream1 from "../../homeImages/iceCreamTopHome6.png";
+import Icecream3 from "../../homeImages/icecream3.jpg";
+import Icecream4 from "../../homeImages/iceCreamHomeTop7.png";
+import Icecream2 from "../../homeImages/iceCreamHomeTop8.png";
 
-import icecreamHome5 from "../../../homeImages/icecreamHome55.jpg";
-import icecreamGG from "../../../homeImages/milkHome.jpg";
-import icecreamG from "../../../homeImages/MoodHome.jpg";
+import icecreamHome5 from "../../homeImages/icecreamHome55.jpg";
+import icecreamGG from "../../homeImages/milkHome.jpg";
+import icecreamG from "../../homeImages/MoodHome.jpg";
 
-import strawBerryHome from "../../../homeImages/strawberryHome.jpg";
-import pistaaHome from "../../../homeImages/pistaaHome.jpg";
-import blueberryHome from "../../../homeImages/bluberryHome.jpg";
-import chocolateHome from "../../../homeImages/chocolateHome.jpg";
+import strawBerryHome from "../../homeImages/strawberryHome.jpg";
+import pistaaHome from "../../homeImages/pistaaHome.jpg";
+import blueberryHome from "../../homeImages/bluberryHome.jpg";
+import chocolateHome from "../../homeImages/chocolateHome.jpg";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

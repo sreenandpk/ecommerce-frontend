@@ -50,25 +50,52 @@ function Register({ toastRef }) {
         return;
       }
 
-      const existing = await api.get(`/users?email=${email}`);
-      if (existing.data.length > 0) {
-        setError("User with this email already exists");
+      // 🚀 RESTORED: Using the correct backend auth endpoint
+      // Backend handles unique email validation automatically.
+      const res = await api.post("/accounts/auth/register/", {
+        name,
+        email,
+        password
+      });
+
+      // Optional: auto-login after register if backend returns token (it does)
+      if (res.data.access) {
+        localStorage.setItem("accessToken", res.data.access);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("userId", JSON.stringify(res.data.user.id));
+        window.dispatchEvent(new Event("profileUpdated"));
+        navigate("/");
         return;
       }
 
-      const res = await api.post("/users", {
-        name, email, password, cart, wishlist, RecentlyViewed, myOrders, booking, payment, block, image
-      });
-
-      localStorage.setItem("userId", JSON.stringify(res.data.id));
-      setEmail("");
-      setName("");
-      setPassword("");
-      setConfirmPassword("");
+      toastRef?.current?.showToast("Registration successful! Please login.");
       navigate("/login");
     } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message || "Error registering user";
-      setError(errorMessage);
+      console.error("Register Error:", err.response?.data);
+
+      const errorData = err.response?.data;
+      let message = "Error registering user";
+
+      if (errorData) {
+        if (typeof errorData === "string") {
+          message = errorData;
+        } else if (errorData.detail) {
+          message = Array.isArray(errorData.detail) ? errorData.detail[0] : errorData.detail;
+        } else if (errorData.email) {
+          // Specific case for "This email is already in use"
+          message = Array.isArray(errorData.email) ? errorData.email[0] : errorData.email;
+        } else if (errorData.message) {
+          message = errorData.message;
+        } else {
+          // Handle field-level errors
+          const fieldErrors = Object.entries(errorData)
+            .map(([key, val]) => `${key}: ${Array.isArray(val) ? val.join(", ") : val}`)
+            .join(" | ");
+          if (fieldErrors) message = fieldErrors;
+        }
+      }
+
+      setError(message);
     }
   };
 

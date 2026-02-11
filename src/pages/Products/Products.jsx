@@ -22,7 +22,7 @@ export default function Products({ toastRef }) {
     const [loading, setLoading] = useState(false);
     const [bestSellerProducts, setBestSellerProducts] = useState([]);
     const [filtered, setFilterd] = useState([]);
-    const { wishlistIds = [], setWishlistIds, setCartCount } = useContext(SearchContext);
+    const { wishlistIds = [], refreshCart, refreshWishlist } = useContext(SearchContext);
     const [active, setActive] = useState("");
     const [cartItems, setCartItems] = useState([]);
     const [confirmDialog, setConfirmDialog] = useState({ open: false, item: null, type: "" });
@@ -30,37 +30,16 @@ export default function Products({ toastRef }) {
 
     //  Sync wishlist when user logs in
     useEffect(() => {
-        async function fetchWishlistItems() {
-            const token = localStorage.getItem("accessToken");
-            if (!token) return; // Only fetch if authenticated
-
-            try {
-                const wishlistItems = await getWishlist();
-                const ids = Array.isArray(wishlistItems) ? wishlistItems.map((item) => item.product?.id || item.id) : [];
-                setWishlistIds(ids);
-            } catch (err) {
-                console.error("error fetching wishlist:", err);
-            }
-        }
-        fetchWishlistItems();
-    }, [setWishlistIds]);
+        refreshWishlist();
+    }, [refreshWishlist]);
 
     useEffect(() => {
-        async function fetchCartItems() {
-            const token = localStorage.getItem("accessToken");
-            if (!token) return; // Only fetch if authenticated
-
-            try {
-                const cartItems = await getCart();
-                const items = Array.isArray(cartItems) ? cartItems : [];
-                setCartItems(items);
-                setCartCount(items.length);
-            } catch (err) {
-                console.error("error fetching cart:", err);
-            }
+        async function loadCart() {
+            const items = await refreshCart();
+            setCartItems(Array.isArray(items) ? items : []);
         }
-        fetchCartItems();
-    }, [setCartCount]);
+        loadCart();
+    }, [refreshCart]);
 
 
     // Fetch Best Sellers
@@ -189,11 +168,8 @@ export default function Products({ toastRef }) {
             }
 
             // Refresh cart
-            const updatedCart = await getCart();
-            console.log("Updated cart:", updatedCart);
-            const items = Array.isArray(updatedCart) ? updatedCart : [];
-            setCartItems(items);
-            setCartCount(items.length);
+            const updatedItems = await refreshCart();
+            setCartItems(Array.isArray(updatedItems) ? updatedItems : []);
 
             toastRef.current.showToast(
                 `${item.name} ${exists ? "removed from cart" : "added to cart"}`,
@@ -230,18 +206,20 @@ export default function Products({ toastRef }) {
             if (alreadyAdded) {
                 // Find the wishlist item to delete
                 const wishlistItems = await getWishlist();
-                const wishItem = wishlistItems.find((w) => w.product?.id === item.id || w.id === item.id);
+                const results = Array.isArray(wishlistItems) ? wishlistItems : (wishlistItems.results || []);
+                const wishItem = results.find((w) => w.product?.id === item.id || w.id === item.id);
                 if (wishItem?.id) {
                     await removeFromWishlist(wishItem.id);
                 }
-                setWishlistIds((prev) => prev.filter((id) => id !== item.id));
                 toastRef.current.showToast(`${item.name} removed from wishlist`);
             } else {
                 // Add to wishlist
                 await addToWishlist(item.id);
-                setWishlistIds((prev) => [...prev, item.id]);
                 toastRef.current.showToast(`${item.name} added to wishlist`);
             }
+
+            await refreshWishlist();
+
             if (navigator.vibrate) {
                 navigator.vibrate(50)
             }

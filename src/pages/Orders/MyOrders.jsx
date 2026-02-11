@@ -8,9 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Package, Clock, CheckCircle, Truck, Info, ChevronRight, Calendar, AlertCircle } from "lucide-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Lottie from "lottie-react";
-import deliveredAnim from "../../../jsonAnimation/delivered.json";
-import deliveryAnim from "../../../jsonAnimation/delivery.json";
-import pendingAnim from "../../../jsonAnimation/pending.json";
+import deliveredAnim from "../../jsonAnimation/delivered.json";
+import deliveryAnim from "../../jsonAnimation/delivery.json";
+import pendingAnim from "../../jsonAnimation/pending.json";
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);

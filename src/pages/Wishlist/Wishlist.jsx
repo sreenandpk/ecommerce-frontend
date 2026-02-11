@@ -9,7 +9,7 @@ import { getCart, addToCart, removeFromCart } from "../../api/user/cart";
 import { useNavigate } from "react-router-dom";
 import ScrollToTop from "../../components/Common/ScrollToTop";
 import Lottie from "lottie-react";
-import emptyWishlistAnim from "../../../jsonAnimation/emptyCart.json";
+import emptyWishlistAnim from "../../jsonAnimation/emptyCart.json";
 // Using Lucide Icons for a more modern, standard look
 import { LuEye, LuTrash2, LuCheck, LuShoppingCart, LuX } from "react-icons/lu";
 import Footer from "../../components/Layout/Footer";
@@ -20,7 +20,7 @@ export default function Wishlist({ toastRef }) {
   const [likedProducts, setLikedProducts] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const { setWishlistIds, setWishlistCount, setCartCount, wishlistIds, setProductDetails } =
+  const { wishlistIds, refreshCart, refreshWishlist, setProductDetails } =
     useContext(SearchContext);
   const navigate = useNavigate();
   const { stopLoading } = useLoading();
@@ -40,15 +40,12 @@ export default function Wishlist({ toastRef }) {
       }
 
       try {
-        const wishlistResponse = await getWishlist();
+        const wishlistResponse = await refreshWishlist();
         const wishlistItems = Array.isArray(wishlistResponse) ? wishlistResponse : [];
         const products = wishlistItems.map(wi => wi.product || wi).reverse();
-
         setLikedProducts(products);
-        setWishlistIds(wishlistItems.map(wi => wi.product?.id || wi.id));
-        setWishlistCount(wishlistItems.length);
 
-        const cartResponse = await getCart();
+        const cartResponse = await refreshCart();
         const items = Array.isArray(cartResponse) ? cartResponse : [];
         setCartItems(items);
       } catch (err) {
@@ -58,7 +55,7 @@ export default function Wishlist({ toastRef }) {
       }
     }
     fetchData();
-  }, [setWishlistIds, setWishlistCount]);
+  }, [refreshCart, refreshWishlist, stopLoading]);
 
   const addtoCart = async (item) => {
     try {
@@ -81,15 +78,10 @@ export default function Wishlist({ toastRef }) {
       } else {
         await addToCart(item.id, 1);
         toastRef?.current?.showToast(`${item.name} added to cart`, { label: "View Cart", onClick: () => navigate("/cart") });
-
+        await refreshCart();
         const updatedCart = await getCart();
         setCartItems(Array.isArray(updatedCart) ? updatedCart : []);
-        setCartCount(Array.isArray(updatedCart) ? updatedCart.length : 0);
       }
-
-      const updatedCart = await getCart();
-      setCartItems(Array.isArray(updatedCart) ? updatedCart : []);
-      setCartCount(Array.isArray(updatedCart) ? updatedCart.length : 0);
 
       if (navigator.vibrate) navigator.vibrate(50);
     } catch (err) {
@@ -124,9 +116,9 @@ export default function Wishlist({ toastRef }) {
     try {
       if (confirmDialog.type === "cart") {
         await removeFromCart(confirmDialog.item.cartId);
+        await refreshCart();
         const updatedCart = await getCart();
         setCartItems(Array.isArray(updatedCart) ? updatedCart : []);
-        setCartCount(Array.isArray(updatedCart) ? updatedCart.length : 0);
         toastRef?.current?.showToast(`${confirmDialog.item.name} removed from cart`);
       } else {
         const wishlistResponse = await getWishlist();
@@ -144,13 +136,10 @@ export default function Wishlist({ toastRef }) {
 
         await Promise.all(requests);
 
-        const updatedWishlist = await getWishlist();
-        const updatedItems = Array.isArray(updatedWishlist) ? updatedWishlist : [];
+        const updatedItems = await refreshWishlist();
         const products = updatedItems.map(wi => wi.product || wi).reverse();
 
         setLikedProducts(products);
-        setWishlistIds(updatedItems.map(wi => wi.product?.id || wi.id));
-        setWishlistCount(updatedItems.length);
         setSelectedItems([]);
 
         const msg = confirmDialog.type === "bulk" ? `${itemsToDeleteIds.length} items removed` : "Item removed";

@@ -17,10 +17,7 @@ function Login({ toastRef }) {
     stopLoading();
   }, []);
 
-  useEffect(() => {
-    const savedUserId = localStorage.getItem("userId");
-    if (savedUserId) navigate("/");
-  }, [navigate]);
+
 
   const submit = async (event) => {
     event.preventDefault();

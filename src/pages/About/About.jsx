@@ -1,11 +1,11 @@
 import Navbar from "../../components/Layout/Navbar";
 import Footer from "../../components/Layout/Footer";
-import icecreamG from "../../../homeImages/AboutImage1.jpg";
-import icecreamGG from "../../../homeImages/AboutImage2.jpg";
-import icecreamGGG from "../../../homeImages/AboutImage3.jpg";
+import icecreamG from "../../homeImages/AboutImage1.jpg";
+import icecreamGG from "../../homeImages/AboutImage2.jpg";
+import icecreamGGG from "../../homeImages/AboutImage3.jpg";
 import FlavorSection from "../../components/Products/FlaverSection";
 import Lottie from "lottie-react";
-import animationData from "../../../jsonAnimation/icecream.json";
+import animationData from "../../jsonAnimation/icecream.json";
 import ScrollToTop from "../../components/Common/ScrollToTop";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
