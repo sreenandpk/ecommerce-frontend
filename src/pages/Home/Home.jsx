@@ -86,8 +86,8 @@ export default function Home() {
 
   return (
     <>
-      <div className="d-none d-md-block" style={{ height: "80px" }} />
-      <div className="d-md-none" style={{ height: "80px" }} />
+      <div className="d-none d-md-block" style={{ height: "120px" }} />
+      <div className="d-md-none" style={{ height: "150px" }} />
 
       {/* ================= HERO SECTION ================= */}
       <div className="text-center mb-2 position-relative">

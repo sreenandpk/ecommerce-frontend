@@ -23,7 +23,8 @@ export default function About() {
 
     <>
 
-      <div style={{ height: '30px' }}></div>
+      <div className="d-none d-md-block" style={{ height: '80px' }}></div>
+      <div className="d-md-none" style={{ height: '120px' }}></div>
       <div className="d-flex flex-wrap justify-content-between align-items-center px-3 px-lg-5 py-5  " style={{ background: " #fff8f0" }}>
 
 

@@ -113,12 +113,13 @@ export default function Cart() {
 
   return (
     <>
-      <Navbar />
+      <div style={{ height: "80px" }} className="d-none d-md-block"></div>
+      <div style={{ height: "120px" }} className="d-md-none d-block"></div>
       <style>{`
         .cart-page {
           background: #fff8f0;
           min-height: 100vh;
-          padding-top: 40px;
+          padding-top: 20px;
           padding-bottom: 80px;
         }
         .cart-header-title {
@@ -341,10 +342,9 @@ export default function Cart() {
 
         /* --- Empty State --- */
         .empty-cart-container {
-           background: white;
-           padding: 60px;
+           background: transparent;
+           padding: 60px 20px;
            border-radius: 40px;
-           box-shadow: 0 20px 40px rgba(93, 55, 43, 0.05);
         }
         .continue-shopping-btn {
           background: #5D372B;
@@ -372,8 +372,31 @@ export default function Cart() {
             padding: 15px;
           }
           .cart-item-img-wrapper {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
+          }
+        }
+        @media (max-width: 768px) {
+          .cart-item-card {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+          }
+          .cart-item-img-wrapper {
+            width: 100%;
+            height: 120px;
+            background: rgba(93, 55, 43, 0.03);
+          }
+          .cart-item-info {
+            width: 100%;
+          }
+          .item-subtotal-box {
+            display: none !important;
+          }
+          .cart-item-card .d-flex.align-items-center {
+            width: 100%;
+            justify-content: space-between;
           }
         }
         @media (max-width: 576px) {

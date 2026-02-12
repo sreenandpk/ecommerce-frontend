@@ -156,13 +156,14 @@ export default function Wishlist({ toastRef }) {
 
   return (
     <>
-      <div style={{ height: "30px" }}></div>
+      <div style={{ height: "80px" }} className="d-none d-md-block"></div>
+      <div style={{ height: "120px" }} className="d-md-none d-block"></div>
 
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center mt-5 mb-5"
+        className="text-center mt-2 mb-4"
       >
         <motion.h4
           initial={{ opacity: 0, scale: 0.95 }}
@@ -171,7 +172,7 @@ export default function Wishlist({ toastRef }) {
           style={{
             fontFamily: "'Playfair Display', serif",
             fontWeight: 700,
-            fontSize: "clamp(1.5rem, 4vw, 2.2rem)",
+            fontSize: "clamp(1.2rem, 3.5vw, 1.8rem)",
             color: "#5D372B",
             letterSpacing: "-0.5px",
             marginBottom: "10px"
@@ -238,7 +239,7 @@ export default function Wishlist({ toastRef }) {
         )}
       </motion.div>
 
-      <div className="container pb-5" style={{ minHeight: "60vh" }}>
+      <div className="container pb-5" style={{ minHeight: "60vh", maxWidth: "1000px" }}>
         <div className="row g-3 g-md-4 justify-content-center">
           <AnimatePresence>
             {likedProducts.length > 0 ? (
@@ -495,7 +496,7 @@ export default function Wishlist({ toastRef }) {
         /* Visual Top */
         .card-visual {
             width: 100%;
-            height: 180px;
+            height: 150px;
             position: relative;
             background: rgba(255, 248, 240, 0.4);
             display: flex;
@@ -628,9 +629,9 @@ export default function Wishlist({ toastRef }) {
         @media (max-width: 576px) {
             .showcase-card {
                 flex-direction: row;
-                height: 140px;
+                height: 120px;
                 background: rgba(255, 248, 240, 0.65);
-                border-radius: 20px;
+                border-radius: 18px;
             }
             .card-visual {
                 width: 120px;
@@ -638,8 +639,8 @@ export default function Wishlist({ toastRef }) {
                 background: transparent;
             }
             .visual-img {
-                max-width: 80%;
-                max-height: 80%;
+                max-width: 85%;
+                max-height: 85%;
             }
             .card-info {
                 padding: 12px 15px;
@@ -653,7 +654,7 @@ export default function Wishlist({ toastRef }) {
                 height: auto;
             }
             .price-tag {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
             .cart-action-btn {
                 padding: 6px 14px;

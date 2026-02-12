@@ -239,7 +239,7 @@ export default function Products({ toastRef }) {
         <>
 
             <div style={{ height: "80px" }} className="d-md-block d-none"></div>
-            <div style={{ height: "60px" }} className="d-md-none d-block"></div>
+            <div style={{ height: "120px" }} className="d-md-none d-block"></div>
 
             {/* Hero Section */}
             <motion.div
@@ -251,7 +251,7 @@ export default function Products({ toastRef }) {
                 <h2 style={{
                     fontFamily: "'Playfair Display', serif",
                     fontWeight: 700,
-                    fontSize: "clamp(2rem, 5vw, 2.5rem)",
+                    fontSize: "clamp(1.5rem, 4.5vw, 2rem)",
                     color: "#5D372B"
                 }}>
                     Premium Scoops

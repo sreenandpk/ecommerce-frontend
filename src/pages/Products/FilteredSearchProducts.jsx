@@ -160,7 +160,8 @@ export default function FilteredSearchProducts({ toastRef }) {
 
   return (
     <>
-      <div style={{ height: "80px" }}></div>
+      <div style={{ height: "120px" }} className="d-md-none d-block"></div>
+      <div style={{ height: "80px" }} className="d-none d-md-block"></div>
 
       <div className="container px-1 px-md-3" style={{ minHeight: "30vh", maxWidth: "1000px" }}>
         {isSearching && displayProducts.length === 0 ? (
