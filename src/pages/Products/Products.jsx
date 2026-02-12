@@ -246,6 +246,7 @@ export default function Products({ toastRef }) {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="container text-center mt-3 mb-4"
+                style={{ maxWidth: "1200px" }}
             >
                 <h2 style={{
                     fontFamily: "'Playfair Display', serif",
@@ -263,6 +264,7 @@ export default function Products({ toastRef }) {
             {/* Modern Filter Chips */}
             <div
                 className="container d-flex justify-content-center flex-wrap gap-3 mb-5"
+                style={{ maxWidth: "1200px" }}
             >
                 {[
                     { label: "All Flavors", key: "", fn: showAll },
@@ -304,7 +306,7 @@ export default function Products({ toastRef }) {
 
 
             {/* Products Grid with Staggered Animation */}
-            <div className="container" style={{ minHeight: "60vh", position: "relative" }}> {/* Added relative for loader */}
+            <div className="container" style={{ minHeight: "40vh", position: "relative", maxWidth: "1200px" }}> {/* Reduced minHeight and constrained width */}
 
                 {/* 💫 INLINE LOADER */}
                 <AnimatePresence>

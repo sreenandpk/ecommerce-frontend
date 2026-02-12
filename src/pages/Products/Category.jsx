@@ -72,8 +72,8 @@ export default function Category() {
 
   return (
     <>
-      <div className="container-fluid pt-4 pt-md-4 pb-4 pb-md-5 mt-1 mt-md-2" style={{ background: "linear-gradient(180deg, #fffcf9 0%, #fff8f0 100%)", minHeight: "60vh" }}>
-        <div className="container px-2 px-md-0">
+      <div className="container-fluid pt-4 pt-md-4 pb-4 pb-md-5 mt-1 mt-md-2" style={{ background: "linear-gradient(180deg, #fffcf9 0%, #fff8f0 100%)", minHeight: "40vh" }}>
+        <div className="container px-2 px-md-0" style={{ maxWidth: "1200px" }}>
           {/* Header Section */}
           <div className="text-center mb-4 mb-md-5" data-aos="fade-down">
             <h1 style={{

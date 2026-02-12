@@ -163,7 +163,7 @@ export default function FilteredSearchProducts({ toastRef }) {
       <Navbar />
       <div style={{ height: "5px" }}></div>
 
-      <div className="container" style={{ minHeight: "50vh" }}>
+      <div className="container" style={{ minHeight: "40vh", maxWidth: "1200px" }}>
         {isSearching && displayProducts.length === 0 ? (
           <div className="text-center py-5" data-aos="fade-up">
             <h3 style={{ fontFamily: "'Playfair Display', serif", color: "#5D372B", marginBottom: "15px" }}>
