@@ -100,6 +100,8 @@ export default function Account({ toastRef }) {
 
   return (
     <>
+      <div style={{ height: "80px" }} className="d-none d-md-block"></div>
+      <div style={{ height: "120px" }} className="d-md-none d-block"></div>
       <div className="profile-wrapper" style={{
         minHeight: "100vh",
         background: "#fff8f0",
@@ -140,7 +142,7 @@ export default function Account({ toastRef }) {
           transition={{ duration: 0.7, ease: "easeOut" }}
           style={{
             width: "100%",
-            maxWidth: "960px",
+            maxWidth: "900px",
             background: "rgba(255, 248, 240, 0.75)", // Cream Glass
             backdropFilter: "blur(25px)",
             borderRadius: "45px",
@@ -397,9 +399,27 @@ export default function Account({ toastRef }) {
         }
 
         @media (max-width: 768px) {
-          .profile-wrapper { padding: 40px 15px 40px; }
-          .col-md-5 { border-right: none; border-bottom: 1px solid rgba(93, 55, 43, 0.05); }
-          h2 { font-size: 1.8rem !important; }
+          .profile-wrapper { padding: 20px 15px 40px; }
+          .col-md-5 { border-right: none; border-bottom: 1px solid rgba(93, 55, 43, 0.05); padding: 30px 20px !important; }
+          .col-md-7 { padding: 30px 20px !important; }
+          h2 { font-size: 1.5rem !important; }
+          h3 { font-size: 1.3rem !important; }
+          .profile-wrapper div[style*="width: 200px"] { 
+            width: 140px !important; 
+            height: 140px !important; 
+            margin-bottom: 15px !important; 
+          }
+          .image-upload-label {
+            width: 38px !important;
+            height: 38px !important;
+            bottom: 5px !important;
+            right: 5px !important;
+          }
+          .image-upload-label svg { width: 16px; height: 16px; }
+          .input-wrapper input { padding: 12px 12px 12px 42px; font-size: 0.9rem; }
+          .input-icon { left: 14px; }
+          .update-btn { padding: 14px; font-size: 0.95rem; border-radius: 16px; }
+          .input-group-modern { gap: 6px; }
         }
       `}</style>
     </>
