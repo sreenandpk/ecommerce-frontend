@@ -238,15 +238,15 @@ export default function Products({ toastRef }) {
     return (
         <>
 
-            <div style={{ height: "20px" }} className="d-md-block d-none"></div>
-            <div style={{ height: "10px" }} className="d-md-none d-block"></div>
+            <div style={{ height: "80px" }} className="d-md-block d-none"></div>
+            <div style={{ height: "60px" }} className="d-md-none d-block"></div>
 
             {/* Hero Section */}
             <motion.div
-                initial={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="container text-center mt-3 mb-4"
-                style={{ maxWidth: "1200px" }}
+                className="container text-center mt-2 mb-3"
+                style={{ maxWidth: "1000px" }}
             >
                 <h2 style={{
                     fontFamily: "'Playfair Display', serif",
@@ -263,8 +263,8 @@ export default function Products({ toastRef }) {
 
             {/* Modern Filter Chips */}
             <div
-                className="container d-flex justify-content-center flex-wrap gap-3 mb-5"
-                style={{ maxWidth: "1200px" }}
+                className="container d-flex justify-content-center flex-wrap gap-2 mb-4"
+                style={{ maxWidth: "1000px" }}
             >
                 {[
                     { label: "All Flavors", key: "", fn: showAll },
@@ -306,7 +306,7 @@ export default function Products({ toastRef }) {
 
 
             {/* Products Grid with Staggered Animation */}
-            <div className="container" style={{ minHeight: "40vh", position: "relative", maxWidth: "1200px" }}> {/* Reduced minHeight and constrained width */}
+            <div className="container px-1 px-md-3" style={{ minHeight: "30vh", position: "relative", maxWidth: "1000px" }}> {/* Reduced padding on mobile and constrained width */}
 
                 {/* 💫 INLINE LOADER */}
                 <AnimatePresence>
@@ -315,7 +315,7 @@ export default function Products({ toastRef }) {
 
                 <motion.div
                     layout
-                    className="row justify-content-center g-4" // Increased gutter for better spacing
+                    className="row justify-content-center g-2 g-md-4" // Use smaller gutter on mobile
                     style={{ opacity: loading ? 0.3 : 1, transition: "opacity 0.3s" }} // Fade out grid slightly
                 >
                     <AnimatePresence>
@@ -333,7 +333,7 @@ export default function Products({ toastRef }) {
                                 <div
                                     className={`card border-0 w-100 ${item.stock > 0 ? 'product-card-hover' : ''}`}
                                     style={{
-                                        maxWidth: "340px",
+                                        maxWidth: "300px",
                                         borderRadius: "22px",
                                         overflow: "hidden",
                                         backgroundColor: "#fff8f0",
@@ -345,8 +345,8 @@ export default function Products({ toastRef }) {
                                     }}
                                 >
                                     <div
-                                        className="d-flex justify-content-center align-items-center p-3 position-relative image-container"
-                                        style={{ background: "transparent", minHeight: "230px", borderRadius: "22px 22px 0 0" }}
+                                        className="d-flex justify-content-center align-items-center p-2 position-relative image-container"
+                                        style={{ background: "transparent", minHeight: "180px", borderRadius: "22px 22px 0 0" }}
                                     >
                                         {/* SOLD OUT OVERLAY */}
                                         {item.stock === 0 && (
@@ -405,8 +405,8 @@ export default function Products({ toastRef }) {
                                             alt={item.name}
                                             className="img-fluid product-image"
                                             style={{
-                                                maxWidth: "150px",
-                                                maxHeight: "150px",
+                                                maxWidth: "120px",
+                                                maxHeight: "120px",
                                                 objectFit: "contain",
                                                 transition: "all 0.5s ease",
                                                 filter: item.stock === 0 ? "grayscale(1) opacity(0.5)" : "none"
@@ -443,7 +443,7 @@ export default function Products({ toastRef }) {
                                         </div>
                                     </div>
 
-                                    <div className="card-body text-center p-3 pt-3" style={{ background: "linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 248, 240, 0.95) 100%)", backdropFilter: "blur(5px)" }}>
+                                    <div className="card-body text-center p-2 pt-2" style={{ background: "linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 248, 240, 0.95) 100%)", backdropFilter: "blur(5px)" }}>
                                         <h5
                                             className="text-truncate px-2"
                                             onClick={() => item.stock > 0 && navigate(`/productDetails/${item.slug}`)}

@@ -160,10 +160,9 @@ export default function FilteredSearchProducts({ toastRef }) {
 
   return (
     <>
-      <Navbar />
-      <div style={{ height: "5px" }}></div>
+      <div style={{ height: "80px" }}></div>
 
-      <div className="container" style={{ minHeight: "40vh", maxWidth: "1200px" }}>
+      <div className="container px-1 px-md-3" style={{ minHeight: "30vh", maxWidth: "1000px" }}>
         {isSearching && displayProducts.length === 0 ? (
           <div className="text-center py-5" data-aos="fade-up">
             <h3 style={{ fontFamily: "'Playfair Display', serif", color: "#5D372B", marginBottom: "15px" }}>
@@ -197,8 +196,8 @@ export default function FilteredSearchProducts({ toastRef }) {
                   }}
                 >
                   <div
-                    className="d-flex justify-content-center align-items-center p-3 position-relative"
-                    style={{ background: "transparent", minHeight: "165px", borderRadius: "22px 22px 0 0" }}
+                    className="d-flex justify-content-center align-items-center p-2 position-relative"
+                    style={{ background: "transparent", minHeight: "150px", borderRadius: "22px 22px 0 0" }}
                   >
                     {/* SOLD OUT OVERLAY */}
                     {item.stock === 0 && (
@@ -236,8 +235,8 @@ export default function FilteredSearchProducts({ toastRef }) {
                       alt={item.name}
                       className="img-fluid product-image"
                       style={{
-                        maxWidth: "110px",
-                        maxHeight: "110px",
+                        maxWidth: "100px",
+                        maxHeight: "100px",
                         objectFit: "contain",
                         transition: "all 0.5s ease",
                         filter: item.stock === 0 ? "grayscale(1) opacity(0.5)" : "none"

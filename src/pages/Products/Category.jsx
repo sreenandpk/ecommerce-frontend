@@ -72,10 +72,10 @@ export default function Category() {
 
   return (
     <>
-      <div className="container-fluid pt-4 pt-md-4 pb-4 pb-md-5 mt-1 mt-md-2" style={{ background: "linear-gradient(180deg, #fffcf9 0%, #fff8f0 100%)", minHeight: "40vh" }}>
-        <div className="container px-2 px-md-0" style={{ maxWidth: "1200px" }}>
+      <div className="container-fluid pt-5 pt-md-5 pb-3 pb-md-4 mt-4 mt-md-5" style={{ background: "linear-gradient(180deg, #fffcf9 0%, #fff8f0 100%)", minHeight: "30vh" }}>
+        <div className="container px-1 px-md-0" style={{ maxWidth: "1000px" }}>
           {/* Header Section */}
-          <div className="text-center mb-4 mb-md-5" data-aos="fade-down">
+          <div className="text-center mb-3 mb-md-4" data-aos="fade-down">
             <h1 style={{
               fontFamily: "'Playfair Display', serif",
               fontWeight: 800,
@@ -98,7 +98,7 @@ export default function Category() {
                   <div
                     className={`card border-0 w-100 ${item.stock > 0 ? 'product-card-hover' : ''}`}
                     style={{
-                      maxWidth: "310px",
+                      maxWidth: "300px",
                       borderRadius: "22px",
                       overflow: "hidden",
                       backgroundColor: "#fff8f0",
@@ -110,7 +110,7 @@ export default function Category() {
                     }}
                   >
                     {/* Visual Section */}
-                    <div className="position-relative p-3" style={{ background: "#fff8f0", minHeight: "180px", height: "200px", mdHeight: "240px" }}>
+                    <div className="position-relative p-2" style={{ background: "#fff8f0", minHeight: "150px", height: "170px" }}>
                       {item.stock === 0 && (
                         <div className="position-absolute d-flex align-items-center justify-content-center" style={{ inset: 0, background: "rgba(255, 255, 255, 0.2)", backdropFilter: "blur(2px)", zIndex: 3 }}>
                           <span className="sold-out-badge" style={{ background: "rgba(0, 0, 0, 0.7)", color: "#fff", padding: "6px 16px", borderRadius: "50px", fontSize: "0.7rem", fontWeight: "700", textTransform: "uppercase" }}>Sold Out</span>
