@@ -261,10 +261,35 @@ export default function ProductDetails({ toastRef }) {
 
   return (
     <>
+      <div style={{ height: "80px" }} className="d-none d-md-block"></div>
+      <div style={{ height: "120px" }} className="d-md-none d-block"></div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .product-detail-container { padding: 10px !important; margin-top: 20px !important; }
+          .product-detail-container h2 { font-size: 1.5rem !important; }
+          .product-detail-container p.fw-bold { font-size: 1.4rem !important; }
+          .product-img-main { max-height: 280px !important; }
+          .recommended-img { height: 90px !important; }
+          .recently-viewed-img { max-width: 80px !important; max-height: 80px !important; }
+          .review-card { padding: 12px !important; }
+          .review-user-img { width: 35px !important; height: 35px !important; }
+          .review-card h6 { font-size: 0.9rem !important; }
+          .review-card p { font-size: 0.85rem !important; }
+          .ingredients-card, .allergens-card { padding: 12px !important; }
+          .ingredients-card h6, .allergens-card h6 { font-size: 0.9rem !important; }
+          .ingredients-card li, .allergens-card li { font-size: 0.8rem !important; }
+          .add-review-btn { 
+            padding: 8px 16px !important; 
+            font-size: 0.8rem !important;
+            border-radius: 30px !important;
+          }
+        }
+      `}</style>
 
       {product && (
         <div
-          className="container my-5"
+          className="container my-5 product-detail-container"
           style={{ background: "#fff8f0", padding: "20px", borderRadius: "15px" }}
         >
           <div className="row g-4">
@@ -338,7 +363,7 @@ export default function ProductDetails({ toastRef }) {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="img-fluid rounded-4"
+                  className="img-fluid rounded-4 product-img-main"
                   style={{
                     maxHeight: "400px",
                     objectFit: "contain",
@@ -460,7 +485,7 @@ export default function ProductDetails({ toastRef }) {
               <div className="row g-3 mb-3">
                 {product.ingredients && (
                   <div className="col-6">
-                    <div className="card p-3 shadow-sm rounded-4" style={{ background: '#fff8f0' }}>
+                    <div className="card p-3 shadow-sm rounded-4 ingredients-card" style={{ background: '#fff8f0' }}>
                       <h6 className="fw-bold">Ingredients</h6>
                       <ul className="list-unstyled mb-0">
                         {product.ingredients.map((ing, i) => (
@@ -472,7 +497,7 @@ export default function ProductDetails({ toastRef }) {
                 )}
                 {product.allergens && (
                   <div className="col-6">
-                    <div className="card p-3 shadow-sm rounded-4 bg-danger text-white">
+                    <div className="card p-3 shadow-sm rounded-4 bg-danger text-white allergens-card">
                       <h6 className="fw-bold">Allergens</h6>
                       <ul className="list-unstyled mb-0">
                         {product.allergens.map((all, i) => (
@@ -513,7 +538,7 @@ export default function ProductDetails({ toastRef }) {
                     <img onClick={() => navigate(`/productDetails/${item.slug}`)}
                       src={item.image}
                       alt={item.name}
-                      className="img-fluid rounded-4 mb-2"
+                      className="img-fluid rounded-4 mb-2 recommended-img"
                       style={{ height: "120px", objectFit: "contain" }}
                     />
                     <h6 className="fw-bold mb-1">{item.name}</h6>
@@ -594,7 +619,7 @@ export default function ProductDetails({ toastRef }) {
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="img-fluid product-image"
+                          className="img-fluid product-image recently-viewed-img"
                           style={{ maxWidth: "110px", maxHeight: "110px", objectFit: "contain", transition: "transform 0.5s ease" }}
                           onClick={() => {
                             navigate(`/productDetails/${item.slug}`);
