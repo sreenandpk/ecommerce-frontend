@@ -98,6 +98,8 @@ export default function BookingPage({ toastRef }) {
 
   return (
     <>
+      <div style={{ height: "80px" }} className="d-none d-md-block"></div>
+      <div style={{ height: "120px" }} className="d-md-none d-block"></div>
       <Navbar />
 
       <main className="booking-page">
@@ -111,7 +113,7 @@ export default function BookingPage({ toastRef }) {
             {/* Header */}
             <div className="col-12 mb-2">
               <motion.div variants={itemVariants} className="booking-header">
-                <h1 className="display-5 fw-bold">Checkout</h1>
+                <h1 className="fw-bold">Checkout</h1>
                 <p className="text-muted">Complete your order details to proceed to payment</p>
               </motion.div>
             </div>
@@ -446,6 +448,41 @@ export default function BookingPage({ toastRef }) {
           .sticky-top {
             top: 0 !important;
             position: relative !important;
+          }
+          .booking-header h1 {
+            font-size: 1.6rem !important;
+          }
+          .glass-card {
+            padding: 1.25rem !important;
+            border-radius: 20px !important;
+          }
+          .form-group label {
+            font-size: 0.75rem !important;
+          }
+          .form-control {
+            padding: 8px 12px !important;
+            font-size: 0.85rem !important;
+          }
+          .confirm-btn {
+            padding: 12px !important;
+            font-size: 0.9rem !important;
+          }
+          .summary-item {
+            padding: 6px !important;
+            margin-bottom: 8px !important;
+          }
+          .item-img-container {
+            width: 40px !important;
+            height: 40px !important;
+          }
+          .item-details h6 {
+            font-size: 0.8rem !important;
+          }
+          .total-breakdown .h5 {
+            font-size: 0.95rem !important;
+          }
+          .total-breakdown .h4 {
+            font-size: 1.1rem !important;
           }
         }
       `}</style>

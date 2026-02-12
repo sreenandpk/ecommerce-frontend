@@ -145,6 +145,8 @@ export default function PaymentPage({ toastRef }) {
 
   return (
     <>
+      <div style={{ height: "80px" }} className="d-none d-md-block"></div>
+      <div style={{ height: "120px" }} className="d-md-none d-block"></div>
       <Navbar />
 
       <main className="payment-page">
@@ -157,7 +159,7 @@ export default function PaymentPage({ toastRef }) {
           >
             <div className="col-12 col-md-10 col-lg-8">
               <motion.div variants={itemVariants} className="payment-header mb-4 text-center">
-                <h1 className="display-6 fw-bold">Secure Checkout</h1>
+                <h1 className="fw-bold">Secure Checkout</h1>
                 <p className="text-muted">Finalize your order with our encrypted payment gateway</p>
               </motion.div>
 
@@ -438,8 +440,31 @@ export default function PaymentPage({ toastRef }) {
 
         @media (max-width: 991px) {
           .payment-card-visual {
-            margin-top: 20px;
+            margin-top: 10px;
             aspect-ratio: 1.6/1; /* Slightly taller on mobile */
+            padding: 16px !important;
+          }
+          .card-number {
+            font-size: 1.1rem !important;
+            gap: 8px !important;
+            margin-bottom: 3rem !important;
+          }
+          .payment-header h1 {
+            font-size: 1.6rem !important;
+          }
+          .glass-card {
+            padding: 1.25rem !important;
+            border-radius: 20px !important;
+          }
+          .address-section {
+            padding: 10px !important;
+          }
+          .address-details {
+            font-size: 0.8rem !important;
+          }
+          .payment-btn {
+            height: 44px !important;
+            font-size: 0.85rem !important;
           }
         }
       `}</style>
