@@ -406,7 +406,7 @@ export default function ProductDetails({ toastRef }) {
                       boxShadow: product.stock === 0 ? "none" : "0 4px 15px rgba(0,0,0,0.2)"
                     }}
                   >
-                    {product.stock === 0 ? "Out of Stock" : (cartItems.some(p => (p.product?.id || p.id) === product.id) ? "Remove from Cart" : "Add to Cart")}
+                    {product.stock === 0 ? "Out of Stock" : (cartItems.some(p => (p.product?.id || p.id) === product.id) ? "Remove" : "Add to Cart")}
                   </button>
 
                 </div>
@@ -570,7 +570,7 @@ export default function ProductDetails({ toastRef }) {
                           textOverflow: "ellipsis",
                         }}
                       >
-                        {cartItems.some((p) => (p.product?.id || p.id) === item.id) ? "Remove from Cart" : "Add to Cart"}
+                        {cartItems.some((p) => (p.product?.id || p.id) === item.id) ? "Remove" : "Add to Cart"}
                       </button>
                     </div>
                   </div>
