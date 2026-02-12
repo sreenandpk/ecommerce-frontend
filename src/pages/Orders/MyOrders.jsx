@@ -163,6 +163,8 @@ export default function MyOrders() {
 
   return (
     <div className="my-orders-page">
+      <div style={{ height: "80px" }} className="d-none d-md-block"></div>
+      <div style={{ height: "120px" }} className="d-md-none d-block"></div>
       <Navbar />
 
       <main className="container py-3">
@@ -171,8 +173,9 @@ export default function MyOrders() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-5 mt-4"
         >
-
-
+          <h1 className="page-title mb-2">My Legacy</h1>
+          <p className="quote-text text-muted">A curated collection of your premium choices</p>
+          <div className="title-underline mx-auto"></div>
         </motion.div>
 
         <motion.div
@@ -188,7 +191,15 @@ export default function MyOrders() {
                 <motion.div
                   key={order.id}
                   variants={cardVariants}
+                  whileHover={{
+                    y: -10,
+                    scale: 1.02,
+                    rotateX: 1,
+                    rotateY: -1,
+                    transition: { duration: 0.3 }
+                  }}
                   className="col-12 col-lg-9 col-xl-8"
+                  style={{ perspective: "1000px" }}
                 >
                   <div className="order-card-glass shimmer-effect">
                     {/* Card Header */}
@@ -306,21 +317,24 @@ export default function MyOrders() {
           ) : !isInitialLoading ? (
             <div className="text-center py-5">
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="empty-orders-glass p-5 rounded-5"
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="empty-orders-premium p-5 rounded-5"
               >
-                <div className="empty-icon-wrapper mb-4">
-                  <Package size={60} strokeWidth={1} className="text-chocolate-muted" />
+                <div className="empty-lottie-wrapper mb-4">
+                  <Lottie animationData={pendingAnim} loop={true} style={{ width: 200, height: 200, margin: '0 auto', opacity: 0.6 }} />
                 </div>
-                <h2 className="fw-bold mb-3" style={{ fontSize: '1.5rem' }}>Legacy is Empty</h2>
-                <p className="text-muted mb-4" style={{ fontSize: '0.95rem' }}>Your curated collection of premium scoops awaits its first chapter.</p>
-                <button
+                <h2 className="premium-empty-title mb-3">Your Journey Awaits</h2>
+                <p className="premium-empty-text mb-4">You haven't placed any orders yet. Start your premium experience with our curated collections.</p>
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(93, 55, 43, 0.3)" }}
+                  whileTap={{ scale: 0.95 }}
                   className="btn-elite-action"
                   onClick={() => navigate("/products")}
                 >
-                  Begin Your Journey
-                </button>
+                  Explore Collections
+                </motion.button>
               </motion.div>
             </div>
           ) : null}
@@ -374,10 +388,9 @@ export default function MyOrders() {
         }
 
         .order-card-glass:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 30px 60px rgba(93, 55, 43, 0.1);
-          background: rgba(255, 248, 240, 0.85);
-          border-color: rgba(93, 55, 43, 0.2);
+          box-shadow: 0 40px 80px rgba(93, 55, 43, 0.12);
+          background: rgba(255, 248, 240, 0.92);
+          border-color: rgba(93, 55, 43, 0.3);
         }
 
         .shimmer-effect::after {
@@ -464,9 +477,10 @@ export default function MyOrders() {
         }
 
         .order-badge-glass.pending {
-          background: rgba(217, 160, 4, 0.12);
+          background: rgba(217, 160, 4, 0.15);
           color: #9d7402;
-          border: 1px solid rgba(217, 160, 4, 0.15);
+          border: 1px solid rgba(217, 160, 4, 0.25);
+          box-shadow: 0 0 15px rgba(217, 160, 4, 0.1);
         }
 
         .order-badge-glass.confirmed {
@@ -731,14 +745,66 @@ export default function MyOrders() {
           .order-total-box .value {
             font-size: 1.3rem;
           }
-           .order-card-header {
-             flex-direction: column;
-             align-items: flex-start !important;
-           }
            .header-status-group {
              width: 100%;
              justify-content: space-between;
            }
+           .page-title {
+             font-size: 2rem !important;
+           }
+           .order-card-glass {
+             padding: 20px 15px !important;
+             border-radius: 20px !important;
+           }
+           .order-icon-box {
+             width: 38px !important;
+             height: 38px !important;
+           }
+           .order-id {
+             font-size: 0.9rem !important;
+           }
+           .header-text-group {
+             max-width: 60%;
+           }
+           .shipping-info-strip {
+             flex-direction: column;
+             align-items: flex-start !important;
+             gap: 8px !important;
+           }
+           .shipping-info-strip .vr {
+             display: none;
+           }
+           .info-pill span {
+             max-width: 100% !important;
+           }
+           .animation-wrapper-right {
+             margin-right: 0 !important;
+           }
+        }
+
+        .empty-orders-premium {
+          background: rgba(255, 248, 240, 0.4);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(93, 55, 43, 0.08);
+          box-shadow: 0 20px 40px rgba(93, 55, 43, 0.03);
+          max-width: 700px;
+          margin: 0 auto;
+          border-radius: 40px;
+        }
+
+        .premium-empty-title {
+          font-family: 'Playfair Display', serif;
+          color: #5D372B;
+          font-weight: 800;
+          font-size: 2rem;
+        }
+
+        .premium-empty-text {
+          font-size: 1rem;
+          color: #8d6e63;
+          max-width: 80%;
+          margin-left: auto;
+          margin-right: auto;
         }
       `}</style>
     </div>
