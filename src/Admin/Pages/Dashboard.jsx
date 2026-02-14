@@ -9,6 +9,8 @@ import { getAdminProducts } from "../../api/admin/products";
 import { OrdersLengthContext } from "../Context/OrdersContext";
 import { useAuth } from "../../context/AuthContext";
 
+import { motion } from "framer-motion";
+
 function Dashboard() {
   const navigate = useNavigate();
   const { isAdmin, loading: authLoading } = useAuth();
@@ -58,50 +60,105 @@ function Dashboard() {
   if (loading) {
     return (
       <div className="text-center py-5">
-        <div className="spinner-border" />
+        <div className="spinner-border text-danger" />
       </div>
     );
   }
 
   const stats = [
-    { title: "Users", value: usersCount, icon: "bi-people-fill", path: "users" },
-    { title: "Products", value: productsCount, icon: "bi-box-seam", path: "products" },
-    { title: "Orders", value: ordersLength, icon: "bi-cart-check-fill", path: "orders" },
-    { title: "Revenue", value: `₹${orderAmount}`, icon: "bi-currency-rupee" },
+    { title: "Users", value: usersCount, icon: "bi-people-fill", path: "users", color: "#4cc9f0" },
+    { title: "Products", value: productsCount, icon: "bi-box-seam", path: "products", color: "#4361ee" },
+    { title: "Orders", value: ordersLength, icon: "bi-cart-check-fill", path: "orders", color: "#e63946" },
+    { title: "Revenue", value: `₹${orderAmount}`, icon: "bi-currency-rupee", color: "#2b9348" },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggeredChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 300, damping: 24 }
+    }
+  };
+
   return (
-    <div className="container-fluid py-4" style={{ background: "#f9f9f9", minHeight: "100vh" }}>
-      <div className="d-flex justify-content-between align-items-center mb-5">
-        <h1 className="h3 fw-bold">Admin Dashboard</h1>
-        <button className="btn btn-outline-dark fw-semibold shadow-sm">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="container-fluid py-4"
+      style={{ minHeight: "100vh" }}
+    >
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5">
+        <div>
+          <h1 className="h3 fw-bold mb-1">Admin Dashboard</h1>
+          <p className="text-muted small mb-0">Welcome back, Administrator</p>
+        </div>
+        <button className="btn btn-dark fw-semibold shadow-sm mt-3 mt-md-0 d-flex align-items-center justify-content-center">
+          <i className="bi bi-file-earmark-bar-graph me-2"></i>
           Generate Report
         </button>
       </div>
 
       <div className="row g-4">
         {stats.map((stat, idx) => (
-          <div key={idx} className="col-xl-3 col-lg-6 col-md-6">
+          <motion.div key={idx} className="col-xl-3 col-sm-6" variants={itemVariants}>
             <Card
-              className="shadow-lg border-0 rounded-4 p-3 stat-card"
+              className="border-0 rounded-4 p-3 h-100 stat-card"
               onClick={() => stat.path && navigate(stat.path)}
+              style={{
+                cursor: stat.path ? "pointer" : "default",
+                background: "#ffffff",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.03)"
+              }}
             >
               <div className="d-flex justify-content-between align-items-center">
                 <div>
-                  <div className="text-muted small text-uppercase">{stat.title}</div>
-                  <div className="h4 fw-bold">{stat.value}</div>
+                  <div className="text-muted small fw-bold text-uppercase mb-1" style={{ letterSpacing: "1px" }}>{stat.title}</div>
+                  <div className="h3 fw-bold mb-0">{stat.value}</div>
                 </div>
-                <i className={`bi ${stat.icon} fs-2 text-secondary`} />
+                <div
+                  className="rounded-circle d-flex align-items-center justify-content-center"
+                  style={{ width: "50px", height: "50px", backgroundColor: `${stat.color}15`, color: stat.color }}
+                >
+                  <i className={`bi ${stat.icon} fs-3`} />
+                </div>
               </div>
+              {stat.path && (
+                <div className="mt-3 text-muted small d-flex align-items-center">
+                  See Details <i className="bi bi-arrow-right ms-1"></i>
+                </div>
+              )}
             </Card>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      <div className="mt-5">
-        <DashboardChart />
-      </div>
-    </div>
+      <motion.div className="mt-5" variants={itemVariants}>
+        <Card className="border-0 shadow-sm rounded-4 p-4 overflow-hidden">
+          <h5 className="fw-bold mb-4">Orders Overview</h5>
+          <DashboardChart />
+        </Card>
+      </motion.div>
+
+      <style>{`
+        .stat-card {
+          transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        }
+        .stat-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 40px rgba(0,0,0,0.08) !important;
+        }
+      `}</style>
+    </motion.div>
   );
 }
 

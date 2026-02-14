@@ -8,16 +8,28 @@ import {
   getAllergens,
   getCities
 } from "../../api/admin/products";
-
-import { getAdminCategories } from "../../api/admin/categories"; // ✅ Added
-import Select from "react-select"; // ✅ Added for multi-select
-
-
-import { Card, Button, Spinner } from "react-bootstrap";
+import { getAdminCategories } from "../../api/admin/categories";
+import Select from "react-select";
+import { Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { LuPlus, LuPencil, LuTrash2, LuPackage, LuInfo, LuEyeOff, LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import {
+  LuPlus, LuPencil, LuTrash2,
+  LuEyeOff, LuChevronLeft, LuChevronRight
+} from "react-icons/lu";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Upload, X, Check, Save, Package, Tag, FileText, Activity
+} from "lucide-react";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggeredChildren: 0.05 }
+  }
+};
 
 export default function Products() {
   const navigate = useNavigate();
@@ -29,7 +41,7 @@ export default function Products() {
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
-  const itemsPerPage = 10; // Match backend default or get from API
+  const itemsPerPage = 10;
 
   // Auxiliary Data
   const [categories, setCategories] = useState([]);
@@ -47,15 +59,15 @@ export default function Products() {
     slug: "",
     price: "",
     currency: "INR",
-    category: "", // ID
+    category: "",
     image: null,
     description: "",
     story: "",
     stock: 0,
     is_active: true,
-    ingredients: [], // Array of IDs
-    allergens: [],   // Array of IDs
-    available_cities: [], // Array of IDs
+    ingredients: [],
+    allergens: [],
+    available_cities: [],
     nutrition: {
       calories: 0,
       protein: 0,
@@ -117,24 +129,11 @@ export default function Products() {
     }
   };
 
-  const loadData = () => fetchProducts(currentPage); // Helper for reloads after edit/delete
-
-  /* ================= HELPERS ================= */
-  const handleMultiSelect = (e, field, stateSetter, currentState) => {
-    const options = e.target.options;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        value.push(parseInt(options[i].value));
-      }
-    }
-    stateSetter({ ...currentState, [field]: value });
-  };
+  const loadData = () => fetchProducts(currentPage);
 
   const prepareFormData = (productState) => {
     const formData = new FormData();
     formData.append("name", productState.name);
-    // Auto-generate slug if empty logic is handled by backend usually, but we can send if user edited it
     if (productState.slug) formData.append("slug", productState.slug);
     formData.append("price", productState.price);
     formData.append("currency", productState.currency);
@@ -144,19 +143,17 @@ export default function Products() {
     formData.append("is_active", productState.is_active);
 
     if (productState.category) {
-      formData.append("category", productState.category); // Send ID
+      formData.append("category", productState.category);
     }
 
     if (productState.image instanceof File) {
       formData.append("image", productState.image);
     }
 
-    // Append lists
     productState.ingredients.forEach(id => formData.append("ingredients", id));
     productState.allergens.forEach(id => formData.append("allergens", id));
     productState.available_cities.forEach(id => formData.append("available_cities", id));
 
-    // Append Nutrition as JSON string
     formData.append("nutrition", JSON.stringify(productState.nutrition));
 
     return formData;
@@ -164,7 +161,6 @@ export default function Products() {
 
   /* ================= CREATE ================= */
   const submitAdd = async () => {
-    // Basic Validation (Only strictly needed things)
     if (!newProduct.name || !newProduct.price || !newProduct.category || !newProduct.image) {
       alert("Please fill essential fields: Name, Price, Category, and Image.");
       return;
@@ -175,33 +171,28 @@ export default function Products() {
       await createAdminProduct(formData);
       setShowAdd(false);
       setNewProduct(initialFormState);
-      loadData(); // Reload all data
+      loadData();
     } catch (err) {
       console.error("Create failed", err);
-      alert("Failed to create product. Ensure all fields are valid.");
+      alert("Failed to create product.");
     }
   };
 
   /* ================= UPDATE ================= */
-  // Prepare Edit Form
   const openEdit = (p) => {
-    // Flatten nested objects for the form state
     setEditProduct({
       ...p,
-      category: p.category_details?.id || p.category, // Handle populated vs ID
+      category: p.category_details?.id || p.category,
       ingredients: p.ingredients.map(i => i.id || i),
       allergens: p.allergens.map(a => a.id || a),
       available_cities: p.available_cities.map(c => c.id || c),
       nutrition: p.nutrition || initialFormState.nutrition,
-      // Ensure image is kept as URL unless changed
     });
     setShowEdit(true);
   };
 
   const submitEdit = async () => {
     if (!editProduct) return;
-
-    // Basic Validation (Only strictly needed things)
     if (!editProduct.name || !editProduct.price || !editProduct.category) {
       alert("Please fill essential fields: Name, Price, and Category.");
       return;
@@ -215,7 +206,7 @@ export default function Products() {
       loadData();
     } catch (err) {
       console.error("Update failed", err);
-      alert("Failed to update product. Ensure slug and fields are correct.");
+      alert("Failed to update product.");
     }
   };
 
@@ -233,20 +224,23 @@ export default function Products() {
   if (loading) {
     return (
       <div className="text-center py-5">
-        <Spinner animation="border" />
+        <Spinner animation="border" variant="danger" />
       </div>
     );
   }
 
-  // Calculate total pages for server-side pagination
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
-
   const paginate = (pageNumber) => fetchProducts(pageNumber);
 
   return (
-    <div className="admin-products-container custom-scrollbar">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="admin-products-container custom-scrollbar"
+    >
       {/* HEADER */}
-      <div className="admin-header-glass d-flex justify-content-between mb-5 align-items-center">
+      <div className="admin-header-glass d-flex flex-column flex-md-row justify-content-between mb-4 mb-md-5 align-items-md-center gap-3">
         <div>
           <h2 className="admin-title">Products Vault</h2>
           <p className="admin-subtitle">{totalProducts} exclusive creations managed</p>
@@ -257,17 +251,17 @@ export default function Products() {
           onClick={() => setShowAdd(true)}
           className="admin-add-btn"
         >
-          <LuPlus className="me-2" size={20} /> Add Masterpiece
+          <LuPlus className="me-2" size={20} /> Add Product
         </motion.button>
       </div>
 
       {/* LIST */}
-      <div className="row g-4">
+      <div className="row g-3 g-md-4">
         {products.length ? (
           products.map((p, index) => (
             <motion.div
               key={p.id}
-              className="col-xl-3 col-lg-4 col-md-6"
+              className="col-6 col-md-4 col-lg-3 col-xl-2.5"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
@@ -276,53 +270,48 @@ export default function Products() {
                 <div className="admin-card-visual">
                   <img src={p.image} alt={p.name} className="admin-card-img" />
 
-                  {/* Status Badges */}
                   <div className="admin-badge-stack">
                     {!p.is_active && (
                       <span className="badge-glass inactive">
-                        <LuEyeOff size={12} className="me-1" /> Hidden
+                        <LuEyeOff size={10} className="me-1" /> Hidden
                       </span>
                     )}
                     {p.stock <= 0 && (
                       <span className="badge-glass sold-out pulsing">
-                        <LuInfo size={12} className="me-1" /> Sold Out
+                        Sold Out
                       </span>
                     )}
                     {p.stock > 0 && p.stock <= 5 && (
                       <span className="badge-glass low-stock">
-                        Low Stock: {p.stock}
+                        Low: {p.stock}
                       </span>
                     )}
                   </div>
                 </div>
 
                 <div className="admin-card-body">
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h6 className="admin-prod-name">{p.name}</h6>
-                    <span className="admin-prod-price">{p.currency === 'INR' ? '₹' : '$'}{p.price}</span>
+                  <div className="mb-2">
+                    <h6 className="admin-prod-name text-truncate">{p.name}</h6>
+                    <span className="admin-prod-price small fw-bold">{p.currency === 'INR' ? '₹' : '$'}{p.price}</span>
                   </div>
 
                   <div className="admin-prod-meta mb-3">
-                    <span className="admin-stock-val">Available: {p.stock} units</span>
+                    <span className="admin-stock-val">Stock: {p.stock}</span>
                   </div>
 
-                  <div className="admin-card-actions mt-auto">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="admin-action-btn refine"
+                  <div className="admin-card-actions mt-auto d-flex flex-column flex-sm-row gap-2">
+                    <button
+                      className="admin-action-btn refine flex-fill"
                       onClick={() => openEdit(p)}
                     >
-                      <LuPencil size={14} className="me-1" /> Refine
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="admin-action-btn discard"
+                      <LuPencil size={12} className="me-1" /> Edit
+                    </button>
+                    <button
+                      className="admin-action-btn discard flex-fill"
                       onClick={() => remove(p.slug)}
                     >
-                      <LuTrash2 size={14} className="me-1" /> Discard
-                    </motion.button>
+                      <LuTrash2 size={12} className="me-1" /> Del
+                    </button>
                   </div>
                 </div>
               </div>
@@ -330,38 +319,40 @@ export default function Products() {
           ))
         ) : (
           <div className="text-center py-5 w-100">
-            <p className="text-muted fs-5">No products found in the vault.</p>
+            <p className="text-muted small">No products found in the vault.</p>
           </div>
         )}
       </div>
 
       {/* Pagination Controls */}
       {totalProducts > itemsPerPage && (
-        <div className="d-flex justify-content-center mt-5 gap-2 align-items-center">
+        <div className="d-flex justify-content-center mt-5 gap-2 align-items-center flex-wrap">
           <button
             className="pagination-btn"
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            <LuChevronLeft />
+            <LuChevronLeft size={18} />
           </button>
 
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              className={`pagination-number ${currentPage === i + 1 ? 'active' : ''}`}
-              onClick={() => paginate(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
+          <div className="d-flex gap-1">
+            {[...Array(totalPages)].map((_, i) => (
+              <button
+                key={i}
+                className={`pagination-number ${currentPage === i + 1 ? 'active' : ''}`}
+                onClick={() => paginate(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
 
           <button
             className="pagination-btn"
             onClick={() => paginate(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
-            <LuChevronRight />
+            <LuChevronRight size={18} />
           </button>
         </div>
       )}
@@ -370,16 +361,22 @@ export default function Products() {
         .admin-products-container {
           background: #fff8f0;
           min-height: 100vh;
-          padding: 40px;
+          padding: 20px 15px;
           font-family: 'Poppins', sans-serif;
+        }
+        @media (min-width: 768px) {
+          .admin-products-container { padding: 40px; }
         }
 
         .admin-header-glass {
           background: linear-gradient(135deg, rgba(93, 55, 43, 0.05) 0%, rgba(93, 55, 43, 0.02) 100%);
           backdrop-filter: blur(10px);
-          padding: 30px;
-          border-radius: 30px;
+          padding: 20px;
+          border-radius: 20px;
           border: 1px solid rgba(93, 55, 43, 0.1);
+        }
+        @media (min-width: 768px) {
+          .admin-header-glass { padding: 30px; border-radius: 30px; }
         }
 
         .admin-title {
@@ -387,11 +384,15 @@ export default function Products() {
           font-weight: 800;
           color: #5D372B;
           margin: 0;
+          font-size: 1.5rem;
+        }
+        @media (min-width: 768px) {
+          .admin-title { font-size: 2.2rem; }
         }
 
         .admin-subtitle {
           color: #8d6e63;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
           margin: 0;
           font-weight: 500;
         }
@@ -400,80 +401,69 @@ export default function Products() {
           background: #5D372B;
           color: white;
           border: none;
-          padding: 12px 25px;
+          padding: 10px 20px;
           border-radius: 50px;
           font-weight: 600;
           display: flex;
           align-items: center;
-          box-shadow: 0 10px 20px rgba(93, 55, 43, 0.15);
+          font-size: 0.9rem;
+          justify-content: center;
         }
 
-        /* --- Admin Card --- */
         .admin-product-card {
           background: white;
-          border-radius: 28px;
+          border-radius: 20px;
           border: 1px solid rgba(93, 55, 43, 0.08);
           overflow: hidden;
-          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+          transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
           display: flex;
           flex-direction: column;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
-        .admin-product-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 25px 50px rgba(93, 55, 43, 0.1);
-          border-color: rgba(93, 55, 43, 0.15);
-        }
-        .admin-product-card.out-of-stock {
-          filter: grayscale(0.4) brightness(0.95);
-        }
+        .admin-product-card:hover { transform: translateY(-5px); }
 
         .admin-card-visual {
-          height: 200px;
+          height: 140px;
           background: #fafafa;
-          margin: 10px;
-          border-radius: 22px;
+          margin: 8px;
+          border-radius: 15px;
           display: flex;
           align-items: center;
           justify-content: center;
           position: relative;
           overflow: hidden;
         }
-        .admin-card-img {
-          height: 75%;
-          object-fit: contain;
-          transition: transform 0.6s ease;
+        @media (min-width: 768px) {
+          .admin-card-visual { height: 180px; }
         }
-        .admin-product-card:hover .admin-card-img {
-          transform: scale(1.1) rotate(2deg);
+        .admin-card-img {
+          height: 80%;
+          object-fit: contain;
         }
 
         .admin-badge-stack {
           position: absolute;
-          top: 10px;
-          left: 10px;
-          right: 10px;
+          top: 8px;
+          right: 8px;
           display: flex;
           flex-direction: column;
-          gap: 5px;
+          gap: 4px;
           align-items: flex-end;
         }
         .badge-glass {
-          backdrop-filter: blur(8px);
-          padding: 4px 10px;
-          border-radius: 10px;
-          font-size: 0.65rem;
+          background: rgba(255,255,255,0.8);
+          backdrop-filter: blur(4px);
+          padding: 2px 8px;
+          border-radius: 6px;
+          font-size: 0.6rem;
           font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          border: 1px solid rgba(255,255,255,0.4);
+          border: 1px solid rgba(0,0,0,0.05);
         }
-        .badge-glass.inactive { background: rgba(0,0,0,0.4); color: white; }
-        .badge-glass.sold-out { background: rgba(255, 71, 87, 0.2); color: #ff4757; border-color: rgba(255, 71, 87, 0.2); }
-        .badge-glass.low-stock { background: rgba(255, 159, 67, 0.2); color: #ff9f43; border-color: rgba(255, 159, 67, 0.2); }
+        .badge-glass.inactive { background: rgba(0,0,0,0.6); color: white; }
+        .badge-glass.sold-out { background: rgba(255, 71, 87, 0.1); color: #ff4757; }
+        .badge-glass.low-stock { background: rgba(255, 159, 67, 0.1); color: #ff9f43; }
 
         .admin-card-body {
-          padding: 20px;
+          padding: 12px;
           display: flex;
           flex-direction: column;
           flex-grow: 1;
@@ -482,86 +472,32 @@ export default function Products() {
           font-weight: 700;
           color: #2d3436;
           margin: 0;
-          font-size: 1rem;
+          font-size: 0.85rem;
         }
-        .admin-prod-price {
-          font-weight: 800;
-          color: #5D372B;
-          font-size: 1.1rem;
-        }
-        .admin-prod-meta {
-          font-size: 0.75rem;
-          font-weight: 600;
-          color: #8d6e63;
-        }
+        .admin-prod-price { color: #5D372B; }
+        .admin-prod-meta { font-size: 0.7rem; color: #8d6e63; }
 
-        .admin-card-actions {
-          display: flex;
-          gap: 10px;
-        }
         .admin-action-btn {
-          flex: 1;
           border: none;
-          padding: 8px;
-          border-radius: 12px;
-          font-size: 0.75rem;
+          padding: 6px;
+          border-radius: 8px;
+          font-size: 0.7rem;
           font-weight: 700;
+          transition: 0.2s;
         }
+        .admin-action-btn.refine { background: #5D372B; color: white; }
+        .admin-action-btn.discard { background: #fee2e2; color: #dc2626; }
 
-        /* --- Pagination --- */
-        .pagination-btn {
-          width: 40px;
-          height: 40px;
-          border-radius: 12px;
-          border: 1px solid rgba(93, 55, 43, 0.1);
-          background: white;
-          color: #5D372B;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.2s;
-        }
-        .pagination-btn:hover:not(:disabled) {
-          background: #5D372B;
-          color: white;
-        }
-        .pagination-btn:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-        
-        .pagination-number {
-          width: 40px;
-          height: 40px;
-          border-radius: 12px;
+        .pagination-btn, .pagination-number {
+          padding: 8px 12px;
+          border-radius: 10px;
           border: 1px solid rgba(93, 55, 43, 0.1);
           background: white;
           color: #5D372B;
           font-weight: 600;
-          transition: all 0.2s;
+          font-size: 0.85rem;
         }
-        .pagination-number.active {
-          background: #5D372B;
-          color: white;
-          border-color: #5D372B;
-          box-shadow: 0 4px 10px rgba(93, 55, 43, 0.2);
-        }
-        .pagination-number:hover:not(.active) {
-          background: rgba(93, 55, 43, 0.05);
-        }
-        .admin-action-btn.refine:hover { background: #5D372B; color: white; }
-        .admin-action-btn.discard:hover { background: #ff4757; color: white; }
-
-        @keyframes pulse {
-          0% { opacity: 0.6; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.05); }
-          100% { opacity: 0.6; transform: scale(1); }
-        }
-        .pulsing { animation: pulse 2s infinite ease-in-out; }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(93, 55, 43, 0.1); border-radius: 10px; }
+        .pagination-number.active { background: #5D372B; color: white; }
       `}</style>
 
       {/* ================= ADD MODAL ================= */}
@@ -594,20 +530,11 @@ export default function Products() {
           />
         </Modal>
       )}
-    </div>
+    </motion.div>
   );
 }
 
-/* ================= MODERN ANIMATED FORM COMPONENT ================= */
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Upload, X, Check, Save, Package, DollarSign, Tag,
-  MapPin, AlertTriangle, FileText, Activity
-} from "lucide-react";
-
 function ProductForm({ state, setState, categories, ingredients, allergens, cities, handleSubmit, isEdit }) {
-
-  // Generic Change Handler for standard inputs
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setState(prev => ({
@@ -616,7 +543,6 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
     }));
   };
 
-  // Nutrition Change Handler
   const handleNutritionChange = (e) => {
     const { name, value } = e.target;
     setState(prev => ({
@@ -625,16 +551,14 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
     }));
   };
 
-  // Select Change Handler
   const handleSelectChange = (selectedOptions, field) => {
     const values = selectedOptions ? selectedOptions.map(opt => opt.value) : [];
     setState(prev => ({ ...prev, [field]: values }));
   };
 
-  // Format options for react-select
   const formatOptions = (items) => items.map(i => ({ value: i.id, label: i.name }));
 
-  const containerVariants = {
+  const formVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
@@ -646,12 +570,11 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
 
   return (
     <motion.div
-      variants={containerVariants}
+      variants={formVariants}
       initial="hidden"
       animate="visible"
       className="pb-2"
     >
-      {/* 🟢 SECTION 1: CORE IDENTITY */}
       <motion.div variants={itemVariants} className="mb-4">
         <h5 className="fw-bold mb-3 d-flex align-items-center text-dark border-bottom pb-2">
           <Package className="me-2 text-primary" size={18} /> Basic Essentials
@@ -684,7 +607,6 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
         </div>
       </motion.div>
 
-      {/* 💰 SECTION 2: PRICING & CATEGORY */}
       <motion.div variants={itemVariants} className="mb-4">
         <div className="row g-3">
           <div className="col-md-4">
@@ -736,7 +658,6 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
         </div>
       </motion.div>
 
-      {/* 🟠 SECTION 3: CONTENT & MEDIA */}
       <motion.div variants={itemVariants} className="mb-4">
         <h5 className="fw-bold mb-3 d-flex align-items-center text-dark border-bottom pb-2">
           <FileText className="me-2 text-warning" size={18} /> Content & Media
@@ -802,7 +723,6 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
         </div>
       </motion.div>
 
-      {/* 🟡 SECTION 4: INVENTORY & STATUS */}
       <motion.div variants={itemVariants} className="mb-4">
         <h5 className="fw-bold mb-3 d-flex align-items-center text-dark border-bottom pb-2">
           <Activity className="me-2 text-info" size={18} /> Inventory & Status
@@ -844,7 +764,6 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
         </div>
       </motion.div>
 
-      {/* 🔵 SECTION 5: RELATIONSHIPS */}
       <motion.div variants={itemVariants} className="mb-4">
         <h5 className="fw-bold mb-3 d-flex align-items-center text-dark border-bottom pb-2">
           <Tag className="me-2 text-danger" size={18} /> Classifications
@@ -886,7 +805,6 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
         </div>
       </motion.div>
 
-      {/* 🥗 SECTION 6: NUTRITION */}
       <motion.div variants={itemVariants}>
         <h5 className="fw-bold mb-3 d-flex align-items-center text-dark border-bottom pb-2">
           <Activity className="me-2 text-success" size={18} /> Nutrition Output
@@ -909,13 +827,11 @@ function ProductForm({ state, setState, categories, ingredients, allergens, citi
 
       <motion.div
         variants={itemVariants}
-        className="mt-4 pt-4 border-top d-flex justify-content-end sticky-bottom bg-white"
-        style={{ zIndex: 10, marginBottom: '-1.5rem', paddingBottom: '1.5rem', marginRight: '-1.5rem' }}
+        className="mt-4 pt-4 border-top d-flex justify-content-end"
       >
         <button
-          className="btn btn-dark rounded-pill px-5 py-3 fw-bold d-flex align-items-center shadow-lg hover-scale"
+          className="btn btn-dark rounded-pill px-5 py-2 fw-bold d-flex align-items-center shadow-lg"
           onClick={handleSubmit}
-          style={{ transition: "all 0.2s", fontSize: '1rem' }}
         >
           <Save size={20} className="me-2" />
           {isEdit ? "Update Product" : "Create Product"}
@@ -954,7 +870,6 @@ const customSelectStyles = {
   })
 };
 
-/* ================= MODERN GLASSMORPHIC MODAL ================= */
 function Modal({ title, children, onClose }) {
   return (
     <AnimatePresence>
@@ -962,7 +877,6 @@ function Modal({ title, children, onClose }) {
         className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
         style={{ zIndex: 1060 }}
       >
-        {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -972,7 +886,6 @@ function Modal({ title, children, onClose }) {
           onClick={onClose}
         />
 
-        {/* Modal Content */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -980,31 +893,26 @@ function Modal({ title, children, onClose }) {
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           className="bg-white shadow-lg position-relative d-flex flex-column"
           style={{
-            width: "90%",
+            width: "95%",
             maxWidth: "850px",
             borderRadius: "24px",
             maxHeight: "90vh",
             overflow: "hidden"
           }}
         >
-          {/* Header */}
           <div className="px-4 py-3 d-flex justify-content-between align-items-center border-bottom bg-white" style={{ position: 'sticky', top: 0, zIndex: 20 }}>
-            <div>
-              <h4 className="fw-bold m-0 text-dark d-flex align-items-center">
-                {title.includes("Add") ? <Package className="me-2 text-success" /> : <FileText className="me-2 text-primary" />}
-                {title}
-              </h4>
-            </div>
+            <h4 className="fw-bold m-0 text-dark d-flex align-items-center">
+              {title}
+            </h4>
             <button
               onClick={onClose}
-              className="btn btn-light rounded-circle p-2 d-flex align-items-center justify-content-center hover-bg-gray"
-              style={{ width: "40px", height: "40px", transition: "background 0.2s" }}
+              className="btn btn-light rounded-circle p-2 d-flex align-items-center justify-content-center"
+              style={{ width: "40px", height: "40px" }}
             >
               <X size={20} />
             </button>
           </div>
 
-          {/* Body */}
           <div className="p-4" style={{ overflowY: "auto" }}>
             {children}
           </div>
