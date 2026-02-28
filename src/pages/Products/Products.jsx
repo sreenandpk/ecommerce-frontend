@@ -605,7 +605,7 @@ export default function Products({ toastRef }) {
                                                 marginTop: "20px"
                                             }}
                                         >
-                                            ~ that's all the sweetness for now ~
+
                                         </span>
                                     )
                                 )}
