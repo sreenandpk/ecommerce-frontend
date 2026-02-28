@@ -57,8 +57,11 @@ function RouteWatcher() {
             return;
         }
 
-        // 🚫 SKIP LOADING FOR ADMIN & RECENTLY VIEWED (fixes infinite loop)
-        if (location.pathname.startsWith("/admin") || location.pathname === "/recentlyViewed") return;
+        // 🚫 SKIP LOADING FOR ADMIN, RECENTLY VIEWED & AUTH (fixes infinite loop)
+        if (location.pathname.startsWith("/admin") ||
+            location.pathname === "/recentlyViewed" ||
+            location.pathname === "/login" ||
+            location.pathname === "/register") return;
 
         // Trigger modern spinner on every subsequent navigation
         startLoading();

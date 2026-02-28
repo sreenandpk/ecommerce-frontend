@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { SearchContext } from "../../context/SearchContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Search } from "@mui/icons-material";
+import Search from "@mui/icons-material/Search";
 import Dprofile from "../../homeImages/profileDD.jpeg";
 import { FaHeart, FaShoppingCart, FaSearch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -578,7 +578,7 @@ export default function Navbar() {
                         await logout();
                         setSavedUserId(null);
                         setWishlistIds([]);
-                        setRecentlyViewedProducts([]);
+                        setRecentlyViewedProducts([]); // ✅ Ensure this is cleared
                         setWishlistCount(0);
                         setCartCount(0);
                         navigate("/login");

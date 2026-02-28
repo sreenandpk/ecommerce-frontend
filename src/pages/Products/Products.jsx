@@ -69,7 +69,7 @@ export default function Products({ toastRef }) {
                 console.log("failed to fetch");
             } finally {
                 setLoading(false);
-                stopLoading(); // Dismiss global loader
+                stopLoading(); // Dismiss any lingering global loader from routing
             }
         }
         fetchProductsFromFetch();
@@ -95,38 +95,64 @@ export default function Products({ toastRef }) {
 
     // Filter functions
     const vanila = async () => {
-        const productVanila = await fetchProducts();
-        setFilterd(productVanila.filter((p) => p.category?.slug === "vanila" || p.category?.name?.toLowerCase().includes("vanila")));
+        setLoading(true);
+        try {
+            const productVanila = await fetchProducts();
+            setFilterd(productVanila.filter((p) => p.category?.slug === "vanila" || p.category?.name?.toLowerCase().includes("vanila")));
+        } finally {
+            setLoading(false);
+        }
     };
     const strawberry = async () => {
-        const productStrawberry = await fetchProducts();
-        setFilterd(productStrawberry.filter((p) => p.category?.slug === "strawberry" || p.category?.name?.toLowerCase().includes("strawberry")));
+        setLoading(true);
+        try {
+            const productStrawberry = await fetchProducts();
+            setFilterd(productStrawberry.filter((p) => p.category?.slug === "strawberry" || p.category?.name?.toLowerCase().includes("strawberry")));
+        } finally {
+            setLoading(false);
+        }
     };
     const choclate = async () => {
-        const productChoclates = await fetchProducts();
-        setFilterd(productChoclates.filter((p) => p.category?.slug === "chocolate" || p.category?.name?.toLowerCase().includes("chocolate")));
+        setLoading(true);
+        try {
+            const productChoclates = await fetchProducts();
+            setFilterd(productChoclates.filter((p) => p.category?.slug === "chocolate" || p.category?.name?.toLowerCase().includes("chocolate")));
+        } finally {
+            setLoading(false);
+        }
     };
     const showAll = async () => {
-        setFilterd([]); // Reset to default paginated list
-        setActive(""); // Clear active filter chip
+        setLoading(true);
+        try {
+            setFilterd([]); // Reset to default paginated list
+            setActive(""); // Clear active filter chip
+            // Wait a small bit so loader is visible for transition
+            await new Promise(resolve => setTimeout(resolve, 300));
+        } finally {
+            setLoading(false);
+        }
     };
     const [sortOrder, setSortOrder] = useState("asc"); // default ascending
 
     const sortByPrice = async () => {
-        const productAll = await fetchProducts();
+        setLoading(true);
+        try {
+            const productAll = await fetchProducts();
 
-        const sorted = [...productAll].sort((a, b) => {
-            if (sortOrder === "asc") {
-                return a.price - b.price; // Low → High
-            } else {
-                return b.price - a.price; // High → Low
-            }
-        });
+            const sorted = [...productAll].sort((a, b) => {
+                if (sortOrder === "asc") {
+                    return a.price - b.price; // Low → High
+                } else {
+                    return b.price - a.price; // High → Low
+                }
+            });
 
-        setFilterd(sorted);
-
-        // Toggle next sort order
-        setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+            setFilterd(sorted);
+            // Toggle next sort order
+            setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+        } finally {
+            setLoading(false);
+        }
     };
 
 
@@ -256,9 +282,7 @@ export default function Products({ toastRef }) {
                 }}>
                     Premium Scoops
                 </h2>
-                <p style={{ color: "#8d6e63", fontSize: "clamp(0.9rem, 3vw, 1.1rem)" }}>
-                    Handcrafted with passion, served with love.
-                </p>
+
             </motion.div>
 
             {/* Modern Filter Chips */}
@@ -308,9 +332,20 @@ export default function Products({ toastRef }) {
             {/* Products Grid with Staggered Animation */}
             <div className="container px-1 px-md-3" style={{ minHeight: "30vh", position: "relative", maxWidth: "1000px" }}> {/* Reduced padding on mobile and constrained width */}
 
-                {/* 💫 INLINE LOADER */}
+
+
+                {/* Loader Overlay for Filtering/Sorting */}
                 <AnimatePresence>
-                    {loading && <PremiumLoader mode="inline" />}
+                    {loading && filtered.length === 0 && !nextPage && (
+                        <div className="position-absolute w-100 d-flex justify-content-center" style={{ top: "30%", zIndex: 10 }}>
+                            <PremiumLoader mode="inline" />
+                        </div>
+                    )}
+                    {loading && filtered.length > 0 && (
+                        <div className="position-absolute w-100 d-flex justify-content-center" style={{ top: "30%", zIndex: 10 }}>
+                            <PremiumLoader mode="inline" />
+                        </div>
+                    )}
                 </AnimatePresence>
 
                 <motion.div
@@ -526,27 +561,39 @@ export default function Products({ toastRef }) {
                         filtered.length === 0 && (
                             <>
                                 {nextPage ? (
-                                    <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={loadMore}
-                                        disabled={loading}
-                                        className="btn px-4 py-2" // Reduced padding
-                                        style={{
-                                            background: "transparent",
-                                            border: "1px solid #7B4B3A", // Thinner, elegant border
-                                            color: "#7B4B3A",
-                                            borderRadius: "50px",
-                                            fontWeight: "600",
-                                            fontSize: "0.85rem", // Reduced font size
-                                            letterSpacing: "0.5px",
-                                            opacity: loading ? 0.7 : 1,
-                                            transition: "all 0.3s ease",
-                                            backdropFilter: "blur(5px)"
-                                        }}
-                                    >
-                                        {loading ? "Churning..." : " More Flavors"}
-                                    </motion.button>
+                                    <div className="d-flex flex-column align-items-center gap-3">
+                                        <AnimatePresence>
+                                            {loading && (
+                                                <div className="position-relative" style={{ height: "60px", width: "100%", display: "flex", justifyContent: "center" }}>
+                                                    <PremiumLoader mode="inline" />
+                                                </div>
+                                            )}
+                                        </AnimatePresence>
+
+                                        {!loading && (
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={loadMore}
+                                                disabled={loading}
+                                                className="btn px-4 py-2" // Reduced padding
+                                                style={{
+                                                    background: "transparent",
+                                                    border: "1px solid #7B4B3A", // Thinner, elegant border
+                                                    color: "#7B4B3A",
+                                                    borderRadius: "50px",
+                                                    fontWeight: "600",
+                                                    fontSize: "0.85rem", // Reduced font size
+                                                    letterSpacing: "0.5px",
+                                                    opacity: loading ? 0.7 : 1,
+                                                    transition: "all 0.3s ease",
+                                                    backdropFilter: "blur(5px)"
+                                                }}
+                                            >
+                                                Load More Flavors
+                                            </motion.button>
+                                        )}
+                                    </div>
                                 ) : (
                                     products.length > 0 && (
                                         <span
